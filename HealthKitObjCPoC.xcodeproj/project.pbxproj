@@ -20,6 +20,8 @@
 		C243C17C1C57D32400DB8803 /* InterfaceController.m in Sources */ = {isa = PBXBuildFile; fileRef = C243C17B1C57D32400DB8803 /* InterfaceController.m */; };
 		C243C17F1C57D32400DB8803 /* ExtensionDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C243C17E1C57D32400DB8803 /* ExtensionDelegate.m */; };
 		C243C1811C57D32400DB8803 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C243C1801C57D32400DB8803 /* Assets.xcassets */; };
+		C243C1911C57D34800DB8803 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C243C1901C57D34800DB8803 /* HealthKit.framework */; };
+		C243C1951C57D35900DB8803 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C243C1941C57D35900DB8803 /* HealthKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -86,6 +88,10 @@
 		C243C17E1C57D32400DB8803 /* ExtensionDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExtensionDelegate.m; sourceTree = "<group>"; };
 		C243C1801C57D32400DB8803 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C243C1821C57D32400DB8803 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C243C1901C57D34800DB8803 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
+		C243C1921C57D34800DB8803 /* HealthKitObjCPoC.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = HealthKitObjCPoC.entitlements; sourceTree = "<group>"; };
+		C243C1931C57D35900DB8803 /* HealthKitObjCPoC WatchKit Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "HealthKitObjCPoC WatchKit Extension.entitlements"; sourceTree = "<group>"; };
+		C243C1941C57D35900DB8803 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS2.1.sdk/System/Library/Frameworks/HealthKit.framework; sourceTree = DEVELOPER_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -93,6 +99,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C243C1911C57D34800DB8803 /* HealthKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -100,6 +107,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C243C1951C57D35900DB8803 /* HealthKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -109,6 +117,8 @@
 		C243C1461C57D32400DB8803 = {
 			isa = PBXGroup;
 			children = (
+				C243C1941C57D35900DB8803 /* HealthKit.framework */,
+				C243C1901C57D34800DB8803 /* HealthKit.framework */,
 				C243C1511C57D32400DB8803 /* HealthKitObjCPoC */,
 				C243C16A1C57D32400DB8803 /* HealthKitObjCPoC WatchKit App */,
 				C243C1791C57D32400DB8803 /* HealthKitObjCPoC WatchKit Extension */,
@@ -129,6 +139,7 @@
 		C243C1511C57D32400DB8803 /* HealthKitObjCPoC */ = {
 			isa = PBXGroup;
 			children = (
+				C243C1921C57D34800DB8803 /* HealthKitObjCPoC.entitlements */,
 				C243C1551C57D32400DB8803 /* AppDelegate.h */,
 				C243C1561C57D32400DB8803 /* AppDelegate.m */,
 				C243C1581C57D32400DB8803 /* ViewController.h */,
@@ -163,6 +174,7 @@
 		C243C1791C57D32400DB8803 /* HealthKitObjCPoC WatchKit Extension */ = {
 			isa = PBXGroup;
 			children = (
+				C243C1931C57D35900DB8803 /* HealthKitObjCPoC WatchKit Extension.entitlements */,
 				C243C17A1C57D32400DB8803 /* InterfaceController.h */,
 				C243C17B1C57D32400DB8803 /* InterfaceController.m */,
 				C243C17D1C57D32400DB8803 /* ExtensionDelegate.h */,
@@ -240,12 +252,24 @@
 				TargetAttributes = {
 					C243C14E1C57D32400DB8803 = {
 						CreatedOnToolsVersion = 7.2;
+						DevelopmentTeam = FQHZ7Y2XXC;
+						SystemCapabilities = {
+							com.apple.HealthKit = {
+								enabled = 1;
+							};
+						};
 					};
 					C243C1651C57D32400DB8803 = {
 						CreatedOnToolsVersion = 7.2;
 					};
 					C243C1741C57D32400DB8803 = {
 						CreatedOnToolsVersion = 7.2;
+						DevelopmentTeam = FQHZ7Y2XXC;
+						SystemCapabilities = {
+							com.apple.HealthKit = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -445,10 +469,14 @@
 		C243C1861C57D32400DB8803 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "HealthKitObjCPoC WatchKit Extension/HealthKitObjCPoC WatchKit Extension.entitlements";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "iPhone Developer";
 				INFOPLIST_FILE = "HealthKitObjCPoC WatchKit Extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.seanpetykowski.HealthKitObjCPoC.watchkitapp.watchkitextension;
 				PRODUCT_NAME = "${TARGET_NAME}";
+				PROVISIONING_PROFILE = "";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = 4;
@@ -459,10 +487,14 @@
 		C243C1871C57D32400DB8803 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "HealthKitObjCPoC WatchKit Extension/HealthKitObjCPoC WatchKit Extension.entitlements";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "iPhone Developer";
 				INFOPLIST_FILE = "HealthKitObjCPoC WatchKit Extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.seanpetykowski.HealthKitObjCPoC.watchkitapp.watchkitextension;
 				PRODUCT_NAME = "${TARGET_NAME}";
+				PROVISIONING_PROFILE = "";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = 4;
@@ -504,10 +536,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = HealthKitObjCPoC/HealthKitObjCPoC.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = HealthKitObjCPoC/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.seanpetykowski.HealthKitObjCPoC;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -515,10 +551,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = HealthKitObjCPoC/HealthKitObjCPoC.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = HealthKitObjCPoC/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.seanpetykowski.HealthKitObjCPoC;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};

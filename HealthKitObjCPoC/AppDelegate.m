@@ -7,13 +7,26 @@
 //
 
 #import "AppDelegate.h"
+@import HealthKit;
 
 @interface AppDelegate ()
+
+@property (nonatomic, retain) HKHealthStore *healthStore;
 
 @end
 
 @implementation AppDelegate
 
+
+- (void)applicationShouldRequestHealthAuthorization:(UIApplication *)application {
+    self.healthStore = [[HKHealthStore alloc] init];
+    [self.healthStore handleAuthorizationForExtensionWithCompletion:^(BOOL success, NSError *error){
+        if (!success) {
+            NSLog(@"[DEBUG] Failed with error: %@", error);
+        }
+    }];
+    
+}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
