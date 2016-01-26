@@ -20,6 +20,7 @@
 
 - (void)applicationShouldRequestHealthAuthorization:(UIApplication *)application {
     self.healthStore = [[HKHealthStore alloc] init];
+    
     [self.healthStore handleAuthorizationForExtensionWithCompletion:^(BOOL success, NSError *error){
         if (!success) {
             NSLog(@"[DEBUG] Failed with error: %@", error);
