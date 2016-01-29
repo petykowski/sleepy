@@ -20,11 +20,32 @@
 @property (nonatomic, readwrite) NSDate *inBedStart;
 @property (nonatomic, readwrite) NSDate *inBedStop;
 
+@property (nonatomic, readwrite) BOOL isSleeping;
+
 @property (unsafe_unretained, nonatomic) IBOutlet WKInterfaceLabel *mainLabel;
 @end
 
 
 @implementation InterfaceController
+
+- (instancetype)init {
+    self = [super init];
+    
+    self.healthStore = [[HKHealthStore alloc] init];
+    
+    self.isSleeping = [self isSleepinProgress];
+    
+    NSLog(@"[DEBUG] Sleep staus at init = %d", self.isSleeping);
+    
+    // If sleep is currently in progress update our labels.
+    if (self.isSleeping) {
+        [self sleepInProgressWillReadDataFromPlist];
+//        [self.mainLabel setText:@"Sleeping"];
+    }
+    
+    
+    return self;
+}
 
 - (void)awakeWithContext:(id)context {
     [super awakeWithContext:context];
@@ -34,8 +55,8 @@
 - (void)willActivate {
     [super willActivate];
     
-    self.healthStore = [[HKHealthStore alloc] init];
-    
+    NSLog(@"[DEBUG] Sleep staus at Activate = %d", self.isSleeping);
+
     HKAuthorizationStatus hasAccessToSleepData = [self.healthStore authorizationStatusForType:[HKObjectType categoryTypeForIdentifier:HKCategoryTypeIdentifierSleepAnalysis]];
     
     if (hasAccessToSleepData == 0) {
@@ -47,21 +68,76 @@
 
 - (void)didDeactivate {
     [super didDeactivate];
+    
+    if (self.isSleeping) {
+#warning Need to write dates to plist.
+    }
+    
 }
 
+// Plist Methods
+
+- (BOOL)isSleepinProgress {
+    
+    NSString *plistPath = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:@"Health.plist"];
+    NSDictionary *plistDictionary = [NSDictionary dictionaryWithContentsOfFile:plistPath];
+    NSNumber *sleeping = [plistDictionary objectForKey:@"SleepInProgress"];
+    BOOL thebool = [sleeping boolValue];
+    return thebool;
+}
+
+- (void)sleepInProgressWillReadDataFromPlist {
+    
+    NSString *plistPath = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:@"Health.plist"];
+    NSDictionary *plistDictionary = [NSDictionary dictionaryWithContentsOfFile:plistPath];
+    self.inBedStart = [plistDictionary objectForKey:@"StartInBedDate"];
+    self.sleepStart = [plistDictionary objectForKey:@"StartSleepDate"];
+    [self updateLabels];
+    NSLog(@"[DEBUG] in bed = %@", self.inBedStart);
+    NSLog(@"[DEBUG] sleep = %@", self.sleepStart);
+}
+
+- (void)writeSleepStartDataToPlist {
+    
+    NSString *plistPath = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:@"Health.plist"];
+    NSMutableDictionary *plistDictionary = [NSMutableDictionary dictionaryWithContentsOfFile:plistPath];
+    NSNumber *sleeping = [[NSNumber alloc] initWithBool:self.isSleeping];
+    [plistDictionary setObject:sleeping forKey:@"SleepInProgress"];
+    [plistDictionary setObject:self.inBedStart forKey:@"StartInBedDate"];
+    [plistDictionary setObject:self.sleepStart forKey:@"StartSleepDate"];
+    
+    [plistDictionary writeToFile:plistPath atomically:YES];
+}
+
+- (void)writeSleepStopDataToPlist {
+    
+    NSString *plistPath = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:@"Health.plist"];
+    NSMutableDictionary *plistDictionary = [NSMutableDictionary dictionaryWithContentsOfFile:plistPath];
+    NSNumber *sleeping = [[NSNumber alloc] initWithBool:self.isSleeping];
+    [plistDictionary setObject:sleeping forKey:@"SleepInProgress"];
+    [plistDictionary setObject:[NSDate date] forKey:@"StartInBedDate"];
+    [plistDictionary setObject:[NSDate date] forKey:@"StartSleepDate"];
+    
+    [plistDictionary writeToFile:plistPath atomically:YES];
+}
 
 // Button Methods
 
 - (IBAction)sleepDidStartButton {
-    self.inBedStart = [NSDate dateWithTimeInterval:-60*60*8 sinceDate:[NSDate date]];
-    self.sleepStart = [NSDate dateWithTimeInterval:60*15 sinceDate:self.inBedStart];
+    self.inBedStart = [NSDate date];
+    self.sleepStart = [NSDate date];
+    self.isSleeping = YES;
     [self updateLabels];
+    [self writeSleepStartDataToPlist];
 }
 
 - (IBAction)sleepDidStopButton {
     self.inBedStop = [NSDate date];
-    self.sleepStop = [NSDate dateWithTimeInterval:-60*15 sinceDate:self.inBedStop];
+    self.sleepStop = [NSDate date];
+    self.isSleeping = NO;
+    
     [self.mainLabel setText:@""];
+    [self writeSleepStopDataToPlist];
     [self writeToHealthKit];
     
 }
@@ -82,11 +158,9 @@
     }];
 }
 
-//- (void)readHeartRateDataFromPreviousSleep {
-//    HKQuery *heartRateData = [[HKQuery alloc] init];
-//    [self.healthStore executeQuery:heartRateData];
-//    
-//}
+- (void)readHeartRateDataFromPreviousSleep {
+#warning Need to add the ability to read heart rate data.
+}
 
 - (void)writeToHealthKit {
     HKCategoryType *categoryType = [HKObjectType categoryTypeForIdentifier:HKCategoryTypeIdentifierSleepAnalysis];

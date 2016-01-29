@@ -22,6 +22,8 @@
 		C243C1811C57D32400DB8803 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C243C1801C57D32400DB8803 /* Assets.xcassets */; };
 		C243C1911C57D34800DB8803 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C243C1901C57D34800DB8803 /* HealthKit.framework */; };
 		C243C1951C57D35900DB8803 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C243C1941C57D35900DB8803 /* HealthKit.framework */; };
+		C2508E571C582A5B00900AC1 /* Health.plist in Resources */ = {isa = PBXBuildFile; fileRef = C2508E561C582A5B00900AC1 /* Health.plist */; };
+		C2508E581C582A5B00900AC1 /* Health.plist in Resources */ = {isa = PBXBuildFile; fileRef = C2508E561C582A5B00900AC1 /* Health.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -92,6 +94,7 @@
 		C243C1921C57D34800DB8803 /* HealthKitObjCPoC.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = HealthKitObjCPoC.entitlements; sourceTree = "<group>"; };
 		C243C1931C57D35900DB8803 /* HealthKitObjCPoC WatchKit Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "HealthKitObjCPoC WatchKit Extension.entitlements"; sourceTree = "<group>"; };
 		C243C1941C57D35900DB8803 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS2.1.sdk/System/Library/Frameworks/HealthKit.framework; sourceTree = DEVELOPER_DIR; };
+		C2508E561C582A5B00900AC1 /* Health.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Health.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -167,6 +170,7 @@
 				C243C16B1C57D32400DB8803 /* Interface.storyboard */,
 				C243C16E1C57D32400DB8803 /* Assets.xcassets */,
 				C243C1701C57D32400DB8803 /* Info.plist */,
+				C2508E561C582A5B00900AC1 /* Health.plist */,
 			);
 			path = "HealthKitObjCPoC WatchKit App";
 			sourceTree = "<group>";
@@ -308,6 +312,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C2508E571C582A5B00900AC1 /* Health.plist in Resources */,
 				C243C16F1C57D32400DB8803 /* Assets.xcassets in Resources */,
 				C243C16D1C57D32400DB8803 /* Interface.storyboard in Resources */,
 			);
@@ -317,6 +322,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C2508E581C582A5B00900AC1 /* Health.plist in Resources */,
 				C243C1811C57D32400DB8803 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -581,6 +587,7 @@
 				C243C1871C57D32400DB8803 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		C243C1891C57D32400DB8803 /* Build configuration list for PBXNativeTarget "HealthKitObjCPoC WatchKit App" */ = {
 			isa = XCConfigurationList;
@@ -589,6 +596,7 @@
 				C243C18B1C57D32400DB8803 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		C243C18D1C57D32400DB8803 /* Build configuration list for PBXNativeTarget "HealthKitObjCPoC" */ = {
 			isa = XCConfigurationList;
@@ -597,6 +605,7 @@
 				C243C18F1C57D32400DB8803 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
