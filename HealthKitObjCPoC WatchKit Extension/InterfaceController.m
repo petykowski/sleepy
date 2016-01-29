@@ -35,14 +35,13 @@
     
     self.isSleeping = [self isSleepinProgress];
     
-    NSLog(@"[DEBUG] Sleep staus at init = %d", self.isSleeping);
-    
     // If sleep is currently in progress update our labels.
     if (self.isSleeping) {
         [self sleepInProgressWillReadDataFromPlist];
-//        [self.mainLabel setText:@"Sleeping"];
+        [self updateLabels];
+        NSLog(@"[VERBOSE] User is currently asleep. Resuming sleep state.");
+        
     }
-    
     
     return self;
 }
@@ -54,13 +53,11 @@
 
 - (void)willActivate {
     [super willActivate];
-    
-    NSLog(@"[DEBUG] Sleep staus at Activate = %d", self.isSleeping);
 
     HKAuthorizationStatus hasAccessToSleepData = [self.healthStore authorizationStatusForType:[HKObjectType categoryTypeForIdentifier:HKCategoryTypeIdentifierSleepAnalysis]];
     
     if (hasAccessToSleepData == 0) {
-        NSLog(@"[DEBUG] No Access, request access to services.");
+        NSLog(@"[VERBOSE] Sleeper does not have access to Health.app, prompting user for access.");
         [self requestAccessToHealthKit];
     }
     
@@ -75,30 +72,30 @@
     
 }
 
-// Plist Methods
+// .plist Methods
 
 - (BOOL)isSleepinProgress {
-    
+    NSLog(@"[VERBOSE] Determining current sleep status.");
     NSString *plistPath = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:@"Health.plist"];
     NSDictionary *plistDictionary = [NSDictionary dictionaryWithContentsOfFile:plistPath];
     NSNumber *sleeping = [plistDictionary objectForKey:@"SleepInProgress"];
     BOOL thebool = [sleeping boolValue];
+    NSLog(@"[VERBOSE] Users sleep status is %s.", thebool  ? "sleeping" : "awake");
     return thebool;
 }
 
 - (void)sleepInProgressWillReadDataFromPlist {
-    
+    NSLog(@"[VERBOSE] Sleep is currently in progress. Setting variables.");
     NSString *plistPath = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:@"Health.plist"];
     NSDictionary *plistDictionary = [NSDictionary dictionaryWithContentsOfFile:plistPath];
     self.inBedStart = [plistDictionary objectForKey:@"StartInBedDate"];
     self.sleepStart = [plistDictionary objectForKey:@"StartSleepDate"];
-    [self updateLabels];
     NSLog(@"[DEBUG] in bed = %@", self.inBedStart);
     NSLog(@"[DEBUG] sleep = %@", self.sleepStart);
 }
 
 - (void)writeSleepStartDataToPlist {
-    
+    NSLog(@"[VERBOSE] Attempting to write data to plist.");
     NSString *plistPath = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:@"Health.plist"];
     NSMutableDictionary *plistDictionary = [NSMutableDictionary dictionaryWithContentsOfFile:plistPath];
     NSNumber *sleeping = [[NSNumber alloc] initWithBool:self.isSleeping];
@@ -106,11 +103,16 @@
     [plistDictionary setObject:self.inBedStart forKey:@"StartInBedDate"];
     [plistDictionary setObject:self.sleepStart forKey:@"StartSleepDate"];
     
-    [plistDictionary writeToFile:plistPath atomically:YES];
+    BOOL didWrite = [plistDictionary writeToFile:plistPath atomically:YES];
+    if (didWrite) {
+        NSLog(@"[VERBOSE] Data sucessfully written to plist.");
+    } else {
+        NSLog(@"[DEBUG] Failed to write data to plist.");
+    }
 }
 
 - (void)writeSleepStopDataToPlist {
-    
+    NSLog(@"[VERBOSE] Clearing plist data.");
     NSString *plistPath = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:@"Health.plist"];
     NSMutableDictionary *plistDictionary = [NSMutableDictionary dictionaryWithContentsOfFile:plistPath];
     NSNumber *sleeping = [[NSNumber alloc] initWithBool:self.isSleeping];
@@ -118,7 +120,12 @@
     [plistDictionary setObject:[NSDate date] forKey:@"StartInBedDate"];
     [plistDictionary setObject:[NSDate date] forKey:@"StartSleepDate"];
     
-    [plistDictionary writeToFile:plistPath atomically:YES];
+    BOOL didWrite = [plistDictionary writeToFile:plistPath atomically:YES];
+    if (didWrite) {
+        NSLog(@"[VERBOSE] Clearing of data sucessfully written to plist.");
+    } else {
+        NSLog(@"[DEBUG] Failed to clear data from plist.");
+    }
 }
 
 // Button Methods
@@ -129,16 +136,19 @@
     self.isSleeping = YES;
     [self updateLabels];
     [self writeSleepStartDataToPlist];
+    NSLog(@"[VERBOSE] User is in bed at %@ and asleep at %@", self.inBedStart, self.sleepStart);
 }
 
 - (IBAction)sleepDidStopButton {
     self.inBedStop = [NSDate date];
     self.sleepStop = [NSDate date];
     self.isSleeping = NO;
+    NSLog(@"[VERBOSE] User exited in bed at %@ and woke at %@", self.inBedStop, self.sleepStop);
     
     [self.mainLabel setText:@""];
     [self writeSleepStopDataToPlist];
     [self writeToHealthKit];
+    NSLog(@"[VERBOSE] Writing data to Health.app.");
     
 }
 
@@ -153,7 +163,7 @@
     
     [self.healthStore requestAuthorizationToShareTypes:[NSSet setWithArray:writeTypes] readTypes:[NSSet setWithArray:readTypes] completion:^(BOOL success, NSError *error){
         if (!success) {
-            NSLog(@"[DEBUG] Failed with error: %@", error);
+            NSLog(@"[DEBUG] Failed attempt to request access to Health.app with error: %@", error);
         }
     }];
 }
@@ -179,7 +189,7 @@
     
     [self.healthStore saveObjects:sampleArray withCompletion:^(BOOL success, NSError *error){
         if (!success) {
-            NSLog(@"[DEBUG] Failed to write data with error: %@", error);
+            NSLog(@"[DEBUG] Failed to write data to Health.app with error: %@", error);
         }
     }];
 }
@@ -191,6 +201,7 @@
     dateFormatter.timeStyle = NSDateFormatterShortStyle;
     
     [self.mainLabel setText:[dateFormatter stringFromDate:self.inBedStart]];
+    NSLog(@"[VERBOSE] Labels set.");
 }
 
 @end
