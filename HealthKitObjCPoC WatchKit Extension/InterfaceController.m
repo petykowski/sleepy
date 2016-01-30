@@ -31,6 +31,8 @@
 - (instancetype)init {
     self = [super init];
     
+    [self checkForPlist];
+    
     self.healthStore = [[HKHealthStore alloc] init];
     
     self.isSleeping = [self isSleepinProgress];
@@ -74,10 +76,40 @@
 
 // .plist Methods
 
+- (void)checkForPlist {
+    BOOL success;
+    NSError *error;
+    
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString *filePath = [documentsDirectory stringByAppendingPathComponent:@"Health.plist"];
+    
+    success = [fileManager fileExistsAtPath:filePath];
+    
+    if (!success) {
+        BOOL didWrite;
+        NSLog(@"[DEBUG] No file currently exsists at this path.");
+        NSString *path = [[NSBundle mainBundle] pathForResource:@"Health" ofType:@"plist"];
+        didWrite = [fileManager copyItemAtPath:path toPath:filePath error:&error];
+        
+        if (didWrite) {
+            NSLog(@"[DEBUG] Sucessfully created Health.plist.");
+        } else if (!didWrite) {
+            NSLog(@"[DEBUG] Failed to create Health.plist");
+        }
+        
+    }
+}
+
 - (BOOL)isSleepinProgress {
     NSLog(@"[VERBOSE] Determining current sleep status.");
-    NSString *plistPath = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:@"Health.plist"];
-    NSDictionary *plistDictionary = [NSDictionary dictionaryWithContentsOfFile:plistPath];
+    
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString *filePath = [documentsDirectory stringByAppendingPathComponent:@"Health.plist"];
+    NSDictionary *plistDictionary = [NSDictionary dictionaryWithContentsOfFile:filePath];
+    
     NSNumber *sleeping = [plistDictionary objectForKey:@"SleepInProgress"];
     BOOL thebool = [sleeping boolValue];
     NSLog(@"[VERBOSE] Users sleep status is %s.", thebool  ? "sleeping" : "awake");
@@ -86,8 +118,12 @@
 
 - (void)sleepInProgressWillReadDataFromPlist {
     NSLog(@"[VERBOSE] Sleep is currently in progress. Setting variables.");
-    NSString *plistPath = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:@"Health.plist"];
-    NSDictionary *plistDictionary = [NSDictionary dictionaryWithContentsOfFile:plistPath];
+    
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString *filePath = [documentsDirectory stringByAppendingPathComponent:@"Health.plist"];
+    NSDictionary *plistDictionary = [NSDictionary dictionaryWithContentsOfFile:filePath];
+    
     self.inBedStart = [plistDictionary objectForKey:@"StartInBedDate"];
     self.sleepStart = [plistDictionary objectForKey:@"StartSleepDate"];
     NSLog(@"[DEBUG] in bed = %@", self.inBedStart);
@@ -96,14 +132,18 @@
 
 - (void)writeSleepStartDataToPlist {
     NSLog(@"[VERBOSE] Attempting to write data to plist.");
-    NSString *plistPath = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:@"Health.plist"];
-    NSMutableDictionary *plistDictionary = [NSMutableDictionary dictionaryWithContentsOfFile:plistPath];
+    
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString *filePath = [documentsDirectory stringByAppendingPathComponent:@"Health.plist"];
+    NSMutableDictionary *plistDictionary = [NSMutableDictionary dictionaryWithContentsOfFile:filePath];
+    
     NSNumber *sleeping = [[NSNumber alloc] initWithBool:self.isSleeping];
     [plistDictionary setObject:sleeping forKey:@"SleepInProgress"];
     [plistDictionary setObject:self.inBedStart forKey:@"StartInBedDate"];
     [plistDictionary setObject:self.sleepStart forKey:@"StartSleepDate"];
     
-    BOOL didWrite = [plistDictionary writeToFile:plistPath atomically:YES];
+    BOOL didWrite = [plistDictionary writeToFile:filePath atomically:YES];
     if (didWrite) {
         NSLog(@"[VERBOSE] Data sucessfully written to plist.");
     } else {
@@ -113,20 +153,25 @@
 
 - (void)writeSleepStopDataToPlist {
     NSLog(@"[VERBOSE] Clearing plist data.");
-    NSString *plistPath = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:@"Health.plist"];
-    NSMutableDictionary *plistDictionary = [NSMutableDictionary dictionaryWithContentsOfFile:plistPath];
+    
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString *filePath = [documentsDirectory stringByAppendingPathComponent:@"Health.plist"];
+    NSMutableDictionary *plistDictionary = [NSMutableDictionary dictionaryWithContentsOfFile:filePath];
+    
     NSNumber *sleeping = [[NSNumber alloc] initWithBool:self.isSleeping];
     [plistDictionary setObject:sleeping forKey:@"SleepInProgress"];
     [plistDictionary setObject:[NSDate date] forKey:@"StartInBedDate"];
     [plistDictionary setObject:[NSDate date] forKey:@"StartSleepDate"];
     
-    BOOL didWrite = [plistDictionary writeToFile:plistPath atomically:YES];
+    BOOL didWrite = [plistDictionary writeToFile:filePath atomically:YES];
     if (didWrite) {
         NSLog(@"[VERBOSE] Clearing of data sucessfully written to plist.");
     } else {
         NSLog(@"[DEBUG] Failed to clear data from plist.");
     }
 }
+
 
 // Button Methods
 
