@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="9531" systemVersion="15E27e" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="AgC-eL-Hgc">
+<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="10089" systemVersion="15E33e" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="AgC-eL-Hgc">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="9515"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10072.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="10028"/>
     </dependencies>
     <scenes>
         <!--Interface Controller-->
@@ -10,20 +10,24 @@
             <objects>
                 <controller id="AgC-eL-Hgc" customClass="InterfaceController">
                     <items>
-                        <button width="1" alignment="left" title="Start" id="wHW-1w-9Vc">
-                            <connections>
-                                <action selector="sleepDidStartButton" destination="AgC-eL-Hgc" id="Iv5-AK-X3T"/>
-                            </connections>
-                        </button>
                         <label alignment="center" verticalAlignment="center" text="Label" id="Bq9-XQ-8sA">
-                            <fontDescription key="font" style="UICTFontTextStyleHeadline"/>
+                            <fontDescription key="font" type="boldSystem" pointSize="30"/>
                         </label>
-                        <button width="1" alignment="left" verticalAlignment="bottom" title="Stop" id="ffn-0e-DNC">
-                            <connections>
-                                <action selector="sleepDidStopButton" destination="AgC-eL-Hgc" id="avZ-f6-mZ8"/>
-                            </connections>
-                        </button>
                     </items>
+                    <menu key="menu" id="XDw-HB-zg6">
+                        <items>
+                            <menuItem title="Sleep" icon="more" id="3QV-n1-YE0">
+                                <connections>
+                                    <action selector="sleepDidStartMenuButton" destination="AgC-eL-Hgc" id="Dy6-lh-roP"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Wake" icon="repeat" id="v32-9P-Xrb">
+                                <connections>
+                                    <action selector="sleepDidStopMenuButton" destination="AgC-eL-Hgc" id="hQ7-Rm-MZT"/>
+                                </connections>
+                            </menuItem>
+                        </items>
+                    </menu>
                     <connections>
                         <outlet property="mainLabel" destination="Bq9-XQ-8sA" id="04B-5i-kqk"/>
                     </connections>

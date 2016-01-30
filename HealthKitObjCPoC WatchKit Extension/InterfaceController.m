@@ -174,8 +174,7 @@
 
 
 // Button Methods
-
-- (IBAction)sleepDidStartButton {
+- (IBAction)sleepDidStartMenuButton {
     self.inBedStart = [NSDate date];
     self.sleepStart = [NSDate date];
     self.isSleeping = YES;
@@ -183,8 +182,7 @@
     [self writeSleepStartDataToPlist];
     NSLog(@"[VERBOSE] User is in bed at %@ and asleep at %@", self.inBedStart, self.sleepStart);
 }
-
-- (IBAction)sleepDidStopButton {
+- (IBAction)sleepDidStopMenuButton {
     self.inBedStop = [NSDate date];
     self.sleepStop = [NSDate date];
     self.isSleeping = NO;
@@ -194,9 +192,7 @@
     [self writeSleepStopDataToPlist];
     [self writeToHealthKit];
     NSLog(@"[VERBOSE] Writing data to Health.app.");
-    
 }
-
 
 // HealthKit Methods
 
