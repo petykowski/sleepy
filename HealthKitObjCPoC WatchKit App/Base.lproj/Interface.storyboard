@@ -10,7 +10,7 @@
             <objects>
                 <controller id="AgC-eL-Hgc" customClass="InterfaceController">
                     <items>
-                        <label alignment="center" verticalAlignment="center" text="Label" id="Bq9-XQ-8sA">
+                        <label alignment="center" verticalAlignment="center" text="Press To Sleep" textAlignment="center" numberOfLines="2" id="Bq9-XQ-8sA">
                             <fontDescription key="font" type="boldSystem" pointSize="30"/>
                         </label>
                     </items>
@@ -27,6 +27,12 @@
                                 </connections>
                             </menuItem>
                         </items>
+                        <variation key="default">
+                            <mask key="items">
+                                <exclude reference="3QV-n1-YE0"/>
+                                <exclude reference="v32-9P-Xrb"/>
+                            </mask>
+                        </variation>
                     </menu>
                     <connections>
                         <outlet property="mainLabel" destination="Bq9-XQ-8sA" id="04B-5i-kqk"/>

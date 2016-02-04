@@ -37,12 +37,17 @@
     
     self.isSleeping = [self isSleepinProgress];
     
+    [self clearAllMenuItems];
+    
     // If sleep is currently in progress update our labels.
     if (self.isSleeping) {
         [self sleepInProgressWillReadDataFromPlist];
         [self updateLabels];
+        [self addMenuItemWithItemIcon:WKMenuItemIconMore title:@"Wake" action:@selector(sleepDidStopMenuButton)];
         NSLog(@"[VERBOSE] User is currently asleep. Resuming sleep state.");
         
+    } else {
+        [self addMenuItemWithItemIcon:WKMenuItemIconAdd title:@"Sleep" action:@selector(sleepDidStartMenuButton)];
     }
     
     return self;
@@ -174,12 +179,18 @@
 
 
 // Button Methods
+
 - (IBAction)sleepDidStartMenuButton {
     self.inBedStart = [NSDate date];
     self.sleepStart = [NSDate date];
     self.isSleeping = YES;
+    
     [self updateLabels];
     [self writeSleepStartDataToPlist];
+    
+    [self clearAllMenuItems];
+    [self addMenuItemWithItemIcon:WKMenuItemIconMore title:@"Wake" action:@selector(sleepDidStopMenuButton)];
+    
     NSLog(@"[VERBOSE] User is in bed at %@ and asleep at %@", self.inBedStart, self.sleepStart);
 }
 - (IBAction)sleepDidStopMenuButton {
@@ -188,7 +199,11 @@
     self.isSleeping = NO;
     NSLog(@"[VERBOSE] User exited in bed at %@ and woke at %@", self.inBedStop, self.sleepStop);
     
-    [self.mainLabel setText:@""];
+    [self.mainLabel setText:@"Press To Sleep"];
+    
+    [self clearAllMenuItems];
+    [self addMenuItemWithItemIcon:WKMenuItemIconAdd title:@"Sleep" action:@selector(sleepDidStartMenuButton)];
+    
     [self writeSleepStopDataToPlist];
     [self writeToHealthKit];
     NSLog(@"[VERBOSE] Writing data to Health.app.");
