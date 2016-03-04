@@ -44,6 +44,7 @@
         [self sleepInProgressWillReadDataFromPlist];
         [self updateLabels];
         [self addMenuItemWithItemIcon:WKMenuItemIconMore title:@"Wake" action:@selector(sleepDidStopMenuButton)];
+        [self addMenuItemWithItemIcon:WKMenuItemIconDecline title:@"Cancel" action:@selector(sleepWasCancelledByUserMenuButton)];
         NSLog(@"[VERBOSE] User is currently asleep. Resuming sleep state.");
         
     } else {
@@ -190,6 +191,7 @@
     
     [self clearAllMenuItems];
     [self addMenuItemWithItemIcon:WKMenuItemIconMore title:@"Wake" action:@selector(sleepDidStopMenuButton)];
+    [self addMenuItemWithItemIcon:WKMenuItemIconDecline title:@"Cancel" action:@selector(sleepWasCancelledByUserMenuButton)];
     
     NSLog(@"[VERBOSE] User is in bed at %@ and asleep at %@", self.inBedStart, self.sleepStart);
 }
@@ -207,6 +209,20 @@
     [self writeSleepStopDataToPlist];
     [self writeToHealthKit];
     NSLog(@"[VERBOSE] Writing data to Health.app.");
+}
+- (IBAction)sleepWasCancelledByUserMenuButton {
+    self.inBedStop = [NSDate date];
+    self.sleepStop = [NSDate date];
+    self.isSleeping = NO;
+    NSLog(@"[VERBOSE] User cancelled sleep at %@", self.sleepStop);
+    
+    [self.mainLabel setText:@"Press To Sleep"];
+    
+    [self clearAllMenuItems];
+    [self addMenuItemWithItemIcon:WKMenuItemIconAdd title:@"Sleep" action:@selector(sleepDidStartMenuButton)];
+    
+    [self writeSleepStopDataToPlist];
+    NSLog(@"[VERBOSE] Sleep data will not be written to Health.app.");
 }
 
 // HealthKit Methods
