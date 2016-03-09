@@ -480,7 +480,7 @@
 				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "iPhone Developer";
 				INFOPLIST_FILE = "HealthKitObjCPoC WatchKit Extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.seanpetykowski.HealthKitObjCPoC.watchkitapp.watchkitextension;
+				PRODUCT_BUNDLE_IDENTIFIER = com.seanpetykowski.SleepyApp.watchkitapp.watchkitextension;
 				PRODUCT_NAME = "${TARGET_NAME}";
 				PROVISIONING_PROFILE = "";
 				SDKROOT = watchos;
@@ -498,7 +498,7 @@
 				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "iPhone Developer";
 				INFOPLIST_FILE = "HealthKitObjCPoC WatchKit Extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.seanpetykowski.HealthKitObjCPoC.watchkitapp.watchkitextension;
+				PRODUCT_BUNDLE_IDENTIFIER = com.seanpetykowski.SleepyApp.watchkitapp.watchkitextension;
 				PRODUCT_NAME = "${TARGET_NAME}";
 				PROVISIONING_PROFILE = "";
 				SDKROOT = watchos;
@@ -514,7 +514,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				IBSC_MODULE = HealthKitObjCPoC_WatchKit_Extension;
 				INFOPLIST_FILE = "HealthKitObjCPoC WatchKit App/Info.plist";
-				PRODUCT_BUNDLE_IDENTIFIER = com.seanpetykowski.HealthKitObjCPoC.watchkitapp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.seanpetykowski.SleepyApp.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
@@ -529,7 +529,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				IBSC_MODULE = HealthKitObjCPoC_WatchKit_Extension;
 				INFOPLIST_FILE = "HealthKitObjCPoC WatchKit App/Info.plist";
-				PRODUCT_BUNDLE_IDENTIFIER = com.seanpetykowski.HealthKitObjCPoC.watchkitapp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.seanpetykowski.SleepyApp.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
@@ -547,7 +547,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = HealthKitObjCPoC/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.seanpetykowski.HealthKitObjCPoC;
+				PRODUCT_BUNDLE_IDENTIFIER = com.seanpetykowski.SleepyApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 			};
@@ -562,7 +562,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = HealthKitObjCPoC/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.seanpetykowski.HealthKitObjCPoC;
+				PRODUCT_BUNDLE_IDENTIFIER = com.seanpetykowski.SleepyApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 			};

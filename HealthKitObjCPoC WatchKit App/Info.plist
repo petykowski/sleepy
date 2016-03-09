@@ -28,7 +28,7 @@
 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 	</array>
 	<key>WKCompanionAppBundleIdentifier</key>
-	<string>com.seanpetykowski.HealthKitObjCPoC</string>
+	<string>com.seanpetykowski.SleepyApp</string>
 	<key>WKWatchKitApp</key>
 	<true/>
 </dict>
