@@ -43,8 +43,9 @@
     if (self.isSleeping) {
         [self sleepInProgressWillReadDataFromPlist];
         [self updateLabels];
-        [self addMenuItemWithItemIcon:WKMenuItemIconMore title:@"Wake" action:@selector(sleepDidStopMenuButton)];
-        [self addMenuItemWithItemIcon:WKMenuItemIconDecline title:@"Cancel" action:@selector(sleepWasCancelledByUserMenuButton)];
+        [self addMenuItemWithItemIcon:WKMenuItemIconAccept title:@"Wake" action:@selector(sleepDidStopMenuButton)];
+        [self addMenuItemWithItemIcon:WKMenuItemIconBlock title:@"Cancel" action:@selector(sleepWasCancelledByUserMenuButton)];
+        [self addMenuItemWithItemIcon:WKMenuItemIconResume title:@"Still Awake?" action:@selector(sleepWasDeferredByUserMenuButton)];
         NSLog(@"[VERBOSE] User is currently asleep. Resuming sleep state.");
         
     } else {
@@ -190,8 +191,9 @@
     [self writeSleepStartDataToPlist];
     
     [self clearAllMenuItems];
-    [self addMenuItemWithItemIcon:WKMenuItemIconMore title:@"Wake" action:@selector(sleepDidStopMenuButton)];
-    [self addMenuItemWithItemIcon:WKMenuItemIconDecline title:@"Cancel" action:@selector(sleepWasCancelledByUserMenuButton)];
+    [self addMenuItemWithItemIcon:WKMenuItemIconAccept title:@"Wake" action:@selector(sleepDidStopMenuButton)];
+    [self addMenuItemWithItemIcon:WKMenuItemIconBlock title:@"Cancel" action:@selector(sleepWasCancelledByUserMenuButton)];
+    [self addMenuItemWithItemIcon:WKMenuItemIconResume title:@"Still Awake?" action:@selector(sleepWasDeferredByUserMenuButton)];
     
     NSLog(@"[VERBOSE] User is in bed at %@ and asleep at %@", self.inBedStart, self.sleepStart);
 }
@@ -223,6 +225,11 @@
     
     [self writeSleepStopDataToPlist];
     NSLog(@"[VERBOSE] Sleep data will not be written to Health.app.");
+}
+
+- (IBAction)sleepWasDeferredByUserMenuButton {
+    self.sleepStart = [NSDate date];
+    NSLog(@"[VERBOSE] User is still awake at %@", self.sleepStart);
 }
 
 // HealthKit Methods
