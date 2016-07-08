@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="10089" systemVersion="15E33e" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="AgC-eL-Hgc">
+<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="11163.2" systemVersion="15G12a" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="AgC-eL-Hgc">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10072.1"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="10028"/>
+        <deployment identifier="watchOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11133"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="11064"/>
     </dependencies>
     <scenes>
         <!--Interface Controller-->
@@ -13,6 +14,30 @@
                         <label alignment="center" verticalAlignment="center" text="Press To Sleep" textAlignment="center" numberOfLines="2" id="Bq9-XQ-8sA">
                             <fontDescription key="font" type="boldSystem" pointSize="30"/>
                         </label>
+                        <label alignment="center" verticalAlignment="center" text="9:40 PM" textAlignment="center" id="P2X-iN-doj" userLabel="In Bed">
+                            <fontDescription key="font" type="boldSystem" pointSize="30"/>
+                        </label>
+                        <separator alignment="center" verticalAlignment="center" id="gwV-AV-DqL"/>
+                        <label alignment="center" verticalAlignment="center" text="11:45 PM" id="VTD-Ai-sUW" userLabel="Sleep Start">
+                            <fontDescription key="font" type="boldSystem" pointSize="30"/>
+                        </label>
+                        <label alignment="left" hidden="YES" text="Please confirm time you fell asleep" textAlignment="center" numberOfLines="2" id="HbD-fg-jbm" userLabel="Sleep Confirmation">
+                            <fontDescription key="font" style="UICTFontTextStyleTitle1"/>
+                        </label>
+                        <label alignment="center" hidden="YES" text="10:45 PM" id="rm6-Ee-pcC" userLabel="Proposed Sleep">
+                            <fontDescription key="font" type="system" pointSize="30"/>
+                        </label>
+                        <button width="1" alignment="left" hidden="YES" title="Confirm" id="wSj-ui-4PQ">
+                            <connections>
+                                <action selector="confirmButton" destination="AgC-eL-Hgc" id="JbO-Jt-mL5"/>
+                            </connections>
+                        </button>
+                        <button width="1" alignment="left" hidden="YES" title="Deny" id="MSD-Ac-16D">
+                            <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <connections>
+                                <action selector="denyButton" destination="AgC-eL-Hgc" id="YG1-ej-zFm"/>
+                            </connections>
+                        </button>
                     </items>
                     <menu key="menu" id="XDw-HB-zg6">
                         <items>
@@ -35,7 +60,14 @@
                         </variation>
                     </menu>
                     <connections>
+                        <outlet property="confirmButtonLabel" destination="wSj-ui-4PQ" id="qKC-XD-AsY"/>
+                        <outlet property="confirmMsg" destination="HbD-fg-jbm" id="TdQ-E2-6p4"/>
+                        <outlet property="denyButtonLabel" destination="MSD-Ac-16D" id="B2n-Nn-eer"/>
+                        <outlet property="inBedLabel" destination="P2X-iN-doj" id="yka-Hu-avv"/>
                         <outlet property="mainLabel" destination="Bq9-XQ-8sA" id="04B-5i-kqk"/>
+                        <outlet property="proposedSleepLabel" destination="rm6-Ee-pcC" id="zIE-GN-61R"/>
+                        <outlet property="separator" destination="gwV-AV-DqL" id="i6z-Np-3dW"/>
+                        <outlet property="sleepStartLabel" destination="VTD-Ai-sUW" id="xG8-cw-AEe"/>
                     </connections>
                 </controller>
             </objects>

@@ -265,6 +265,8 @@
 					};
 					C243C1651C57D32400DB8803 = {
 						CreatedOnToolsVersion = 7.2;
+						DevelopmentTeam = FQHZ7Y2XXC;
+						DevelopmentTeamName = "Sean Petykowski";
 					};
 					C243C1741C57D32400DB8803 = {
 						CreatedOnToolsVersion = 7.2;
