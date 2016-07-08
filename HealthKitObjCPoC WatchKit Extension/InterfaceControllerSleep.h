@@ -17,6 +17,6 @@
 
 @protocol InterfaceControllerSleepDelegate <NSObject>
 
-- (void)selectedButton:(int)buttonValue;
+- (void)proposedSleepStartDecision:(int)buttonValue;
 
 @end

@@ -12,7 +12,8 @@
 
 @interface InterfaceController() <InterfaceControllerSleepDelegate>
 
-// HEALTHKIT PROPERTIES
+
+// HEALTHKIT PROPERTIES //
 
 @property (nonatomic, retain) HKHealthStore *healthStore;
 
@@ -34,7 +35,7 @@
 @property (nonatomic, readwrite) NSDate *proposedSleepStart;
 
 
-// INTERFACE ITEMS
+// INTERFACE ITEMS //
 
 // Labels
 @property (unsafe_unretained, nonatomic) IBOutlet WKInterfaceLabel *mainLabel;
@@ -72,7 +73,7 @@
     } else {
         [self updateLabelsWhileAwake];
         [self addMenuItemWithItemIcon:WKMenuItemIconAdd title:@"Sleep" action:@selector(sleepDidStartMenuButton)];
-        [self addMenuItemWithItemIcon:WKMenuItemIconAdd title:@"Add Data" action:@selector(populateHRData)];
+//        [self addMenuItemWithItemIcon:WKMenuItemIconAdd title:@"Add Data" action:@selector(populateHRData)];
     }
     
     return self;
@@ -98,12 +99,9 @@
 - (void)didDeactivate {
     [super didDeactivate];
     
-    if (self.isSleeping) {
-#warning Need to write dates to plist. (This doesnt seem necessary.)
-    }
 }
 
-// .plist Methods
+// PLIST METHODS //
 
 - (void)checkForPlist {
     BOOL success;
@@ -205,12 +203,12 @@
 }
 
 
-// Button Methods
+// MENU BUTTON METHODS //
 
 - (IBAction)sleepDidStartMenuButton {
     self.inBedStart = [NSDate date];
-    self.sleepStart = [NSDate date];
     self.awakeStart = [NSDate date];
+    self.sleepStart = [NSDate dateWithTimeInterval:1 sinceDate:[NSDate date]];
     self.isSleeping = YES;
     
     [self updateLabelsWhileAsleep];
@@ -228,6 +226,7 @@
     self.inBedStop = [NSDate date];
     self.awakeStop = [NSDate date];
     self.isSleeping = NO;
+    
     NSLog(@"[VERBOSE] User exited in bed at %@ and woke at %@", self.inBedStop, self.sleepStop);
     
     [self readHeartRateData];
@@ -265,7 +264,6 @@
     [self updateLabelsWhileAsleep];
     NSLog(@"[VERBOSE] User is still awake at %@", self.sleepStart);
 }
-
 
 
 // HealthKit Methods
@@ -316,25 +314,48 @@
     }];
 }
 
-//- (void)debugVals {
-//    NSLog(@"[DEBUG] sleepStart: %@", self.sleepStart);
-//    NSLog(@"[DEBUG] sleepStop: %@", self.sleepStop);
-//    NSLog(@"[DEBUG] proposedSleepStart: %@", self.proposedSleepStart);
-//    NSLog(@"[DEBUG] awakeStart: %@", self.awakeStart);
-//    NSLog(@"[DEBUG] awakeStop: %@", self.awakeStop);
-//    NSLog(@"[DEBUG] inBedStart: %@", self.inBedStart);
-//    NSLog(@"[DEBUG] inBedStop: %@", self.inBedStop);
-//}
-
-
-- (void)updateLabels {
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    dateFormatter.dateStyle = NSDateFormatterNoStyle;
-    dateFormatter.timeStyle = NSDateFormatterShortStyle;
+- (void)readHeartRateData {
+    NSDate *sampleStartDate = self.sleepStart;
+    NSDate *sampleEndDate = [NSDate dateWithTimeInterval:3600 sinceDate:sampleStartDate];
     
-    [self.mainLabel setText:[dateFormatter stringFromDate:self.inBedStart]];
-    NSLog(@"[VERBOSE] Labels set.");
+    HKSampleType *sampleType = [HKSampleType quantityTypeForIdentifier:HKQuantityTypeIdentifierHeartRate];
+    NSPredicate *predicate = [HKQuery predicateForSamplesWithStartDate:sampleStartDate endDate:sampleEndDate options:HKQueryOptionNone];
+    
+    HKSampleQuery *query = [[HKSampleQuery alloc] initWithSampleType:sampleType predicate:predicate limit:HKObjectQueryNoLimit sortDescriptors:nil resultsHandler:^(HKSampleQuery * _Nonnull query, NSArray<__kindof HKSample *> * _Nullable results, NSError * _Nullable error) {
+        if (!results) {
+            NSLog(@"An error has occured. The error was: %@", error);
+            abort();
+        }
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+            BOOL sleepDetected = false;
+            
+            for (HKQuantitySample *sample in results) {
+                
+                double heartRate = [sample.quantity doubleValueForUnit:[HKUnit unitFromString:@"count/min"]];
+                NSDate *predetictedSleep = sample.startDate;
+                
+                
+                if (heartRate <= 50 && sleepDetected == false) {
+                    NSLog(@"[DEBUG] User fell asleep at %@ with a heart rate of %f bpm", predetictedSleep, heartRate);
+                    self.proposedSleepStart = predetictedSleep;
+                    sleepDetected = true;
+                }
+                
+            };
+            
+            NSLog(@"[DEBUG] The results are: %@", results);
+            [self updateLabelsForConfirmation];
+        });
+    }];
+    
+    [self.healthStore executeQuery:query];
+    
 }
+
+
+// LABEL CONFIGURATION //
 
 - (void)updateLabelsWhileAwake {
     
@@ -383,68 +404,31 @@
     NSLog(@"[VERBOSE] Labels set for asleep.");
 }
 
-- (void)readHeartRateData {
-    NSDate *sampleStartDate = self.sleepStart;
-    NSDate *sampleEndDate = [NSDate dateWithTimeInterval:3600 sinceDate:sampleStartDate];
-    
-    HKSampleType *sampleType = [HKSampleType quantityTypeForIdentifier:HKQuantityTypeIdentifierHeartRate];
-    NSPredicate *predicate = [HKQuery predicateForSamplesWithStartDate:sampleStartDate endDate:sampleEndDate options:HKQueryOptionNone];
-    
-    HKSampleQuery *query = [[HKSampleQuery alloc] initWithSampleType:sampleType predicate:predicate limit:HKObjectQueryNoLimit sortDescriptors:nil resultsHandler:^(HKSampleQuery * _Nonnull query, NSArray<__kindof HKSample *> * _Nullable results, NSError * _Nullable error) {
-        if (!results) {
-            NSLog(@"An error has occured. The error was: %@", error);
-            abort();
-        }
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            
-            BOOL sleepDetected = false;
-            
-            for (HKQuantitySample *sample in results) {
-                
-                double heartRate = [sample.quantity doubleValueForUnit:[HKUnit unitFromString:@"count/min"]];
-                NSDate *predetictedSleep = sample.startDate;
-                
-                
-                if (heartRate <= 52 && sleepDetected == false) {
-                    NSLog(@"[DEBUG] User fell asleep at %@ with a heart rate of %f bpm", predetictedSleep, heartRate);
-                    self.proposedSleepStart = predetictedSleep;
-                    sleepDetected = true;
-                }
-                
-            };
-            
-            NSLog(@"[DEBUG] The results are: %@", results);
-            [self updateLabelsForConfirmation];
-        });
-    }];
-    
-    [self.healthStore executeQuery:query];
-    
-}
 
-- (void)selectedButton:(int)buttonValue {
-    NSLog(@"[DEBUG] The button value was %d", buttonValue);
+// DELEGATE FUNCTIONS //
+
+- (void)proposedSleepStartDecision:(int)buttonValue {
     
     if (buttonValue == 1) {
-        [self confirmButton];
+        [self proposedSleepStartWasConfirmed];
     } else {
-        [self denyButton];
+        [self proposedSleepStartWasDenied];
     }
 }
 
-- (void)confirmButton {
-    
+- (void)proposedSleepStartWasConfirmed {
     self.sleepStart = self.proposedSleepStart;
     [self writeToHealthKit];
     [self updateLabelsWhileAwake];
 }
 
-- (void)denyButton {
-    
+- (void)proposedSleepStartWasDenied {
     [self writeToHealthKit];
     [self updateLabelsWhileAwake];
 }
+
+
+// TASK CLEAN UP //
 
 -(void)clearAllSleepValues {
     self.sleepStart = nil;
@@ -455,6 +439,7 @@
     self.inBedStart = nil;
     self.inBedStop = nil;
 }
+
 
 // ONLY CALL TO POPULATE DATA ON SIMULATOR //
 
@@ -484,6 +469,19 @@
         
         x++;
     }
+}
+
+
+// VALUE DEBUG //
+
+- (void)debugVals {
+    NSLog(@"[DEBUG] sleepStart: %@", self.sleepStart);
+    NSLog(@"[DEBUG] sleepStop: %@", self.sleepStop);
+    NSLog(@"[DEBUG] proposedSleepStart: %@", self.proposedSleepStart);
+    NSLog(@"[DEBUG] awakeStart: %@", self.awakeStart);
+    NSLog(@"[DEBUG] awakeStop: %@", self.awakeStop);
+    NSLog(@"[DEBUG] inBedStart: %@", self.inBedStart);
+    NSLog(@"[DEBUG] inBedStop: %@", self.inBedStop);
 }
 
 @end

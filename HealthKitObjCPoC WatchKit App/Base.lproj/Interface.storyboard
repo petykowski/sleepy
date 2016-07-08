@@ -57,10 +57,10 @@
             <objects>
                 <controller identifier="confirm" hidesWhenLoading="NO" alwaysBounce="YES" id="Zr7-h6-xXZ" customClass="InterfaceControllerSleep">
                     <items>
-                        <label alignment="left" text="Please confirm time you fell asleep" textAlignment="center" numberOfLines="2" id="ewH-Mp-aed" userLabel="Sleep Confirmation">
+                        <label width="1" alignment="left" text="Your heartrate indicated you fell asleep at:" textAlignment="center" numberOfLines="3" id="ewH-Mp-aed" userLabel="Sleep Confirmation">
                             <fontDescription key="font" style="UICTFontTextStyleTitle1"/>
                         </label>
-                        <label alignment="center" text="10:45 PM" id="SN5-gZ-DF7" userLabel="Proposed Sleep">
+                        <label alignment="center" text="10:45 PM" textAlignment="center" id="SN5-gZ-DF7" userLabel="Proposed Sleep">
                             <fontDescription key="font" type="system" pointSize="30"/>
                         </label>
                         <button width="1" alignment="left" title="Confirm" id="ZcO-5o-eRr">
