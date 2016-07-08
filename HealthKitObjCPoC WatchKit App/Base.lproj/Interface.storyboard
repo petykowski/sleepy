@@ -21,23 +21,6 @@
                         <label alignment="center" verticalAlignment="center" text="11:45 PM" id="VTD-Ai-sUW" userLabel="Sleep Start">
                             <fontDescription key="font" type="boldSystem" pointSize="30"/>
                         </label>
-                        <label alignment="left" hidden="YES" text="Please confirm time you fell asleep" textAlignment="center" numberOfLines="2" id="HbD-fg-jbm" userLabel="Sleep Confirmation">
-                            <fontDescription key="font" style="UICTFontTextStyleTitle1"/>
-                        </label>
-                        <label alignment="center" hidden="YES" text="10:45 PM" id="rm6-Ee-pcC" userLabel="Proposed Sleep">
-                            <fontDescription key="font" type="system" pointSize="30"/>
-                        </label>
-                        <button width="1" alignment="left" hidden="YES" title="Confirm" id="wSj-ui-4PQ">
-                            <connections>
-                                <action selector="confirmButton" destination="AgC-eL-Hgc" id="JbO-Jt-mL5"/>
-                            </connections>
-                        </button>
-                        <button width="1" alignment="left" hidden="YES" title="Deny" id="MSD-Ac-16D">
-                            <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                            <connections>
-                                <action selector="denyButton" destination="AgC-eL-Hgc" id="YG1-ej-zFm"/>
-                            </connections>
-                        </button>
                     </items>
                     <menu key="menu" id="XDw-HB-zg6">
                         <items>
@@ -60,17 +43,45 @@
                         </variation>
                     </menu>
                     <connections>
-                        <outlet property="confirmButtonLabel" destination="wSj-ui-4PQ" id="qKC-XD-AsY"/>
-                        <outlet property="confirmMsg" destination="HbD-fg-jbm" id="TdQ-E2-6p4"/>
-                        <outlet property="denyButtonLabel" destination="MSD-Ac-16D" id="B2n-Nn-eer"/>
                         <outlet property="inBedLabel" destination="P2X-iN-doj" id="yka-Hu-avv"/>
                         <outlet property="mainLabel" destination="Bq9-XQ-8sA" id="04B-5i-kqk"/>
-                        <outlet property="proposedSleepLabel" destination="rm6-Ee-pcC" id="zIE-GN-61R"/>
                         <outlet property="separator" destination="gwV-AV-DqL" id="i6z-Np-3dW"/>
                         <outlet property="sleepStartLabel" destination="VTD-Ai-sUW" id="xG8-cw-AEe"/>
                     </connections>
                 </controller>
             </objects>
+            <point key="canvasLocation" x="61" y="92"/>
+        </scene>
+        <!--confirm-->
+        <scene sceneID="ggP-8X-qDP">
+            <objects>
+                <controller identifier="confirm" hidesWhenLoading="NO" alwaysBounce="YES" id="Zr7-h6-xXZ" customClass="InterfaceControllerSleep">
+                    <items>
+                        <label alignment="left" text="Please confirm time you fell asleep" textAlignment="center" numberOfLines="2" id="ewH-Mp-aed" userLabel="Sleep Confirmation">
+                            <fontDescription key="font" style="UICTFontTextStyleTitle1"/>
+                        </label>
+                        <label alignment="center" text="10:45 PM" id="SN5-gZ-DF7" userLabel="Proposed Sleep">
+                            <fontDescription key="font" type="system" pointSize="30"/>
+                        </label>
+                        <button width="1" alignment="left" title="Confirm" id="ZcO-5o-eRr">
+                            <connections>
+                                <action selector="confirmButton" destination="Zr7-h6-xXZ" id="gf7-hC-6ET"/>
+                            </connections>
+                        </button>
+                        <button width="1" alignment="left" title="Deny" id="3Ps-P9-vpN">
+                            <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <connections>
+                                <action selector="denyButton" destination="Zr7-h6-xXZ" id="avC-oy-Ufh"/>
+                            </connections>
+                        </button>
+                    </items>
+                    <connections>
+                        <outlet property="confirmMsgLabel" destination="ewH-Mp-aed" id="0XB-IZ-XCf"/>
+                        <outlet property="proposedSleepLabel" destination="SN5-gZ-DF7" id="E3r-ys-DD3"/>
+                    </connections>
+                </controller>
+            </objects>
+            <point key="canvasLocation" x="60" y="400"/>
         </scene>
     </scenes>
 </document>

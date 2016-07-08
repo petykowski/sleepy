@@ -24,6 +24,7 @@
 		C243C1951C57D35900DB8803 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C243C1941C57D35900DB8803 /* HealthKit.framework */; };
 		C2508E571C582A5B00900AC1 /* Health.plist in Resources */ = {isa = PBXBuildFile; fileRef = C2508E561C582A5B00900AC1 /* Health.plist */; };
 		C2508E581C582A5B00900AC1 /* Health.plist in Resources */ = {isa = PBXBuildFile; fileRef = C2508E561C582A5B00900AC1 /* Health.plist */; };
+		C2BA05E11D2FEC1800438CC7 /* InterfaceControllerSleep.m in Sources */ = {isa = PBXBuildFile; fileRef = C2BA05E01D2FEC1800438CC7 /* InterfaceControllerSleep.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -95,6 +96,8 @@
 		C243C1931C57D35900DB8803 /* HealthKitObjCPoC WatchKit Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "HealthKitObjCPoC WatchKit Extension.entitlements"; sourceTree = "<group>"; };
 		C243C1941C57D35900DB8803 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS2.1.sdk/System/Library/Frameworks/HealthKit.framework; sourceTree = DEVELOPER_DIR; };
 		C2508E561C582A5B00900AC1 /* Health.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Health.plist; sourceTree = "<group>"; };
+		C2BA05DF1D2FEC1800438CC7 /* InterfaceControllerSleep.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InterfaceControllerSleep.h; sourceTree = "<group>"; };
+		C2BA05E01D2FEC1800438CC7 /* InterfaceControllerSleep.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InterfaceControllerSleep.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -181,6 +184,8 @@
 				C243C1931C57D35900DB8803 /* HealthKitObjCPoC WatchKit Extension.entitlements */,
 				C243C17A1C57D32400DB8803 /* InterfaceController.h */,
 				C243C17B1C57D32400DB8803 /* InterfaceController.m */,
+				C2BA05DF1D2FEC1800438CC7 /* InterfaceControllerSleep.h */,
+				C2BA05E01D2FEC1800438CC7 /* InterfaceControllerSleep.m */,
 				C243C17D1C57D32400DB8803 /* ExtensionDelegate.h */,
 				C243C17E1C57D32400DB8803 /* ExtensionDelegate.m */,
 				C243C1801C57D32400DB8803 /* Assets.xcassets */,
@@ -348,6 +353,7 @@
 			files = (
 				C243C17F1C57D32400DB8803 /* ExtensionDelegate.m in Sources */,
 				C243C17C1C57D32400DB8803 /* InterfaceController.m in Sources */,
+				C2BA05E11D2FEC1800438CC7 /* InterfaceControllerSleep.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

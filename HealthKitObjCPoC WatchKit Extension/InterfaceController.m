@@ -7,42 +7,41 @@
 //
 
 #import "InterfaceController.h"
+#import "InterfaceControllerSleep.h"
 @import HealthKit;
 
+@interface InterfaceController() <InterfaceControllerSleepDelegate>
 
-@interface InterfaceController()
+// HEALTHKIT PROPERTIES
 
 @property (nonatomic, retain) HKHealthStore *healthStore;
 
-@property (nonatomic, readwrite) NSDate *sleepStart;
-@property (nonatomic, readwrite) NSDate *sleepStop;
+// Sleeping
+@property (nonatomic, readwrite) BOOL isSleeping;
 
+// In Bed
 @property (nonatomic, readwrite) NSDate *inBedStart;
 @property (nonatomic, readwrite) NSDate *inBedStop;
 
+// Awake
 @property (nonatomic, readwrite) NSDate *awakeStart;
 @property (nonatomic, readwrite) NSDate *awakeStop;
 
+
+// Asleep
+@property (nonatomic, readwrite) NSDate *sleepStart;
+@property (nonatomic, readwrite) NSDate *sleepStop;
 @property (nonatomic, readwrite) NSDate *proposedSleepStart;
 
-@property (nonatomic, readwrite) BOOL isSleeping;
 
 // INTERFACE ITEMS
 
 // Labels
 @property (unsafe_unretained, nonatomic) IBOutlet WKInterfaceLabel *mainLabel;
 @property (unsafe_unretained, nonatomic) IBOutlet WKInterfaceLabel *inBedLabel;
-@property (unsafe_unretained, nonatomic) IBOutlet WKInterfaceSeparator *separator;
 @property (unsafe_unretained, nonatomic) IBOutlet WKInterfaceLabel *sleepStartLabel;
-@property (unsafe_unretained, nonatomic) IBOutlet WKInterfaceLabel *confirmMsg;
-@property (unsafe_unretained, nonatomic) IBOutlet WKInterfaceLabel *proposedSleepLabel;
 
-
-// Buttons
-- (IBAction)confirmButton;
-- (IBAction)denyButton;
-@property (unsafe_unretained, nonatomic) IBOutlet WKInterfaceButton *confirmButtonLabel;
-@property (unsafe_unretained, nonatomic) IBOutlet WKInterfaceButton *denyButtonLabel;
+@property (unsafe_unretained, nonatomic) IBOutlet WKInterfaceSeparator *separator;
 
 @end
 
@@ -60,7 +59,7 @@
     
     [self clearAllMenuItems];
     
-    // If sleep is currently in progress update labels.
+    // If sleep is currently in progress update labels and menu buttons to Sleep State
     if (self.isSleeping) {
         [self sleepInProgressWillReadDataFromPlist];
         [self updateLabelsWhileAsleep];
@@ -73,7 +72,7 @@
     } else {
         [self updateLabelsWhileAwake];
         [self addMenuItemWithItemIcon:WKMenuItemIconAdd title:@"Sleep" action:@selector(sleepDidStartMenuButton)];
-//        [self addMenuItemWithItemIcon:WKMenuItemIconAdd title:@"Add Data" action:@selector(populateHRData)];
+        [self addMenuItemWithItemIcon:WKMenuItemIconAdd title:@"Add Data" action:@selector(populateHRData)];
     }
     
     return self;
@@ -100,9 +99,8 @@
     [super didDeactivate];
     
     if (self.isSleeping) {
-#warning Need to write dates to plist.
+#warning Need to write dates to plist. (This doesnt seem necessary.)
     }
-    
 }
 
 // .plist Methods
@@ -211,7 +209,7 @@
 
 - (IBAction)sleepDidStartMenuButton {
     self.inBedStart = [NSDate date];
-    self.sleepStart = [NSDate dateWithTimeInterval:1 sinceDate:[NSDate date]];
+    self.sleepStart = [NSDate date];
     self.awakeStart = [NSDate date];
     self.isSleeping = YES;
     
@@ -239,24 +237,6 @@
     [self writeSleepStopDataToPlist];
 }
 
-//- (IBAction)sleepDidStopMenuButton {
-//    self.inBedStop = [NSDate date];
-//    self.awakeStop = [NSDate date];
-//    self.isSleeping = NO;
-//    NSLog(@"[VERBOSE] User exited in bed at %@ and woke at %@", self.inBedStop, self.sleepStop);
-//    
-//    [self readHeartRateData];
-//    
-//    [self updateLabelsWhileAwake];
-//    
-//    [self clearAllMenuItems];
-//    [self addMenuItemWithItemIcon:WKMenuItemIconAdd title:@"Sleep" action:@selector(sleepDidStartMenuButton)];
-//    
-//    [self writeSleepStopDataToPlist];
-//    [self writeToHealthKit];
-//    NSLog(@"[VERBOSE] Writing data to Health.app.");
-//}
-
 - (IBAction)sleepWasCancelledByUserMenuButton {
     self.inBedStop = [NSDate date];
     self.sleepStop = [NSDate date];
@@ -270,6 +250,7 @@
     [self addMenuItemWithItemIcon:WKMenuItemIconAdd title:@"Sleep" action:@selector(sleepDidStartMenuButton)];
     
     [self writeSleepStopDataToPlist];
+    [self clearAllSleepValues];
     NSLog(@"[VERBOSE] Sleep data will not be written to Health.app.");
 }
 
@@ -303,10 +284,6 @@
     }];
 }
 
-- (void)readHeartRateDataFromPreviousSleep {
-#warning Need to add the ability to read heart rate data.
-}
-
 - (void)writeToHealthKit {
     HKCategoryType *categoryType = [HKObjectType categoryTypeForIdentifier:HKCategoryTypeIdentifierSleepAnalysis];
     HKCategorySample *sleepSample = [HKCategorySample categorySampleWithType:categoryType
@@ -333,9 +310,21 @@
     [self.healthStore saveObjects:sampleArray withCompletion:^(BOOL success, NSError *error){
         if (!success) {
             NSLog(@"[DEBUG] Failed to write data to Health.app with error: %@", error);
+        } else {
+            [self clearAllSleepValues];
         }
     }];
 }
+
+//- (void)debugVals {
+//    NSLog(@"[DEBUG] sleepStart: %@", self.sleepStart);
+//    NSLog(@"[DEBUG] sleepStop: %@", self.sleepStop);
+//    NSLog(@"[DEBUG] proposedSleepStart: %@", self.proposedSleepStart);
+//    NSLog(@"[DEBUG] awakeStart: %@", self.awakeStart);
+//    NSLog(@"[DEBUG] awakeStop: %@", self.awakeStop);
+//    NSLog(@"[DEBUG] inBedStart: %@", self.inBedStart);
+//    NSLog(@"[DEBUG] inBedStop: %@", self.inBedStop);
+//}
 
 
 - (void)updateLabels {
@@ -353,10 +342,6 @@
     [self.inBedLabel setHidden:true];
     [self.sleepStartLabel setHidden:true];
     [self.separator setHidden:true];
-    [self.confirmMsg setHidden:true];
-    [self.proposedSleepLabel setHidden:true];
-    [self.confirmButtonLabel setHidden:true];
-    [self.denyButtonLabel setHidden:true];
     
     NSLog(@"[VERBOSE] Labels set for awake.");
 }
@@ -370,10 +355,6 @@
     [self.inBedLabel setHidden:false];
     [self.sleepStartLabel setHidden:false];
     [self.separator setHidden:false];
-    [self.confirmMsg setHidden:true];
-    [self.proposedSleepLabel setHidden:true];
-    [self.confirmButtonLabel setHidden:true];
-    [self.denyButtonLabel setHidden:true];
     
     [self.inBedLabel setText:[dateFormatter stringFromDate:self.inBedStart]];
     [self.sleepStartLabel setText:[dateFormatter stringFromDate:self.sleepStart]];
@@ -391,12 +372,13 @@
     [self.inBedLabel setHidden:true];
     [self.sleepStartLabel setHidden:true];
     [self.separator setHidden:true];
-    [self.confirmMsg setHidden:false];
-    [self.proposedSleepLabel setHidden:false];
-    [self.confirmButtonLabel setHidden:false];
-    [self.denyButtonLabel setHidden:false];
     
-    [self.proposedSleepLabel setText:[dateFormatter stringFromDate:self.proposedSleepStart]];
+    if (self.proposedSleepStart == nil) {
+        self.proposedSleepStart = self.sleepStart;
+        NSLog(@"[DEBUG] Could not determine sleep start from user's heart rate data. Setting last defined sleep start time instead.");
+    }
+    
+    [self presentControllerWithName:@"confirm" context:@{@"delegate" : self, @"time" : self.proposedSleepStart}];
     
     NSLog(@"[VERBOSE] Labels set for asleep.");
 }
@@ -441,6 +423,39 @@
     
 }
 
+- (void)selectedButton:(int)buttonValue {
+    NSLog(@"[DEBUG] The button value was %d", buttonValue);
+    
+    if (buttonValue == 1) {
+        [self confirmButton];
+    } else {
+        [self denyButton];
+    }
+}
+
+- (void)confirmButton {
+    
+    self.sleepStart = self.proposedSleepStart;
+    [self writeToHealthKit];
+    [self updateLabelsWhileAwake];
+}
+
+- (void)denyButton {
+    
+    [self writeToHealthKit];
+    [self updateLabelsWhileAwake];
+}
+
+-(void)clearAllSleepValues {
+    self.sleepStart = nil;
+    self.sleepStop = nil;
+    self.proposedSleepStart = nil;
+    self.awakeStart = nil;
+    self.awakeStop = nil;
+    self.inBedStart = nil;
+    self.inBedStop = nil;
+}
+
 // ONLY CALL TO POPULATE DATA ON SIMULATOR //
 
 - (void)populateHRData {
@@ -471,16 +486,4 @@
     }
 }
 
-- (IBAction)confirmButton {
-    
-    self.sleepStart = self.proposedSleepStart;
-    [self writeToHealthKit];
-    [self updateLabelsWhileAwake];
-}
-
-- (IBAction)denyButton {
-    
-    [self writeToHealthKit];
-    [self updateLabelsWhileAwake];
-}
 @end
