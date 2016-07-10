@@ -83,12 +83,20 @@
                         </group>
                         <group width="1" alignment="left" layout="vertical" id="cUP-AS-FDs" userLabel="Awake Group">
                             <items>
-                                <group width="154" alignment="left" id="wq6-NW-VLh">
-                                    <items>
-                                        <label alignment="left" text="AWAKE" textAlignment="left" id="kfX-Hg-5nR"/>
-                                    </items>
-                                </group>
+                                <label alignment="left" text="AWAKE" textAlignment="left" id="kfX-Hg-5nR"/>
                                 <label alignment="left" text="6:52 AM" textAlignment="left" id="yzB-WY-NVO">
+                                    <fontDescription key="font" type="system" weight="semibold" pointSize="21"/>
+                                </label>
+                            </items>
+                            <color key="backgroundColor" red="0.0" green="0.96078431369999995" blue="0.91764705879999997" alpha="0.14000000000000001" colorSpace="calibratedRGB"/>
+                            <metadata>
+                                <string key="libraryAssetSourceID">Xcode.InterfaceBuilderKit.PepperIntegration.ObjectLibraryAssetProvider:IBSPInterfaceGroup</string>
+                            </metadata>
+                        </group>
+                        <group width="1" alignment="left" layout="vertical" id="64S-RA-qBc" userLabel="Awake Group">
+                            <items>
+                                <label alignment="left" text="END" textAlignment="left" id="0h4-RX-XUo"/>
+                                <label alignment="left" text="6:55 AM" textAlignment="left" id="WhG-BB-ODb">
                                     <fontDescription key="font" type="system" weight="semibold" pointSize="21"/>
                                 </label>
                             </items>
@@ -100,7 +108,7 @@
                     </items>
                 </controller>
             </objects>
-            <point key="canvasLocation" x="287.69230769230774" y="90.230769230769241"/>
+            <point key="canvasLocation" x="277" y="411"/>
         </scene>
         <!--confirm-->
         <scene sceneID="ggP-8X-qDP">
