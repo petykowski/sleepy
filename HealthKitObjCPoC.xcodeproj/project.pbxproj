@@ -25,6 +25,9 @@
 		C2508E571C582A5B00900AC1 /* Health.plist in Resources */ = {isa = PBXBuildFile; fileRef = C2508E561C582A5B00900AC1 /* Health.plist */; };
 		C2508E581C582A5B00900AC1 /* Health.plist in Resources */ = {isa = PBXBuildFile; fileRef = C2508E561C582A5B00900AC1 /* Health.plist */; };
 		C2BA05E11D2FEC1800438CC7 /* InterfaceControllerSleep.m in Sources */ = {isa = PBXBuildFile; fileRef = C2BA05E01D2FEC1800438CC7 /* InterfaceControllerSleep.m */; };
+		C2FB86511D31D0B900FCC143 /* SleepMilestoneInterfaceController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2FB86501D31D0B900FCC143 /* SleepMilestoneInterfaceController.m */; };
+		C2FB86521D31D0B900FCC143 /* SleepMilestoneInterfaceController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2FB86501D31D0B900FCC143 /* SleepMilestoneInterfaceController.m */; };
+		C2FB86561D31D93800FCC143 /* MilestoneRowController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2FB86541D31D93800FCC143 /* MilestoneRowController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -98,6 +101,10 @@
 		C2508E561C582A5B00900AC1 /* Health.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Health.plist; sourceTree = "<group>"; };
 		C2BA05DF1D2FEC1800438CC7 /* InterfaceControllerSleep.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InterfaceControllerSleep.h; sourceTree = "<group>"; };
 		C2BA05E01D2FEC1800438CC7 /* InterfaceControllerSleep.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InterfaceControllerSleep.m; sourceTree = "<group>"; };
+		C2FB864F1D31D0B900FCC143 /* SleepMilestoneInterfaceController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SleepMilestoneInterfaceController.h; sourceTree = "<group>"; };
+		C2FB86501D31D0B900FCC143 /* SleepMilestoneInterfaceController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SleepMilestoneInterfaceController.m; sourceTree = "<group>"; };
+		C2FB86531D31D93800FCC143 /* MilestoneRowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MilestoneRowController.h; path = "HealthKitObjCPoC WatchKit Extension/MilestoneRowController.h"; sourceTree = SOURCE_ROOT; };
+		C2FB86541D31D93800FCC143 /* MilestoneRowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MilestoneRowController.m; path = "HealthKitObjCPoC WatchKit Extension/MilestoneRowController.m"; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -182,6 +189,10 @@
 			isa = PBXGroup;
 			children = (
 				C243C1931C57D35900DB8803 /* HealthKitObjCPoC WatchKit Extension.entitlements */,
+				C2FB86531D31D93800FCC143 /* MilestoneRowController.h */,
+				C2FB86541D31D93800FCC143 /* MilestoneRowController.m */,
+				C2FB864F1D31D0B900FCC143 /* SleepMilestoneInterfaceController.h */,
+				C2FB86501D31D0B900FCC143 /* SleepMilestoneInterfaceController.m */,
 				C243C17A1C57D32400DB8803 /* InterfaceController.h */,
 				C243C17B1C57D32400DB8803 /* InterfaceController.m */,
 				C2BA05DF1D2FEC1800438CC7 /* InterfaceControllerSleep.h */,
@@ -341,6 +352,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C2FB86511D31D0B900FCC143 /* SleepMilestoneInterfaceController.m in Sources */,
 				C243C15A1C57D32400DB8803 /* ViewController.m in Sources */,
 				C243C1571C57D32400DB8803 /* AppDelegate.m in Sources */,
 				C243C1541C57D32400DB8803 /* main.m in Sources */,
@@ -351,9 +363,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C2FB86521D31D0B900FCC143 /* SleepMilestoneInterfaceController.m in Sources */,
 				C243C17F1C57D32400DB8803 /* ExtensionDelegate.m in Sources */,
 				C243C17C1C57D32400DB8803 /* InterfaceController.m in Sources */,
 				C2BA05E11D2FEC1800438CC7 /* InterfaceControllerSleep.m in Sources */,
+				C2FB86561D31D93800FCC143 /* MilestoneRowController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
