@@ -52,6 +52,56 @@
             </objects>
             <point key="canvasLocation" x="61" y="92"/>
         </scene>
+        <!--Interface Controller-->
+        <scene sceneID="GOh-kK-oWw">
+            <objects>
+                <controller id="DDy-KD-bGw">
+                    <items>
+                        <group width="1" alignment="left" layout="vertical" id="3Eo-zo-Fi6" userLabel="In Bed Group">
+                            <items>
+                                <label alignment="left" text="IN BED" textAlignment="left" id="R5Z-fZ-LyM"/>
+                                <label alignment="left" text="10:45 PM" textAlignment="left" id="CTm-lK-fKB">
+                                    <fontDescription key="font" type="system" weight="semibold" pointSize="21"/>
+                                </label>
+                            </items>
+                            <color key="backgroundColor" red="0.0" green="0.96078431372549022" blue="0.91764705882352937" alpha="0.14000000000000001" colorSpace="calibratedRGB"/>
+                            <metadata>
+                                <string key="libraryAssetSourceID">Xcode.InterfaceBuilderKit.PepperIntegration.ObjectLibraryAssetProvider:IBSPInterfaceGroup</string>
+                            </metadata>
+                        </group>
+                        <group width="1" alignment="left" layout="vertical" id="SQZ-Wy-5Td" userLabel="Asleep Group">
+                            <items>
+                                <label alignment="left" text="ASLEEP" textAlignment="left" id="N7P-6f-Ejr"/>
+                                <label alignment="left" text="10:52 PM" textAlignment="left" id="4bj-R6-iob">
+                                    <fontDescription key="font" type="system" weight="semibold" pointSize="21"/>
+                                </label>
+                            </items>
+                            <color key="backgroundColor" red="0.0" green="0.96078431369999995" blue="0.91764705879999997" alpha="0.14000000000000001" colorSpace="calibratedRGB"/>
+                            <metadata>
+                                <string key="libraryAssetSourceID">Xcode.InterfaceBuilderKit.PepperIntegration.ObjectLibraryAssetProvider:IBSPInterfaceGroup</string>
+                            </metadata>
+                        </group>
+                        <group width="1" alignment="left" layout="vertical" id="cUP-AS-FDs" userLabel="Awake Group">
+                            <items>
+                                <group width="154" alignment="left" id="wq6-NW-VLh">
+                                    <items>
+                                        <label alignment="left" text="AWAKE" textAlignment="left" id="kfX-Hg-5nR"/>
+                                    </items>
+                                </group>
+                                <label alignment="left" text="6:52 AM" textAlignment="left" id="yzB-WY-NVO">
+                                    <fontDescription key="font" type="system" weight="semibold" pointSize="21"/>
+                                </label>
+                            </items>
+                            <color key="backgroundColor" red="0.0" green="0.96078431369999995" blue="0.91764705879999997" alpha="0.14000000000000001" colorSpace="calibratedRGB"/>
+                            <metadata>
+                                <string key="libraryAssetSourceID">Xcode.InterfaceBuilderKit.PepperIntegration.ObjectLibraryAssetProvider:IBSPInterfaceGroup</string>
+                            </metadata>
+                        </group>
+                    </items>
+                </controller>
+            </objects>
+            <point key="canvasLocation" x="287.69230769230774" y="90.230769230769241"/>
+        </scene>
         <!--confirm-->
         <scene sceneID="ggP-8X-qDP">
             <objects>

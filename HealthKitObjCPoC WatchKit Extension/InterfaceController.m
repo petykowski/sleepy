@@ -337,7 +337,7 @@
                 NSDate *predetictedSleep = sample.startDate;
                 
                 
-                if (heartRate <= 50 && sleepDetected == false) {
+                if (heartRate <= 52 && sleepDetected == false) {
                     NSLog(@"[DEBUG] User fell asleep at %@ with a heart rate of %f bpm", predetictedSleep, heartRate);
                     self.proposedSleepStart = predetictedSleep;
                     sleepDetected = true;
