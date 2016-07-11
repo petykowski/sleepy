@@ -56,7 +56,7 @@
         <!--Last Night-->
         <scene sceneID="GOh-kK-oWw">
             <objects>
-                <controller title="Last Night" id="DDy-KD-bGw" customClass="SleepMilestoneInterfaceController">
+                <controller title="Last Night" alwaysBounce="YES" id="DDy-KD-bGw" customClass="SleepMilestoneInterfaceController">
                     <items>
                         <table alignment="left" id="mgo-3o-CLP">
                             <items>
@@ -78,9 +78,11 @@
                                 </tableRow>
                             </items>
                         </table>
+                        <label alignment="center" verticalAlignment="center" hidden="YES" text="Get some rest and check back here in the morning." textAlignment="center" numberOfLines="4" id="Bpl-YJ-0ys"/>
                     </items>
                     <connections>
                         <outlet property="milestoneTable" destination="mgo-3o-CLP" id="eje-Rf-Oyy"/>
+                        <outlet property="userMsgLabel" destination="Bpl-YJ-0ys" id="RVW-oi-gJc"/>
                     </connections>
                 </controller>
             </objects>

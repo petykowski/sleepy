@@ -12,6 +12,11 @@
 @interface SleepMilestoneInterfaceController ()
 
 @property (unsafe_unretained, nonatomic) IBOutlet WKInterfaceTable *milestoneTable;
+@property (nonatomic, readwrite) NSArray *lastNightTimes;
+@property (nonatomic, readwrite) BOOL sleepDataExsists;
+
+// LABELS //
+@property (unsafe_unretained, nonatomic) IBOutlet WKInterfaceLabel *userMsgLabel;
 
 @end
 
@@ -20,27 +25,90 @@
 - (void)awakeWithContext:(id)context {
     [super awakeWithContext:context];
     
-    NSArray *titleArray = [NSArray arrayWithObjects:@"IN BED", @"ASLEEP", @"AWAKE", @"END", nil];
-    NSArray *timeArray = [NSArray arrayWithObjects:@"10:13 PM", @"10:37 PM", @"6:43 AM", @"6:54 AM", nil];
-    
-    [self.milestoneTable setNumberOfRows:titleArray.count withRowType:@"main"];
-    for (NSInteger i = 0; i < self.milestoneTable.numberOfRows; i++) {
-        MilestoneRowController* theRow = [self.milestoneTable rowControllerAtIndex:i];
-        [theRow.milestoneLabel setText:[titleArray objectAtIndex:i]];
-        [theRow.milestoneTimeLabel setText:[timeArray objectAtIndex:i]];
-    }
     
 }
 
 - (void)willActivate {
     // This method is called when watch view controller is about to be visible to user
     [super willActivate];
+    
+    self.sleepDataExsists = [self doesMilestoneDataExsist];
+    
+    if (self.sleepDataExsists) {
+        [self hideNewUserMessage];
+        [self getMilestoneTimes];
+        [self updateMilestoneTableData];
+    } else {
+        [self displayNewUserMessage];
+    }
+    
 }
 
 - (void)didDeactivate {
     // This method is called when watch view controller is no longer visible
     [super didDeactivate];
 }
+
+-(BOOL)doesMilestoneDataExsist {
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString *filePath = [documentsDirectory stringByAppendingPathComponent:@"Health.plist"];
+    NSDictionary *plistDictionary = [NSDictionary dictionaryWithContentsOfFile:filePath];
+    
+    NSMutableArray *milestoneTimes = [plistDictionary objectForKey:@"milestoneTimes"];
+    
+    if (milestoneTimes) {
+        return true;
+    }
+    else {
+       return false;
+    }
+}
+
+- (void)getMilestoneTimes {
+#warning this needs to be cleaned up and written logically.
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    dateFormatter.dateStyle = NSDateFormatterNoStyle;
+    dateFormatter.timeStyle = NSDateFormatterShortStyle;
+    
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString *filePath = [documentsDirectory stringByAppendingPathComponent:@"Health.plist"];
+    NSDictionary *plistDictionary = [NSDictionary dictionaryWithContentsOfFile:filePath];
+    
+    NSMutableArray *milestoneTimes = [plistDictionary objectForKey:@"milestoneTimes"];
+    NSMutableArray *formattedTimes = [[NSMutableArray alloc] init];
+    
+    NSRange endRange = NSMakeRange(milestoneTimes.count >= 4 ? milestoneTimes.count - 4 : 0, MIN(milestoneTimes.count, 4));
+    NSArray *rawSleepData = [milestoneTimes subarrayWithRange:endRange];
+    
+    for (NSDate* rawTime in rawSleepData) {
+        [formattedTimes addObject:[dateFormatter stringFromDate:rawTime]];
+    }
+    
+    self.lastNightTimes = formattedTimes;
+}
+
+-(void)updateMilestoneTableData {
+    NSArray *titleArray = [NSArray arrayWithObjects:@"IN BED", @"ASLEEP", @"AWAKE", @"END", nil];
+    
+    [self.milestoneTable setNumberOfRows:titleArray.count withRowType:@"main"];
+    for (NSInteger i = 0; i < self.milestoneTable.numberOfRows; i++) {
+        MilestoneRowController* theRow = [self.milestoneTable rowControllerAtIndex:i];
+        [theRow.milestoneLabel setText:[titleArray objectAtIndex:i]];
+        [theRow.milestoneTimeLabel setText:[self.lastNightTimes objectAtIndex:i]];
+    }
+}
+
+-(void)displayNewUserMessage {
+    [self.userMsgLabel setHidden:false];
+}
+
+-(void)hideNewUserMessage {
+    [self.userMsgLabel setHidden:true];
+}
+
 
 @end
 

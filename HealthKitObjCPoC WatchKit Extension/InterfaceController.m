@@ -8,6 +8,7 @@
 
 #import "InterfaceController.h"
 #import "InterfaceControllerSleep.h"
+#import "SleepMilestoneInterfaceController.h"
 @import HealthKit;
 
 @interface InterfaceController() <InterfaceControllerSleepDelegate>
@@ -73,6 +74,8 @@
     } else {
         [self updateLabelsWhileAwake];
         [self addMenuItemWithItemIcon:WKMenuItemIconAdd title:@"Sleep" action:@selector(sleepDidStartMenuButton)];
+//        [self addMenuItemWithItemIcon:WKMenuItemIconPlay title:@"Save" action:@selector(saveSleepDataToDataStore)];
+//        [self addMenuItemWithItemIcon:WKMenuItemIconPlay title:@"Del" action:@selector(deleteSleepDataToDataStore)];
 //        [self addMenuItemWithItemIcon:WKMenuItemIconAdd title:@"Add Data" action:@selector(populateHRData)];
     }
     
@@ -202,6 +205,51 @@
     }
 }
 
+- (void)saveSleepDataToDataStore {
+    NSLog(@"[VERBOSE] Attempting to write sleep data to data store.");
+    
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString *filePath = [documentsDirectory stringByAppendingPathComponent:@"Health.plist"];
+    NSMutableDictionary *plistDictionary = [NSMutableDictionary dictionaryWithContentsOfFile:filePath];
+
+    NSMutableArray *milestoneTimes = [plistDictionary objectForKey:@"milestoneTimes"];
+    
+    NSArray *lastNightSleepTimes = [[NSArray alloc] initWithObjects:self.inBedStart, self.sleepStart, self.sleepStop, self.inBedStop, nil];
+    
+    if (milestoneTimes == nil) {
+        milestoneTimes = [[NSMutableArray alloc] init];
+    }
+    
+    [milestoneTimes addObjectsFromArray:lastNightSleepTimes];
+    
+    [plistDictionary setObject:milestoneTimes forKey:@"milestoneTimes"];
+    
+    BOOL didWrite = [plistDictionary writeToFile:filePath atomically:YES];
+    if (didWrite) {
+        NSLog(@"[VERBOSE] Data sucessfully written to plist.");
+    } else {
+        NSLog(@"[DEBUG] Failed to write data to plist.");
+    }
+}
+
+- (void)deleteSleepDataToDataStore {
+    NSLog(@"[VERBOSE] Attempting to delete sleep data to data store.");
+    
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString *filePath = [documentsDirectory stringByAppendingPathComponent:@"Health.plist"];
+    NSMutableDictionary *plistDictionary = [NSMutableDictionary dictionaryWithContentsOfFile:filePath];
+    
+    [plistDictionary removeObjectForKey:@"milestoneTimes"];
+    
+    BOOL didWrite = [plistDictionary writeToFile:filePath atomically:YES];
+    if (didWrite) {
+        NSLog(@"[VERBOSE] Data sucessfully written to plist.");
+    } else {
+        NSLog(@"[DEBUG] Failed to write data to plist.");
+    }
+}
 
 // MENU BUTTON METHODS //
 
@@ -420,11 +468,13 @@
     self.sleepStart = self.proposedSleepStart;
     [self writeToHealthKit];
     [self updateLabelsWhileAwake];
+    [self saveSleepDataToDataStore];
 }
 
 - (void)proposedSleepStartWasDenied {
     [self writeToHealthKit];
     [self updateLabelsWhileAwake];
+    [self saveSleepDataToDataStore];
 }
 
 

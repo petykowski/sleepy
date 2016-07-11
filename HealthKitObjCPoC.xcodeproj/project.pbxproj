@@ -73,6 +73,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		C22F3B0A1D331B7900FE6F9B /* HealthKitObjCPoC WatchKit App.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "HealthKitObjCPoC WatchKit App.entitlements"; sourceTree = "<group>"; };
 		C243C14F1C57D32400DB8803 /* HealthKitObjCPoC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HealthKitObjCPoC.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C243C1531C57D32400DB8803 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		C243C1551C57D32400DB8803 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -177,6 +178,7 @@
 		C243C16A1C57D32400DB8803 /* HealthKitObjCPoC WatchKit App */ = {
 			isa = PBXGroup;
 			children = (
+				C22F3B0A1D331B7900FE6F9B /* HealthKitObjCPoC WatchKit App.entitlements */,
 				C243C16B1C57D32400DB8803 /* Interface.storyboard */,
 				C243C16E1C57D32400DB8803 /* Assets.xcassets */,
 				C243C1701C57D32400DB8803 /* Info.plist */,
@@ -274,6 +276,9 @@
 						CreatedOnToolsVersion = 7.2;
 						DevelopmentTeam = FQHZ7Y2XXC;
 						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
 							com.apple.HealthKit = {
 								enabled = 1;
 							};
@@ -283,11 +288,19 @@
 						CreatedOnToolsVersion = 7.2;
 						DevelopmentTeam = FQHZ7Y2XXC;
 						DevelopmentTeamName = "Sean Petykowski";
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
+						};
 					};
 					C243C1741C57D32400DB8803 = {
 						CreatedOnToolsVersion = 7.2;
 						DevelopmentTeam = FQHZ7Y2XXC;
 						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
 							com.apple.HealthKit = {
 								enabled = 1;
 							};
@@ -534,6 +547,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "HealthKitObjCPoC WatchKit App/HealthKitObjCPoC WatchKit App.entitlements";
 				IBSC_MODULE = HealthKitObjCPoC_WatchKit_Extension;
 				INFOPLIST_FILE = "HealthKitObjCPoC WatchKit App/Info.plist";
 				PRODUCT_BUNDLE_IDENTIFIER = com.seanpetykowski.SleepyApp.watchkitapp;
@@ -549,6 +563,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "HealthKitObjCPoC WatchKit App/HealthKitObjCPoC WatchKit App.entitlements";
 				IBSC_MODULE = HealthKitObjCPoC_WatchKit_Extension;
 				INFOPLIST_FILE = "HealthKitObjCPoC WatchKit App/Info.plist";
 				PRODUCT_BUNDLE_IDENTIFIER = com.seanpetykowski.SleepyApp.watchkitapp;
