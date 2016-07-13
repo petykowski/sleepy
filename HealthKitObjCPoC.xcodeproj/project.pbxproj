@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C2391DEC1D35D92C00808835 /* Utility.m in Sources */ = {isa = PBXBuildFile; fileRef = C2391DEB1D35D92C00808835 /* Utility.m */; };
+		C2391DED1D35D92C00808835 /* Utility.m in Sources */ = {isa = PBXBuildFile; fileRef = C2391DEB1D35D92C00808835 /* Utility.m */; };
 		C243C1541C57D32400DB8803 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C243C1531C57D32400DB8803 /* main.m */; };
 		C243C1571C57D32400DB8803 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C243C1561C57D32400DB8803 /* AppDelegate.m */; };
 		C243C15A1C57D32400DB8803 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C243C1591C57D32400DB8803 /* ViewController.m */; };
@@ -74,6 +76,8 @@
 
 /* Begin PBXFileReference section */
 		C22F3B0A1D331B7900FE6F9B /* HealthKitObjCPoC WatchKit App.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "HealthKitObjCPoC WatchKit App.entitlements"; sourceTree = "<group>"; };
+		C2391DEA1D35D92C00808835 /* Utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utility.h; sourceTree = "<group>"; };
+		C2391DEB1D35D92C00808835 /* Utility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Utility.m; sourceTree = "<group>"; };
 		C243C14F1C57D32400DB8803 /* HealthKitObjCPoC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HealthKitObjCPoC.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C243C1531C57D32400DB8803 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		C243C1551C57D32400DB8803 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -128,6 +132,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C2391DE91D35D8E900808835 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				C2391DEA1D35D92C00808835 /* Utility.h */,
+				C2391DEB1D35D92C00808835 /* Utility.m */,
+			);
+			name = Utilities;
+			path = "HealthKitObjCPoC WatchKit App";
+			sourceTree = "<group>";
+		};
 		C243C1461C57D32400DB8803 = {
 			isa = PBXGroup;
 			children = (
@@ -137,6 +151,7 @@
 				C243C16A1C57D32400DB8803 /* HealthKitObjCPoC WatchKit App */,
 				C243C1791C57D32400DB8803 /* HealthKitObjCPoC WatchKit Extension */,
 				C243C1501C57D32400DB8803 /* Products */,
+				C2391DE91D35D8E900808835 /* Utilities */,
 			);
 			sourceTree = "<group>";
 		};
@@ -367,6 +382,7 @@
 			files = (
 				C2FB86511D31D0B900FCC143 /* SleepMilestoneInterfaceController.m in Sources */,
 				C243C15A1C57D32400DB8803 /* ViewController.m in Sources */,
+				C2391DEC1D35D92C00808835 /* Utility.m in Sources */,
 				C243C1571C57D32400DB8803 /* AppDelegate.m in Sources */,
 				C243C1541C57D32400DB8803 /* main.m in Sources */,
 			);
@@ -380,6 +396,7 @@
 				C243C17F1C57D32400DB8803 /* ExtensionDelegate.m in Sources */,
 				C243C17C1C57D32400DB8803 /* InterfaceController.m in Sources */,
 				C2BA05E11D2FEC1800438CC7 /* InterfaceControllerSleep.m in Sources */,
+				C2391DED1D35D92C00808835 /* Utility.m in Sources */,
 				C2FB86561D31D93800FCC143 /* MilestoneRowController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

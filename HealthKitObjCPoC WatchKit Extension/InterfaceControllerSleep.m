@@ -7,6 +7,7 @@
 //
 
 #import "InterfaceControllerSleep.h"
+#import "Utility.h"
 
 @interface InterfaceControllerSleep ()
 
@@ -21,19 +22,16 @@
 @implementation InterfaceControllerSleep
 
 - (void)awakeWithContext:(id)context {
+    [super awakeWithContext:context];
     
     if ([context isKindOfClass:[NSDictionary class]]) {
         self.delegate = [context objectForKey:@"delegate"];
         
     }
     
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    dateFormatter.dateStyle = NSDateFormatterNoStyle;
-    dateFormatter.timeStyle = NSDateFormatterShortStyle;
-    [super awakeWithContext:context];
-    [self.proposedSleepLabel setText:[dateFormatter stringFromDate:[context objectForKey:@"time"]]];
+    NSDateFormatter *dateFormatter = [Utility dateFormatterForTimeLabels];
     
-    // Configure interface objects here.
+    [self.proposedSleepLabel setText:[dateFormatter stringFromDate:[context objectForKey:@"time"]]];
 }
 
 - (void)willActivate {
@@ -47,13 +45,11 @@
 }
 
 - (IBAction)denyButton {
-    
     [self.delegate proposedSleepStartDecision:0];
     [self dismissController];
 }
 
 - (IBAction)confirmButton {
-    
     [self.delegate proposedSleepStartDecision:1];
     [self dismissController];
 }

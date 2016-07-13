@@ -8,6 +8,7 @@
 
 #import "SleepMilestoneInterfaceController.h"
 #import "MilestoneRowController.h"
+#import "Utility.h"
 
 @interface SleepMilestoneInterfaceController ()
 
@@ -50,11 +51,7 @@
 }
 
 -(BOOL)doesMilestoneDataExsist {
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
-    NSString *filePath = [documentsDirectory stringByAppendingPathComponent:@"Health.plist"];
-    NSDictionary *plistDictionary = [NSDictionary dictionaryWithContentsOfFile:filePath];
-    
+    NSDictionary *plistDictionary = [Utility contentsOfHealthPlist];
     NSMutableArray *milestoneTimes = [plistDictionary objectForKey:@"milestoneTimes"];
     
     if (milestoneTimes) {
@@ -68,18 +65,11 @@
 - (void)getMilestoneTimes {
 #warning this needs to be cleaned up and written logically.
     
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    dateFormatter.dateStyle = NSDateFormatterNoStyle;
-    dateFormatter.timeStyle = NSDateFormatterShortStyle;
-    
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
-    NSString *filePath = [documentsDirectory stringByAppendingPathComponent:@"Health.plist"];
-    NSDictionary *plistDictionary = [NSDictionary dictionaryWithContentsOfFile:filePath];
+    NSDateFormatter *dateFormatter = [Utility dateFormatterForTimeLabels];
+    NSDictionary *plistDictionary = [Utility contentsOfHealthPlist];
     
     NSMutableArray *milestoneTimes = [plistDictionary objectForKey:@"milestoneTimes"];
     NSMutableArray *formattedTimes = [[NSMutableArray alloc] init];
-    
     NSRange endRange = NSMakeRange(milestoneTimes.count >= 4 ? milestoneTimes.count - 4 : 0, MIN(milestoneTimes.count, 4));
     NSArray *rawSleepData = [milestoneTimes subarrayWithRange:endRange];
     

@@ -9,6 +9,8 @@
 #import "InterfaceController.h"
 #import "InterfaceControllerSleep.h"
 #import "SleepMilestoneInterfaceController.h"
+#import "Utility.h"
+
 @import HealthKit;
 
 @interface InterfaceController() <InterfaceControllerSleepDelegate>
@@ -135,10 +137,7 @@
 - (BOOL)isSleepinProgress {
     NSLog(@"[VERBOSE] Determining current sleep status.");
     
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
-    NSString *filePath = [documentsDirectory stringByAppendingPathComponent:@"Health.plist"];
-    NSDictionary *plistDictionary = [NSDictionary dictionaryWithContentsOfFile:filePath];
+    NSDictionary *plistDictionary = [Utility contentsOfHealthPlist];
     
     NSNumber *sleeping = [plistDictionary objectForKey:@"SleepInProgress"];
     BOOL thebool = [sleeping boolValue];
@@ -149,10 +148,7 @@
 - (void)sleepInProgressWillReadDataFromPlist {
     NSLog(@"[VERBOSE] Sleep is currently in progress. Setting variables.");
     
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
-    NSString *filePath = [documentsDirectory stringByAppendingPathComponent:@"Health.plist"];
-    NSDictionary *plistDictionary = [NSDictionary dictionaryWithContentsOfFile:filePath];
+    NSDictionary *plistDictionary = [Utility contentsOfHealthPlist];
     
     self.inBedStart = [plistDictionary objectForKey:@"StartInBedDate"];
     self.sleepStart = [plistDictionary objectForKey:@"StartSleepDate"];
@@ -416,9 +412,7 @@
 }
 
 - (void)updateLabelsWhileAsleep {
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    dateFormatter.dateStyle = NSDateFormatterNoStyle;
-    dateFormatter.timeStyle = NSDateFormatterShortStyle;
+    NSDateFormatter *dateFormatter = [Utility dateFormatterForTimeLabels];
     
     [self.mainLabel setHidden:true];
     [self.inBedLabel setHidden:false];
@@ -433,9 +427,6 @@
 }
 
 - (void)updateLabelsForConfirmation {
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    dateFormatter.dateStyle = NSDateFormatterNoStyle;
-    dateFormatter.timeStyle = NSDateFormatterShortStyle;
     
     [self.mainLabel setHidden:true];
     [self.inBedLabel setHidden:true];
