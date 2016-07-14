@@ -63,13 +63,13 @@
 }
 
 - (void)getMilestoneTimes {
-#warning this needs to be cleaned up and written logically.
     
     NSDateFormatter *dateFormatter = [Utility dateFormatterForTimeLabels];
     NSDictionary *plistDictionary = [Utility contentsOfHealthPlist];
     
     NSMutableArray *milestoneTimes = [plistDictionary objectForKey:@"milestoneTimes"];
     NSMutableArray *formattedTimes = [[NSMutableArray alloc] init];
+    
     NSRange endRange = NSMakeRange(milestoneTimes.count >= 4 ? milestoneTimes.count - 4 : 0, MIN(milestoneTimes.count, 4));
     NSArray *rawSleepData = [milestoneTimes subarrayWithRange:endRange];
     

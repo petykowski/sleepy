@@ -233,6 +233,7 @@
 				C243C14C1C57D32400DB8803 /* Frameworks */,
 				C243C14D1C57D32400DB8803 /* Resources */,
 				C243C18C1C57D32400DB8803 /* Embed Watch Content */,
+				C2ABC9771D371FFA0064917F /* Increment Build */,
 			);
 			buildRules = (
 			);
@@ -268,6 +269,7 @@
 				C243C1711C57D32400DB8803 /* Sources */,
 				C243C1721C57D32400DB8803 /* Frameworks */,
 				C243C1731C57D32400DB8803 /* Resources */,
+				C2ABC9781D3720560064917F /* Increment Build */,
 			);
 			buildRules = (
 			);
@@ -374,6 +376,37 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		C2ABC9771D371FFA0064917F /* Increment Build */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Increment Build";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "buildNumber=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\")\nbuildNumber=$(($buildNumber + 1))\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\"";
+		};
+		C2ABC9781D3720560064917F /* Increment Build */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Increment Build";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "buildNumber=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\")\nbuildNumber=$(($buildNumber + 1))\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\"\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"$SRCROOT/HealthKitObjCPoC WatchKit App/Info.plist\"";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		C243C14B1C57D32400DB8803 /* Sources */ = {

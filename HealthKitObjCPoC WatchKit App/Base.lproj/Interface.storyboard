@@ -14,11 +14,11 @@
                         <label alignment="center" verticalAlignment="center" text="Press To Sleep" textAlignment="center" numberOfLines="2" id="Bq9-XQ-8sA">
                             <fontDescription key="font" type="boldSystem" pointSize="30"/>
                         </label>
-                        <label alignment="center" verticalAlignment="center" text="9:40 PM" textAlignment="center" id="P2X-iN-doj" userLabel="In Bed">
+                        <label alignment="center" verticalAlignment="center" hidden="YES" text="9:40 PM" textAlignment="center" id="P2X-iN-doj" userLabel="In Bed">
                             <fontDescription key="font" type="boldSystem" pointSize="30"/>
                         </label>
-                        <separator alignment="center" verticalAlignment="center" id="gwV-AV-DqL"/>
-                        <label alignment="center" verticalAlignment="center" text="11:45 PM" id="VTD-Ai-sUW" userLabel="Sleep Start">
+                        <separator alignment="center" verticalAlignment="center" hidden="YES" id="gwV-AV-DqL"/>
+                        <label alignment="center" verticalAlignment="center" hidden="YES" text="11:45 PM" id="VTD-Ai-sUW" userLabel="Sleep Start">
                             <fontDescription key="font" type="boldSystem" pointSize="30"/>
                         </label>
                     </items>

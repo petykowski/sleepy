@@ -23,6 +23,7 @@
 
 - (void)awakeWithContext:(id)context {
     [super awakeWithContext:context];
+    [[WKInterfaceDevice currentDevice] playHaptic:WKHapticTypeSuccess];
     
     if ([context isKindOfClass:[NSDictionary class]]) {
         self.delegate = [context objectForKey:@"delegate"];
