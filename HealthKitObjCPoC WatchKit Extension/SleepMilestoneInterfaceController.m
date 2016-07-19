@@ -99,8 +99,4 @@
     [self.userMsgLabel setHidden:true];
 }
 
-
 @end
-
-
-
