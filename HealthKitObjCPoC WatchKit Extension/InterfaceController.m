@@ -38,6 +38,14 @@
 @property (nonatomic, readwrite) NSDate *proposedSleepStart;
 
 
+// Sleep Arrays
+
+@property (nonatomic, readwrite) NSMutableArray *inBed;
+@property (nonatomic, readwrite) NSMutableArray *sleep;
+@property (nonatomic, readwrite) NSMutableArray *wake;
+@property (nonatomic, readwrite) NSMutableArray *outBed;
+
+
 // INTERFACE ITEMS //
 
 // Labels
@@ -54,6 +62,11 @@
 
 - (instancetype)init {
     self = [super init];
+    
+    self.inBed = [[NSMutableArray alloc] init];
+    self.sleep = [[NSMutableArray alloc] init];
+    self.wake = [[NSMutableArray alloc] init];
+    self.outBed = [[NSMutableArray alloc] init];
     
     [self checkForPlist];
     
@@ -250,63 +263,78 @@
 // MENU BUTTON METHODS //
 
 - (IBAction)sleepDidStartMenuButton {
-    self.inBedStart = [NSDate date];
-    self.awakeStart = [NSDate date];
-    self.sleepStart = [NSDate dateWithTimeInterval:1 sinceDate:[NSDate date]];
-    self.isSleeping = YES;
+    if (self.wake.count > 0) {
+        [self.outBed addObject:[self.wake objectAtIndex:self.wake.count - 1]];
+    }
     
-    [self updateLabelsWhileAsleep];
-    [self writeSleepStartDataToPlist];
+    [self.inBed addObject:[NSDate date]];
+    [self.sleep addObject:[NSDate dateWithTimeInterval:1 sinceDate:[NSDate date]]];
+    [self debugArrays];
+    self.isSleeping = YES;
+//    
+//    [self updateLabelsWhileAsleep];
+//    [self writeSleepStartDataToPlist];
     
     [self clearAllMenuItems];
     [self addMenuItemWithItemIcon:WKMenuItemIconAccept title:@"End" action:@selector(sleepDidStopMenuButton)];
     [self addMenuItemWithItemIcon:WKMenuItemIconBlock title:@"Cancel" action:@selector(sleepWasCancelledByUserMenuButton)];
     [self addMenuItemWithItemIcon:WKMenuItemIconResume title:@"Wake" action:@selector(userAwokeByUserMenuButton)];
     [self addMenuItemWithItemIcon:WKMenuItemIconMore title:@"Still Awake?" action:@selector(sleepWasDeferredByUserMenuButton)];
-    
-    NSLog(@"[VERBOSE] User is in bed at %@ and asleep at %@", self.inBedStart, self.sleepStart);
+//    
+//    NSLog(@"[VERBOSE] User is in bed at %@ and asleep at %@", self.inBedStart, self.sleepStart);
 }
 - (IBAction)sleepDidStopMenuButton {
-    self.inBedStop = [NSDate date];
-    self.awakeStop = [NSDate date];
+    [self.outBed addObject:[NSDate date]];
+    [self debugArrays];
     self.isSleeping = NO;
     
-    NSLog(@"[VERBOSE] User exited in bed at %@ and woke at %@", self.inBedStop, self.sleepStop);
-    
-    [self readHeartRateData];
+//    NSLog(@"[VERBOSE] User exited in bed at %@ and woke at %@", self.inBedStop, self.sleepStop);
+//    
+//    [self readHeartRateData];
     [self clearAllMenuItems];
     [self addMenuItemWithItemIcon:WKMenuItemIconAdd title:@"Sleep" action:@selector(sleepDidStartMenuButton)];
     
-    [self writeSleepStopDataToPlist];
+//    [self writeSleepStopDataToPlist];
 }
 
 - (IBAction)sleepWasCancelledByUserMenuButton {
-    self.inBedStop = [NSDate date];
-    self.sleepStop = [NSDate date];
-    self.awakeStop = [NSDate date];
+    [self.inBed removeAllObjects];
+    [self.sleep removeAllObjects];
+    [self.wake removeAllObjects];
+    [self.outBed removeAllObjects];
+    [self debugArrays];
+    
     self.isSleeping = NO;
-    NSLog(@"[VERBOSE] User cancelled sleep at %@", self.sleepStop);
+//    NSLog(@"[VERBOSE] User cancelled sleep at %@", self.sleepStop);
     
     [self updateLabelsWhileAwake];
     
     [self clearAllMenuItems];
     [self addMenuItemWithItemIcon:WKMenuItemIconAdd title:@"Sleep" action:@selector(sleepDidStartMenuButton)];
     
-    [self writeSleepStopDataToPlist];
-    [self clearAllSleepValues];
-    NSLog(@"[VERBOSE] Sleep data will not be written to Health.app.");
+//    [self writeSleepStopDataToPlist];
+//    [self clearAllSleepValues];
+//    NSLog(@"[VERBOSE] Sleep data will not be written to Health.app.");
 }
 
 - (IBAction)userAwokeByUserMenuButton {
-    self.sleepStop = [NSDate date];
+    [self.wake addObject:[NSDate date]];
+    [self debugArrays];
+    
+    [self clearAllMenuItems];
+    [self addMenuItemWithItemIcon:WKMenuItemIconAccept title:@"End" action:@selector(sleepDidStopMenuButton)];
+    [self addMenuItemWithItemIcon:WKMenuItemIconBlock title:@"Cancel" action:@selector(sleepWasCancelledByUserMenuButton)];
+    [self addMenuItemWithItemIcon:WKMenuItemIconAdd title:@"Sleep" action:@selector(sleepDidStartMenuButton)];
+    
     self.isSleeping = YES;
-    NSLog(@"[VERBOSE] User awoke from sleep at %@", self.sleepStop);
+//    NSLog(@"[VERBOSE] User awoke from sleep at %@", self.sleepStop);
 }
 
 - (IBAction)sleepWasDeferredByUserMenuButton {
-    self.sleepStart = [NSDate date];
-    [self updateLabelsWhileAsleep];
-    NSLog(@"[VERBOSE] User is still awake at %@", self.sleepStart);
+    [self.sleep replaceObjectAtIndex:self.sleep.count - 1 withObject:[NSDate date]];
+    [self debugArrays];
+//    [self updateLabelsWhileAsleep];
+//    NSLog(@"[VERBOSE] User is still awake at %@", self.sleepStart);
 }
 
 
@@ -524,5 +552,14 @@
     NSLog(@"[DEBUG] inBedStart: %@", self.inBedStart);
     NSLog(@"[DEBUG] inBedStop: %@", self.inBedStop);
 }
+
+- (void)debugArrays {
+    NSLog(@"[DEBUG] Contents of inBed: %@", self.inBed);
+    NSLog(@"[DEBUG] Contents of sleep: %@", self.sleep);
+    NSLog(@"[DEBUG] Contents of wake: %@", self.wake);
+    NSLog(@"[DEBUG] Contents of outBed: %@", self.outBed);
+    
+}
+
 
 @end
