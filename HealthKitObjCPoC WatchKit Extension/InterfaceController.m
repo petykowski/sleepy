@@ -60,6 +60,8 @@
 
 @implementation InterfaceController
 
+#pragma mark - UIViewController
+
 - (instancetype)init {
     self = [super init];
     
@@ -119,7 +121,7 @@
     
 }
 
-// PLIST METHODS //
+#pragma mark - Data Store Methods
 
 - (void)checkForPlist {
     BOOL success;
@@ -260,7 +262,8 @@
     }
 }
 
-// MENU BUTTON METHODS //
+
+#pragma mark - Menu Button Methods
 
 - (IBAction)sleepDidStartMenuButton {
     if (self.wake.count > 0) {
@@ -338,7 +341,7 @@
 }
 
 
-// HealthKit Methods
+#pragma mark - HealthKit Methods
 
 - (void)requestAccessToHealthKit {
     NSArray *readTypes = @[[HKObjectType categoryTypeForIdentifier:HKCategoryTypeIdentifierSleepAnalysis],
@@ -427,7 +430,7 @@
 }
 
 
-// LABEL CONFIGURATION //
+#pragma mark - Label Methods
 
 - (void)updateLabelsWhileAwake {
     
@@ -471,8 +474,7 @@
     NSLog(@"[VERBOSE] Labels set for asleep.");
 }
 
-
-// DELEGATE FUNCTIONS //
+#pragma mark - Sleep Delegate Functions
 
 - (void)proposedSleepStartDecision:(int)buttonValue {
     
@@ -496,8 +498,7 @@
     [self saveSleepDataToDataStore];
 }
 
-
-// TASK CLEAN UP //
+#pragma mark - Reset Values
 
 -(void)clearAllSleepValues {
     self.sleepStart = nil;
@@ -509,6 +510,7 @@
     self.inBedStop = nil;
 }
 
+#pragma mark - iOS Simulator Health Data
 
 // ONLY CALL TO POPULATE DATA ON SIMULATOR //
 
@@ -541,7 +543,7 @@
 }
 
 
-// VALUE DEBUG //
+#pragma mark - Private Debug Methods
 
 - (void)debugVals {
     NSLog(@"[DEBUG] sleepStart: %@", self.sleepStart);

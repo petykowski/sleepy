@@ -136,6 +136,7 @@
    </AnalyzeAction>
    <ArchiveAction
       buildConfiguration = "Release"
+      customArchiveName = "Sleepy WatchKit App"
       revealArchiveInOrganizer = "YES">
    </ArchiveAction>
 </Scheme>
