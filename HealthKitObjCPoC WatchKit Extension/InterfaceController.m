@@ -81,7 +81,7 @@
     // If sleep is currently in progress update labels and menu buttons to Sleep State
     if (self.isSleeping) {
         [self sleepInProgressWillReadDataFromPlist];
-        [self updateLabelsWhileAsleep];
+        [self updateLabelsForSleepSessionStart];
         [self addMenuItemWithItemIcon:WKMenuItemIconAccept title:@"End" action:@selector(sleepDidStopMenuButton)];
         [self addMenuItemWithItemIcon:WKMenuItemIconBlock title:@"Cancel" action:@selector(sleepWasCancelledByUserMenuButton)];
         [self addMenuItemWithItemIcon:WKMenuItemIconResume title:@"Wake" action:@selector(userAwokeByUserMenuButton)];
@@ -89,7 +89,7 @@
         NSLog(@"[VERBOSE] User is currently asleep. Resuming sleep state.");
         
     } else {
-        [self updateLabelsWhileAwake];
+        [self updateLabelsForSleepSessionEnded];
         [self addMenuItemWithItemIcon:WKMenuItemIconAdd title:@"Sleep" action:@selector(sleepDidStartMenuButton)];
 //        [self addMenuItemWithItemIcon:WKMenuItemIconPlay title:@"Save" action:@selector(saveSleepDataToDataStore)];
 //        [self addMenuItemWithItemIcon:WKMenuItemIconPlay title:@"Del" action:@selector(deleteSleepDataToDataStore)];
@@ -165,16 +165,13 @@
     
     NSDictionary *plistDictionary = [Utility contentsOfHealthPlist];
     
-    self.inBedStart = [plistDictionary objectForKey:@"StartInBedDate"];
-    self.sleepStart = [plistDictionary objectForKey:@"StartSleepDate"];
-    self.awakeStart = [plistDictionary objectForKey:@"StartAwakeDate"];
-    NSLog(@"[DEBUG] in bed = %@", self.inBedStart);
-    NSLog(@"[DEBUG] sleep = %@", self.sleepStart);
+    [self.inBed setArray:[plistDictionary objectForKey:@"inBedArray"]];
+    [self.sleep setArray:[plistDictionary objectForKey:@"sleepArray"]];
+    [self.wake setArray:[plistDictionary objectForKey:@"wakeArray"]];
+    [self.outBed setArray:[plistDictionary objectForKey:@"outBedArray"]];
 }
 
-- (void)writeSleepStartDataToPlist {
-    NSLog(@"[VERBOSE] Attempting to write data to plist.");
-    
+- (void)writeSleepDataToPlist {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
     NSString *filePath = [documentsDirectory stringByAppendingPathComponent:@"Health.plist"];
@@ -182,9 +179,10 @@
     
     NSNumber *sleeping = [[NSNumber alloc] initWithBool:self.isSleeping];
     [plistDictionary setObject:sleeping forKey:@"SleepInProgress"];
-    [plistDictionary setObject:self.inBedStart forKey:@"StartInBedDate"];
-    [plistDictionary setObject:self.sleepStart forKey:@"StartSleepDate"];
-    [plistDictionary setObject:self.awakeStart forKey:@"StartAwakeDate"];
+    [plistDictionary setObject:self.inBed forKey:@"inBedArray"];
+    [plistDictionary setObject:self.sleep forKey:@"sleepArray"];
+    [plistDictionary setObject:self.wake forKey:@"wakeArray"];
+    [plistDictionary setObject:self.outBed forKey:@"outBedArray"];
     
     BOOL didWrite = [plistDictionary writeToFile:filePath atomically:YES];
     if (didWrite) {
@@ -192,28 +190,7 @@
     } else {
         NSLog(@"[DEBUG] Failed to write data to plist.");
     }
-}
-
-- (void)writeSleepStopDataToPlist {
-    NSLog(@"[VERBOSE] Clearing plist data.");
     
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
-    NSString *filePath = [documentsDirectory stringByAppendingPathComponent:@"Health.plist"];
-    NSMutableDictionary *plistDictionary = [NSMutableDictionary dictionaryWithContentsOfFile:filePath];
-    
-    NSNumber *sleeping = [[NSNumber alloc] initWithBool:self.isSleeping];
-    [plistDictionary setObject:sleeping forKey:@"SleepInProgress"];
-    [plistDictionary setObject:[NSDate date] forKey:@"StartInBedDate"];
-    [plistDictionary setObject:[NSDate date] forKey:@"StartSleepDate"];
-    [plistDictionary setObject:[NSDate date] forKey:@"StartAwakeDate"];
-    
-    BOOL didWrite = [plistDictionary writeToFile:filePath atomically:YES];
-    if (didWrite) {
-        NSLog(@"[VERBOSE] Clearing of data sucessfully written to plist.");
-    } else {
-        NSLog(@"[DEBUG] Failed to clear data from plist.");
-    }
 }
 
 - (void)saveSleepDataToDataStore {
@@ -226,7 +203,7 @@
 
     NSMutableArray *milestoneTimes = [plistDictionary objectForKey:@"milestoneTimes"];
     
-    NSArray *lastNightSleepTimes = [[NSArray alloc] initWithObjects:self.inBedStart, self.sleepStart, self.sleepStop, self.inBedStop, nil];
+    NSArray *lastNightSleepTimes = [[NSArray alloc] initWithObjects:[self.inBed firstObject], [self.sleep firstObject], [self.wake firstObject], [self.outBed firstObject], nil];
     
     if (milestoneTimes == nil) {
         milestoneTimes = [[NSMutableArray alloc] init];
@@ -243,6 +220,8 @@
         NSLog(@"[DEBUG] Failed to write data to plist.");
     }
 }
+
+// ONLY CALL TO DELETE MILESTONE DATA //
 
 - (void)deleteSleepDataToDataStore {
     NSLog(@"[VERBOSE] Attempting to delete sleep data to data store.");
@@ -267,77 +246,65 @@
 
 - (IBAction)sleepDidStartMenuButton {
     if (self.wake.count > 0) {
+        // Determines if this is the start of sleep or if user previously awoke during sleep session
         [self.outBed addObject:[self.wake objectAtIndex:self.wake.count - 1]];
     }
     
     [self.inBed addObject:[NSDate date]];
     [self.sleep addObject:[NSDate dateWithTimeInterval:1 sinceDate:[NSDate date]]];
-    [self debugArrays];
     self.isSleeping = YES;
-//    
-//    [self updateLabelsWhileAsleep];
-//    [self writeSleepStartDataToPlist];
+
+    [self updateLabelsForSleepSessionStart];
+    [self writeSleepDataToPlist];
     
     [self clearAllMenuItems];
     [self addMenuItemWithItemIcon:WKMenuItemIconAccept title:@"End" action:@selector(sleepDidStopMenuButton)];
     [self addMenuItemWithItemIcon:WKMenuItemIconBlock title:@"Cancel" action:@selector(sleepWasCancelledByUserMenuButton)];
     [self addMenuItemWithItemIcon:WKMenuItemIconResume title:@"Wake" action:@selector(userAwokeByUserMenuButton)];
     [self addMenuItemWithItemIcon:WKMenuItemIconMore title:@"Still Awake?" action:@selector(sleepWasDeferredByUserMenuButton)];
-//    
-//    NSLog(@"[VERBOSE] User is in bed at %@ and asleep at %@", self.inBedStart, self.sleepStart);
 }
 - (IBAction)sleepDidStopMenuButton {
     [self.outBed addObject:[NSDate date]];
-    [self debugArrays];
+    
+    if (self.wake.count == 0) {
+        [self.wake addObject:[NSDate dateWithTimeInterval:-1 sinceDate:[NSDate date]]];
+    }
+    
     self.isSleeping = NO;
     
-//    NSLog(@"[VERBOSE] User exited in bed at %@ and woke at %@", self.inBedStop, self.sleepStop);
-//    
-//    [self readHeartRateData];
+    [self writeSleepDataToPlist];
+    [self readHeartRateData];
     [self clearAllMenuItems];
     [self addMenuItemWithItemIcon:WKMenuItemIconAdd title:@"Sleep" action:@selector(sleepDidStartMenuButton)];
     
-//    [self writeSleepStopDataToPlist];
 }
 
 - (IBAction)sleepWasCancelledByUserMenuButton {
-    [self.inBed removeAllObjects];
-    [self.sleep removeAllObjects];
-    [self.wake removeAllObjects];
-    [self.outBed removeAllObjects];
-    [self debugArrays];
-    
     self.isSleeping = NO;
-//    NSLog(@"[VERBOSE] User cancelled sleep at %@", self.sleepStop);
     
-    [self updateLabelsWhileAwake];
+    [self clearAllSleepValues];
+    [self updateLabelsForSleepSessionEnded];
     
     [self clearAllMenuItems];
     [self addMenuItemWithItemIcon:WKMenuItemIconAdd title:@"Sleep" action:@selector(sleepDidStartMenuButton)];
     
-//    [self writeSleepStopDataToPlist];
-//    [self clearAllSleepValues];
-//    NSLog(@"[VERBOSE] Sleep data will not be written to Health.app.");
+    [self writeSleepDataToPlist];
 }
 
 - (IBAction)userAwokeByUserMenuButton {
     [self.wake addObject:[NSDate date]];
-    [self debugArrays];
+    [self writeSleepDataToPlist];
     
     [self clearAllMenuItems];
     [self addMenuItemWithItemIcon:WKMenuItemIconAccept title:@"End" action:@selector(sleepDidStopMenuButton)];
     [self addMenuItemWithItemIcon:WKMenuItemIconBlock title:@"Cancel" action:@selector(sleepWasCancelledByUserMenuButton)];
     [self addMenuItemWithItemIcon:WKMenuItemIconAdd title:@"Sleep" action:@selector(sleepDidStartMenuButton)];
-    
-    self.isSleeping = YES;
-//    NSLog(@"[VERBOSE] User awoke from sleep at %@", self.sleepStop);
 }
 
 - (IBAction)sleepWasDeferredByUserMenuButton {
     [self.sleep replaceObjectAtIndex:self.sleep.count - 1 withObject:[NSDate date]];
-    [self debugArrays];
-//    [self updateLabelsWhileAsleep];
-//    NSLog(@"[VERBOSE] User is still awake at %@", self.sleepStart);
+    [self updateLabelsForSleepStartDeferred];
+    [self writeSleepDataToPlist];
 }
 
 
@@ -357,28 +324,44 @@
     }];
 }
 
-- (void)writeToHealthKit {
+- (void)writeSleepSessionDataToHealthKit {
+    NSMutableArray *sampleArray = [[NSMutableArray alloc] init];
     HKCategoryType *categoryType = [HKObjectType categoryTypeForIdentifier:HKCategoryTypeIdentifierSleepAnalysis];
-    HKCategorySample *sleepSample = [HKCategorySample categorySampleWithType:categoryType
-                                                                          value:HKCategoryValueSleepAnalysisAsleep
-                                                                      startDate:self.sleepStart
-                                                                        endDate:self.sleepStop];
-    HKCategorySample *inBedSample = [HKCategorySample categorySampleWithType:categoryType
-                                                                       value:HKCategoryValueSleepAnalysisInBed
-                                                                   startDate:self.inBedStart
-                                                                     endDate:self.inBedStop];
-    HKCategorySample *awakeSample1 = [HKCategorySample categorySampleWithType:categoryType
-                                                                       value:HKCategoryValueSleepAnalysisAwake
-                                                                   startDate:self.awakeStart
-                                                                     endDate:self.sleepStart];
-    HKCategorySample *awakeSample2 = [HKCategorySample categorySampleWithType:categoryType
-                                                                        value:HKCategoryValueSleepAnalysisAwake
-                                                                    startDate:self.sleepStop
-                                                                      endDate:self.awakeStop];
     
-    NSArray *sampleArray = [NSArray arrayWithObjects:sleepSample, inBedSample, awakeSample1, awakeSample2, nil];
+    for (int i = 0; i <= [self.wake count]; i++) {
+        HKCategorySample *awakeSample;
+        if (i == 0) {
+            awakeSample = [HKCategorySample categorySampleWithType:categoryType
+                                                                               value:HKCategoryValueSleepAnalysisAwake
+                                                                           startDate:[self.inBed objectAtIndex:i]
+                                                                             endDate:[self.sleep objectAtIndex:i]];
+        } else if (i == [self.wake count]) {
+            awakeSample = [HKCategorySample categorySampleWithType:categoryType
+                                                                               value:HKCategoryValueSleepAnalysisAwake
+                                                                           startDate:[self.wake objectAtIndex:i-1]
+                                                                             endDate:[self.outBed objectAtIndex:i-1]];
+            
+        } else {
+            awakeSample = [HKCategorySample categorySampleWithType:categoryType
+                                                                               value:HKCategoryValueSleepAnalysisAwake
+                                                                           startDate:[self.wake objectAtIndex:i-1]
+                                                                             endDate:[self.sleep objectAtIndex:i]];
+        }
+        [sampleArray addObject:awakeSample];
+    }
     
-    
+    for (int i = 0; i < [self.inBed count]; i++) {
+        HKCategorySample *inBedSample = [HKCategorySample categorySampleWithType:categoryType
+                                                                           value:HKCategoryValueSleepAnalysisInBed
+                                                                       startDate:[self.inBed objectAtIndex:i]
+                                                                         endDate:[self.outBed objectAtIndex:i]];
+        HKCategorySample *sleepSample = [HKCategorySample categorySampleWithType:categoryType
+                                                                           value:HKCategoryValueSleepAnalysisAsleep
+                                                                       startDate:[self.sleep objectAtIndex:i]
+                                                                         endDate:[self.wake objectAtIndex:i]];
+        [sampleArray addObject:inBedSample];
+        [sampleArray addObject:sleepSample];
+    }
     
     [self.healthStore saveObjects:sampleArray withCompletion:^(BOOL success, NSError *error){
         if (!success) {
@@ -390,7 +373,7 @@
 }
 
 - (void)readHeartRateData {
-    NSDate *sampleStartDate = self.sleepStart;
+    NSDate *sampleStartDate = [self.sleep firstObject];
     NSDate *sampleEndDate = [NSDate dateWithTimeInterval:3600 sinceDate:sampleStartDate];
     
     HKSampleType *sampleType = [HKSampleType quantityTypeForIdentifier:HKQuantityTypeIdentifierHeartRate];
@@ -421,7 +404,7 @@
             };
             
             NSLog(@"[DEBUG] The results are: %@", results);
-            [self updateLabelsForConfirmation];
+            [self presentControllerToConfirmProposedSleepTime];
         });
     }];
     
@@ -432,17 +415,28 @@
 
 #pragma mark - Label Methods
 
-- (void)updateLabelsWhileAwake {
+- (void)updateLabelsForSleepSessionStart {
+    NSDateFormatter *dateFormatter = [Utility dateFormatterForTimeLabels];
+    
+    [self.mainLabel setHidden:true];
+    [self.inBedLabel setHidden:false];
+    [self.sleepStartLabel setHidden:true];
+    [self.separator setHidden:true];
+    
+    [self.inBedLabel setText:[dateFormatter stringFromDate:[self.inBed firstObject]]];
+    
+    [self debugArrays];
+}
+
+- (void)updateLabelsForSleepSessionEnded {
     
     [self.mainLabel setHidden:false];
     [self.inBedLabel setHidden:true];
     [self.sleepStartLabel setHidden:true];
     [self.separator setHidden:true];
-    
-    NSLog(@"[VERBOSE] Labels set for awake.");
 }
 
-- (void)updateLabelsWhileAsleep {
+- (void)updateLabelsForSleepStartDeferred {
     NSDateFormatter *dateFormatter = [Utility dateFormatterForTimeLabels];
     
     [self.mainLabel setHidden:true];
@@ -450,28 +444,17 @@
     [self.sleepStartLabel setHidden:false];
     [self.separator setHidden:false];
     
-    [self.inBedLabel setText:[dateFormatter stringFromDate:self.inBedStart]];
-    [self.sleepStartLabel setText:[dateFormatter stringFromDate:self.sleepStart]];
-    [self.separator setHidden:false];
-    
-    NSLog(@"[VERBOSE] Labels set for asleep.");
+    [self.inBedLabel setText:[dateFormatter stringFromDate:[self.inBed firstObject]]];
+    [self.sleepStartLabel setText:[dateFormatter stringFromDate:[self.sleep lastObject]]];
 }
 
-- (void)updateLabelsForConfirmation {
-    
-    [self.mainLabel setHidden:true];
-    [self.inBedLabel setHidden:true];
-    [self.sleepStartLabel setHidden:true];
-    [self.separator setHidden:true];
-    
+- (void)presentControllerToConfirmProposedSleepTime {
     if (self.proposedSleepStart == nil) {
-        self.proposedSleepStart = self.sleepStart;
+        self.proposedSleepStart = [self.sleep firstObject];
         NSLog(@"[DEBUG] Could not determine sleep start from user's heart rate data. Setting last defined sleep start time instead.");
     }
     
     [self presentControllerWithName:@"confirm" context:@{@"delegate" : self, @"time" : self.proposedSleepStart}];
-    
-    NSLog(@"[VERBOSE] Labels set for asleep.");
 }
 
 #pragma mark - Sleep Delegate Functions
@@ -486,28 +469,26 @@
 }
 
 - (void)proposedSleepStartWasConfirmed {
-    self.sleepStart = self.proposedSleepStart;
-    [self writeToHealthKit];
-    [self updateLabelsWhileAwake];
+    [self.sleep replaceObjectAtIndex:0 withObject:self.proposedSleepStart];
+    [self writeSleepSessionDataToHealthKit];
+    [self updateLabelsForSleepSessionEnded];
     [self saveSleepDataToDataStore];
 }
 
 - (void)proposedSleepStartWasDenied {
-    [self writeToHealthKit];
-    [self updateLabelsWhileAwake];
+    [self writeSleepSessionDataToHealthKit];
+    [self updateLabelsForSleepSessionEnded];
     [self saveSleepDataToDataStore];
 }
 
 #pragma mark - Reset Values
 
 -(void)clearAllSleepValues {
-    self.sleepStart = nil;
-    self.sleepStop = nil;
+    [self.inBed removeAllObjects];
+    [self.sleep removeAllObjects];
+    [self.wake removeAllObjects];
+    [self.outBed removeAllObjects];
     self.proposedSleepStart = nil;
-    self.awakeStart = nil;
-    self.awakeStop = nil;
-    self.inBedStart = nil;
-    self.inBedStop = nil;
 }
 
 #pragma mark - iOS Simulator Health Data
