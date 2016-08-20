@@ -82,15 +82,14 @@
     if (self.isSleeping) {
         [self sleepInProgressWillReadDataFromPlist];
         [self updateLabelsForSleepSessionStart];
-        [self addMenuItemWithItemIcon:WKMenuItemIconAccept title:@"End" action:@selector(sleepDidStopMenuButton)];
-        [self addMenuItemWithItemIcon:WKMenuItemIconBlock title:@"Cancel" action:@selector(sleepWasCancelledByUserMenuButton)];
-        [self addMenuItemWithItemIcon:WKMenuItemIconResume title:@"Wake" action:@selector(userAwokeByUserMenuButton)];
-        [self addMenuItemWithItemIcon:WKMenuItemIconMore title:@"Still Awake?" action:@selector(sleepWasDeferredByUserMenuButton)];
+        [self prepareMenuIconsForUserAsleepInSleepSession];
         NSLog(@"[VERBOSE] User is currently asleep. Resuming sleep state.");
         
     } else {
         [self updateLabelsForSleepSessionEnded];
-        [self addMenuItemWithItemIcon:WKMenuItemIconAdd title:@"Sleep" action:@selector(sleepDidStartMenuButton)];
+        [self prepareMenuIconsForUserNotInSleepSession];
+        
+        // Debug Menu Items
 //        [self addMenuItemWithItemIcon:WKMenuItemIconPlay title:@"Save" action:@selector(saveSleepDataToDataStore)];
 //        [self addMenuItemWithItemIcon:WKMenuItemIconPlay title:@"Del" action:@selector(deleteSleepDataToDataStore)];
 //        [self addMenuItemWithItemIcon:WKMenuItemIconAdd title:@"Add Data" action:@selector(populateHRData)];
@@ -257,11 +256,7 @@
     [self updateLabelsForSleepSessionStart];
     [self writeSleepDataToPlist];
     
-    [self clearAllMenuItems];
-    [self addMenuItemWithItemIcon:WKMenuItemIconAccept title:@"End" action:@selector(sleepDidStopMenuButton)];
-    [self addMenuItemWithItemIcon:WKMenuItemIconBlock title:@"Cancel" action:@selector(sleepWasCancelledByUserMenuButton)];
-    [self addMenuItemWithItemIcon:WKMenuItemIconResume title:@"Wake" action:@selector(userAwokeByUserMenuButton)];
-    [self addMenuItemWithItemIcon:WKMenuItemIconMore title:@"Still Awake?" action:@selector(sleepWasDeferredByUserMenuButton)];
+    [self prepareMenuIconsForUserAsleepInSleepSession];
 }
 - (IBAction)sleepDidStopMenuButton {
     [self.outBed addObject:[NSDate date]];
@@ -274,8 +269,7 @@
     
     [self writeSleepDataToPlist];
     [self readHeartRateData];
-    [self clearAllMenuItems];
-    [self addMenuItemWithItemIcon:WKMenuItemIconAdd title:@"Sleep" action:@selector(sleepDidStartMenuButton)];
+    [self prepareMenuIconsForUserNotInSleepSession];
     
 }
 
@@ -285,8 +279,7 @@
     [self clearAllSleepValues];
     [self updateLabelsForSleepSessionEnded];
     
-    [self clearAllMenuItems];
-    [self addMenuItemWithItemIcon:WKMenuItemIconAdd title:@"Sleep" action:@selector(sleepDidStartMenuButton)];
+    [self prepareMenuIconsForUserNotInSleepSession];
     
     [self writeSleepDataToPlist];
 }
@@ -295,10 +288,7 @@
     [self.wake addObject:[NSDate date]];
     [self writeSleepDataToPlist];
     
-    [self clearAllMenuItems];
-    [self addMenuItemWithItemIcon:WKMenuItemIconAccept title:@"End" action:@selector(sleepDidStopMenuButton)];
-    [self addMenuItemWithItemIcon:WKMenuItemIconBlock title:@"Cancel" action:@selector(sleepWasCancelledByUserMenuButton)];
-    [self addMenuItemWithItemIcon:WKMenuItemIconAdd title:@"Sleep" action:@selector(sleepDidStartMenuButton)];
+    [self prepareMenuIconsForUserAwakeInSleepSession];
 }
 
 - (IBAction)sleepWasDeferredByUserMenuButton {
@@ -410,6 +400,28 @@
     
     [self.healthStore executeQuery:query];
     
+}
+
+
+#pragma mark - Menu Icon Methods
+- (void)prepareMenuIconsForUserNotInSleepSession {
+    [self clearAllMenuItems];
+    [self addMenuItemWithImageNamed:@"sleepMenuIcon" title:@"Sleep" action:@selector(sleepDidStartMenuButton)];
+}
+
+- (void)prepareMenuIconsForUserAsleepInSleepSession {
+    [self clearAllMenuItems];
+    [self addMenuItemWithItemIcon:WKMenuItemIconAccept title:@"End" action:@selector(sleepDidStopMenuButton)];
+    [self addMenuItemWithItemIcon:WKMenuItemIconBlock title:@"Cancel" action:@selector(sleepWasCancelledByUserMenuButton)];
+    [self addMenuItemWithImageNamed:@"wakeMenuIcon" title:@"Wake" action:@selector(userAwokeByUserMenuButton)];
+    [self addMenuItemWithImageNamed:@"stillAwakeMenuIcon" title:@"Still Awake?" action:@selector(sleepWasDeferredByUserMenuButton)];
+}
+
+-(void)prepareMenuIconsForUserAwakeInSleepSession {
+    [self clearAllMenuItems];
+    [self addMenuItemWithItemIcon:WKMenuItemIconAccept title:@"End" action:@selector(sleepDidStopMenuButton)];
+    [self addMenuItemWithItemIcon:WKMenuItemIconBlock title:@"Cancel" action:@selector(sleepWasCancelledByUserMenuButton)];
+    [self addMenuItemWithImageNamed:@"backToSleepMenuIcon" title:@"Back To Sleep" action:@selector(sleepDidStartMenuButton)];
 }
 
 
