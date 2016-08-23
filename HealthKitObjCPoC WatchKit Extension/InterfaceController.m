@@ -48,6 +48,9 @@
 
 // INTERFACE ITEMS //
 
+// Images
+@property (unsafe_unretained, nonatomic) IBOutlet WKInterfaceImage *wakeIndicator;
+
 // Labels
 @property (unsafe_unretained, nonatomic) IBOutlet WKInterfaceLabel *mainLabel;
 @property (unsafe_unretained, nonatomic) IBOutlet WKInterfaceLabel *inBedLabel;
@@ -259,6 +262,7 @@
     [self prepareMenuIconsForUserAsleepInSleepSession];
 }
 - (IBAction)sleepDidStopMenuButton {
+    [self hideWakeIndicator];
     [self.outBed addObject:[NSDate date]];
     
     if (self.wake.count == 0) {
@@ -275,6 +279,7 @@
 
 - (IBAction)sleepWasCancelledByUserMenuButton {
     self.isSleeping = NO;
+    [self hideWakeIndicator];
     
     [self clearAllSleepValues];
     [self updateLabelsForSleepSessionEnded];
@@ -285,9 +290,9 @@
 }
 
 - (IBAction)userAwokeByUserMenuButton {
+    [self displayWakeIndicator];
     [self.wake addObject:[NSDate date]];
     [self writeSleepDataToPlist];
-    
     [self prepareMenuIconsForUserAwakeInSleepSession];
 }
 
@@ -467,6 +472,18 @@
     }
     
     [self presentControllerWithName:@"confirm" context:@{@"delegate" : self, @"time" : self.proposedSleepStart}];
+}
+
+#pragma mark - Image Methods
+
+-(void)displayWakeIndicator{
+    NSRange range = NSMakeRange(0, 11);
+    [self.wakeIndicator setImageNamed:@"wakeIndicator"];
+    [self.wakeIndicator setHidden:false];
+    [self.wakeIndicator startAnimatingWithImagesInRange:range duration:0.8 repeatCount:1];
+}
+-(void)hideWakeIndicator{
+    [self.wakeIndicator setHidden:true];
 }
 
 #pragma mark - Sleep Delegate Functions

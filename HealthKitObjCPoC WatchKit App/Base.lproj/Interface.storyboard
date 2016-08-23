@@ -11,6 +11,7 @@
             <objects>
                 <controller id="AgC-eL-Hgc" customClass="InterfaceController">
                     <items>
+                        <imageView alignment="center" contentMode="scaleAspectFit" id="ptQ-Tp-H4F"/>
                         <label alignment="center" verticalAlignment="center" text="Press To Sleep" textAlignment="center" numberOfLines="2" id="Bq9-XQ-8sA">
                             <fontDescription key="font" type="boldSystem" pointSize="30"/>
                         </label>
@@ -47,6 +48,7 @@
                         <outlet property="mainLabel" destination="Bq9-XQ-8sA" id="04B-5i-kqk"/>
                         <outlet property="separator" destination="gwV-AV-DqL" id="i6z-Np-3dW"/>
                         <outlet property="sleepStartLabel" destination="VTD-Ai-sUW" id="xG8-cw-AEe"/>
+                        <outlet property="wakeIndicator" destination="ptQ-Tp-H4F" id="sk9-zN-QLq"/>
                         <segue destination="DDy-KD-bGw" kind="relationship" relationship="nextPage" id="Ptu-Qi-z7G"/>
                     </connections>
                 </controller>
