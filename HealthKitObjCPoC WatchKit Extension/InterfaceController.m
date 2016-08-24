@@ -250,6 +250,7 @@
     if (self.wake.count > 0) {
         // Determines if this is the start of sleep or if user previously awoke during sleep session
         [self.outBed addObject:[self.wake objectAtIndex:self.wake.count - 1]];
+        [self fadeWakeIndicator];
     }
     
     [self.inBed addObject:[NSDate date]];
@@ -481,6 +482,17 @@
     [self.wakeIndicator setImageNamed:@"wakeIndicator"];
     [self.wakeIndicator setHidden:false];
     [self.wakeIndicator startAnimatingWithImagesInRange:range duration:0.8 repeatCount:1];
+}
+-(void)fadeWakeIndicator{
+    NSRange range = NSMakeRange(10, 12);
+    [self.wakeIndicator setImageNamed:@"wakeIndicator"];
+    [self.wakeIndicator startAnimatingWithImagesInRange:range duration:0.8 repeatCount:1];
+    [NSTimer scheduledTimerWithTimeInterval:0.8
+                                     target:self
+                                   selector:@selector(hideWakeIndicator)
+                                   userInfo:nil
+                                    repeats:NO];
+    
 }
 -(void)hideWakeIndicator{
     [self.wakeIndicator setHidden:true];
