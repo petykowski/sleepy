@@ -6,6 +6,7 @@
 //  Copyright © 2016 Sean Petykowski. All rights reserved.
 //
 
+#import <WatchConnectivity/WatchConnectivity.h>
 #import "InterfaceController.h"
 #import "InterfaceControllerSleep.h"
 #import "SleepMilestoneInterfaceController.h"
@@ -108,6 +109,13 @@
 
 - (void)willActivate {
     [super willActivate];
+    
+    // Initate WatchConnectivity
+    if ([WCSession isSupported]) {
+        WCSession *session = [WCSession defaultSession];
+        session.delegate = self;
+        [session activateSession];
+    }
 
     HKAuthorizationStatus hasAccessToSleepData = [self.healthStore authorizationStatusForType:[HKObjectType categoryTypeForIdentifier:HKCategoryTypeIdentifierSleepAnalysis]];
     
@@ -262,6 +270,7 @@
     
     [self prepareMenuIconsForUserAsleepInSleepSession];
 }
+
 - (IBAction)sleepDidStopMenuButton {
     [self hideWakeIndicator];
     [self.outBed addObject:[NSDate date]];
@@ -405,7 +414,20 @@
     }];
     
     [self.healthStore executeQuery:query];
-    
+}
+
+#pragma mark - Watch Connectivity Methods
+
+- (void)sendSleepSessionDataToiOSApp {
+    NSDictionary *applicationData = self.sleep;
+    [[WCSession defaultSession] sendMessage:applicationData
+                               replyHandler:^(NSDictionary *reply) {
+                                   //handle reply from iPhone app here
+                               }
+                               errorHandler:^(NSError *error) {
+                                   //catch any errors here
+                               }
+     ];
 }
 
 
@@ -511,6 +533,7 @@
 
 - (void)proposedSleepStartWasConfirmed {
     [self.sleep replaceObjectAtIndex:0 withObject:self.proposedSleepStart];
+    [self sendSleepSessionDataToiOSApp];
     [self writeSleepSessionDataToHealthKit];
     [self updateLabelsForSleepSessionEnded];
     [self saveSleepDataToDataStore];
