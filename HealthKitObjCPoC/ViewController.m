@@ -9,7 +9,7 @@
 #import <WatchConnectivity/WatchConnectivity.h>
 #import "ViewController.h"
 
-@interface ViewController () <WCSessionDelegate>
+@interface ViewController ()
 
 @property (strong, nonatomic) NSMutableArray *sleepSession;
 
