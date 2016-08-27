@@ -312,7 +312,6 @@
     [self writeSleepDataToPlist];
 }
 
-
 #pragma mark - HealthKit Methods
 
 - (void)requestAccessToHealthKit {
@@ -419,7 +418,8 @@
 #pragma mark - Watch Connectivity Methods
 
 - (void)sendSleepSessionDataToiOSApp {
-    NSDictionary *applicationData = @"Update";
+    NSDictionary *applicationData = [NSDictionary dictionaryWithObjectsAndKeys:@"August 26", @"Name", @"10:48 PM", @"Start", nil];
+    NSLog(@"[DEBUG] Plist Data: %@", applicationData);
     [[WCSession defaultSession] sendMessage:applicationData
                                replyHandler:^(NSDictionary *reply) {
                                    //handle reply from iPhone app here

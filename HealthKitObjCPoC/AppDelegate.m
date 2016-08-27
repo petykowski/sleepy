@@ -7,12 +7,13 @@
 //
 
 #import "AppDelegate.h"
+#import <CoreData/CoreData.h>
+
 @import HealthKit;
 
 @interface AppDelegate ()
 
 @property (nonatomic, retain) HKHealthStore *healthStore;
-
 @end
 
 @implementation AppDelegate

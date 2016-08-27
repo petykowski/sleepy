@@ -8,6 +8,7 @@
 
 #import <WatchConnectivity/WatchConnectivity.h>
 #import "SessionsTableViewController.h"
+#import <CoreData/CoreData.h>
 
 @interface SessionsTableViewController () <WCSessionDelegate>
 
@@ -38,21 +39,40 @@
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
-- (void)session:(nonnull WCSession *)session didReceiveMessage:(nonnull NSArray *)message replyHandler:(nonnull void (^)(NSDictionary * __nonnull))replyHandler {
-    NSArray *sleepData = message;
+//-(void)session:(WCSession *)session didReceiveMessage:(NSDictionary<NSString *,id> *)message {
+//    NSDictionary *sleepSession = message;
+//    NSArray *names = [NSArray arrayWithObject:[sleepSession objectForKey:@"Name"]];
+//    NSArray *start = [NSArray arrayWithObject:[sleepSession objectForKey:@"Start"]];
 //    
-//    if (!self.sleepSession) {
-//        self.sleepSession = [[NSMutableArray alloc] init];
-//    }
+//    NSLog(@"[DEBUG] the contents of name array in iOS is: %@", names);
+//    NSLog(@"[DEBUG] the contents of start array in iOS is: %@", start);
+//    
+////    Use this to update the UI instantaneously (otherwise, takes a little while)
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//    
+//            [sessionTitles addObject:[names lastObject]];
+//            [sampleObjects addObject:[start lastObject]];
+//            [self.tableView reloadData];
+//        });
+//    
+//
+//}
+
+- (void)session:(nonnull WCSession *)session didReceiveMessage:(nonnull NSArray *)message replyHandler:(nonnull void (^)(NSDictionary * __nonnull))replyHandler {
+    NSDictionary *sleepSession = message;
+    NSArray *names = [NSArray arrayWithObject:[sleepSession objectForKey:@"Name"]];
+    NSArray *start = [NSArray arrayWithObject:[sleepSession objectForKey:@"Start"]];
     
-    //Use this to update the UI instantaneously (otherwise, takes a little while)
+    NSLog(@"[DEBUG] the contents of name array in iOS is: %@", names);
+    NSLog(@"[DEBUG] the contents of start array in iOS is: %@", start);
+    
+    //    Use this to update the UI instantaneously (otherwise, takes a little while)
     dispatch_async(dispatch_get_main_queue(), ^{
         
-        [sessionTitles addObject:[sleepData lastObject]];
+        [sessionTitles addObject:[names lastObject]];
+        [sampleObjects addObject:[start lastObject]];
+        [self.tableView reloadData];
     });
-    
-    NSLog(@"[DEBUG] the contents of array in iOS is: %@", sessionTitles);
-    [self.tableView reloadData];
 }
 
 - (void)didReceiveMemoryWarning {

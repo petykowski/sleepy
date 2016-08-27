@@ -10,6 +10,7 @@
 
 @interface session : NSManagedObject
 
+@property (nonatomic, strong) NSString *name;
 @property (nonatomic, strong) NSDate *inBedStart;
 
 @end

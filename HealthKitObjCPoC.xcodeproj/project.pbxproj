@@ -33,6 +33,7 @@
 		C2FB86511D31D0B900FCC143 /* SleepMilestoneInterfaceController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2FB86501D31D0B900FCC143 /* SleepMilestoneInterfaceController.m */; };
 		C2FB86521D31D0B900FCC143 /* SleepMilestoneInterfaceController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2FB86501D31D0B900FCC143 /* SleepMilestoneInterfaceController.m */; };
 		C2FB86561D31D93800FCC143 /* MilestoneRowController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2FB86541D31D93800FCC143 /* MilestoneRowController.m */; };
+		C2FFFCF11D71313500BF3B6C /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2FFFCF01D71313500BF3B6C /* CoreData.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -119,6 +120,7 @@
 		C2FB86501D31D0B900FCC143 /* SleepMilestoneInterfaceController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SleepMilestoneInterfaceController.m; sourceTree = "<group>"; };
 		C2FB86531D31D93800FCC143 /* MilestoneRowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MilestoneRowController.h; path = "HealthKitObjCPoC WatchKit Extension/MilestoneRowController.h"; sourceTree = SOURCE_ROOT; };
 		C2FB86541D31D93800FCC143 /* MilestoneRowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MilestoneRowController.m; path = "HealthKitObjCPoC WatchKit Extension/MilestoneRowController.m"; sourceTree = SOURCE_ROOT; };
+		C2FFFCF01D71313500BF3B6C /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -126,6 +128,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C2FFFCF11D71313500BF3B6C /* CoreData.framework in Frameworks */,
 				C243C1911C57D34800DB8803 /* HealthKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -164,6 +167,7 @@
 				C243C1791C57D32400DB8803 /* HealthKitObjCPoC WatchKit Extension */,
 				C243C1501C57D32400DB8803 /* Products */,
 				C2391DE91D35D8E900808835 /* Utilities */,
+				C2FFFCEF1D71313400BF3B6C /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -234,6 +238,14 @@
 				C243C1821C57D32400DB8803 /* Info.plist */,
 			);
 			path = "HealthKitObjCPoC WatchKit Extension";
+			sourceTree = "<group>";
+		};
+		C2FFFCEF1D71313400BF3B6C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				C2FFFCF01D71313500BF3B6C /* CoreData.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
