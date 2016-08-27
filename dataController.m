@@ -15,13 +15,14 @@
     if (!self) return nil;
     
     [self initializeCoreData];
+    NSLog(@"[DEBUG] CORE DATA INITIALIZED");
     
     return self;
 }
 
 - (void)initializeCoreData {
     
-    NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"DataModel" withExtension:@"momd"];
+    NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"coreData" withExtension:@"momd"];
     NSManagedObjectModel *mom = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
     NSAssert(mom != nil, @"Error initializing Managed Object Model");
     
@@ -31,7 +32,7 @@
     [self setManagedObjectContext:moc];
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSURL *documentsURL = [[fileManager URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
-    NSURL *storeURL = [documentsURL URLByAppendingPathComponent:@"DataModel.sqlite"];
+    NSURL *storeURL = [documentsURL URLByAppendingPathComponent:@"coreData.sqlite"];
     
     dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
         NSError *error = nil;
