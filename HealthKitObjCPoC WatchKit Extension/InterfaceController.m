@@ -426,6 +426,7 @@
                                }
                                errorHandler:^(NSError *error) {
                                    //catch any errors here
+                                   NSLog(@"[DEBUG] ERROR: %@", error);
                                }
      ];
 }
@@ -435,7 +436,7 @@
 - (void)prepareMenuIconsForUserNotInSleepSession {
     [self clearAllMenuItems];
     [self addMenuItemWithImageNamed:@"sleepMenuIcon" title:@"Sleep" action:@selector(sleepDidStartMenuButton)];
-    [self addMenuItemWithImageNamed:@"sleepMenuIcon" title:@"Sleep" action:@selector(sendSleepSessionDataToiOSApp)];
+    [self addMenuItemWithImageNamed:@"sleepMenuIcon" title:@"Send Sleep" action:@selector(sendSleepSessionDataToiOSApp)];
 }
 
 - (void)prepareMenuIconsForUserAsleepInSleepSession {

@@ -59,6 +59,9 @@
                                     </subviews>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <connections>
+                                    <segue destination="rrm-Dx-pQg" kind="show" id="xyH-fc-N8B"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -104,6 +107,24 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Wdu-3a-ZQh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1085.5999999999999" y="823.53823088455783"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="VfY-z3-5lU">
+            <objects>
+                <viewController id="rrm-Dx-pQg" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="KEt-CT-lBx"/>
+                        <viewControllerLayoutGuide type="bottom" id="NEy-KW-g7T"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="nSP-f0-xfM">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="iTA-Kd-J4q" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1996" y="828"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="hXM-M4-8GU">

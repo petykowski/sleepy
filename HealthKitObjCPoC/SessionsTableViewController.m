@@ -9,11 +9,12 @@
 #import <CoreData/CoreData.h>
 #import <WatchConnectivity/WatchConnectivity.h>
 #import "SessionsTableViewController.h"
-#import "session.h"
 #import "AppDelegate.h"
 
 
 @interface SessionsTableViewController () <WCSessionDelegate>
+
+// Debug Core Data
 - (IBAction)debugCoreData:(id)sender;
 - (IBAction)fetchCoreData:(id)sender;
 - (IBAction)deleteCoreData:(id)sender;
@@ -44,12 +45,15 @@
     
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
-    
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
-- (void)session:(nonnull WCSession *)session didReceiveMessage:(nonnull NSArray *)message replyHandler:(nonnull void (^)(NSDictionary * __nonnull))replyHandler {
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+}
+
+#pragma mark - Watch Connectivity
+
+-(void)session:(WCSession *)session didReceiveMessage:(NSDictionary<NSString *,id> *)message replyHandler:(void (^)(NSDictionary<NSString *,id> * _Nonnull))replyHandler {
     NSDictionary *sleepSession = message;
     NSArray *names = [NSArray arrayWithObject:[sleepSession objectForKey:@"Name"]];
     NSArray *start = [NSArray arrayWithObject:[sleepSession objectForKey:@"Start"]];
@@ -57,18 +61,12 @@
     NSLog(@"[DEBUG] the contents of name array in iOS is: %@", names);
     NSLog(@"[DEBUG] the contents of start array in iOS is: %@", start);
     
-    //    Use this to update the UI instantaneously (otherwise, takes a little while)
     dispatch_async(dispatch_get_main_queue(), ^{
         
         [sessionTitles addObject:[names lastObject]];
         [sampleObjects addObject:[start lastObject]];
         [self.tableView reloadData];
     });
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 #pragma mark - Table view data source
@@ -98,42 +96,13 @@
     return cell;
 }
 
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-/*
 #pragma mark - Navigation
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+}
+
+/*
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
@@ -173,6 +142,7 @@
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"Session"];
     self.devices = [[managedObjectContext executeFetchRequest:fetchRequest error:nil] mutableCopy];
     
+    NSLog(@"[DEBUG] contents of coreData object: %@", self.devices);
     NSLog(@"[DEBUG] contents of coreData: %@ and %@", [self.devices valueForKey:@"name"], [self.devices valueForKey:@"inBedStart"]);
 }
 
