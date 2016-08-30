@@ -11,6 +11,7 @@
 #import "InterfaceControllerSleep.h"
 #import "SleepMilestoneInterfaceController.h"
 #import "Utility.h"
+#import "SleepSession.h"
 
 @import HealthKit;
 
@@ -20,6 +21,9 @@
 // HEALTHKIT PROPERTIES //
 
 @property (nonatomic, retain) HKHealthStore *healthStore;
+
+// SESSION PROPERTIES
+@property (nonatomic, strong) SleepSession *sleepSession;
 
 // Sleeping
 @property (nonatomic, readwrite) BOOL isSleeping;
@@ -73,6 +77,11 @@
     self.sleep = [[NSMutableArray alloc] init];
     self.wake = [[NSMutableArray alloc] init];
     self.outBed = [[NSMutableArray alloc] init];
+    
+    // Remove! Only for testing
+    self.sleepSession = [[SleepSession alloc] init];
+    self.sleepSession.name = @"August 30th";
+    self.sleepSession.inBedStart = [NSDate date];
     
     [self checkForPlist];
     
@@ -418,7 +427,7 @@
 #pragma mark - Watch Connectivity Methods
 
 - (void)sendSleepSessionDataToiOSApp {
-    NSDictionary *applicationData = [NSDictionary dictionaryWithObjectsAndKeys:@"August 26", @"Name", @"10:48 PM", @"Start", nil];
+    NSDictionary *applicationData = [NSDictionary dictionaryWithObjectsAndKeys:self.sleepSession, @"Sleep Session", nil];
     NSLog(@"[DEBUG] Plist Data: %@", applicationData);
     [[WCSession defaultSession] sendMessage:applicationData
                                replyHandler:^(NSDictionary *reply) {

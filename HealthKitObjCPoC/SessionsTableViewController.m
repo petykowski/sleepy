@@ -25,6 +25,7 @@
 @property (strong) NSMutableArray *devices;
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, strong) session *object;
+@property (nonatomic, strong) session *objectToSave;
 
 @end
 
@@ -62,17 +63,15 @@
 
 -(void)session:(WCSession *)session didReceiveMessage:(NSDictionary<NSString *,id> *)message replyHandler:(void (^)(NSDictionary<NSString *,id> * _Nonnull))replyHandler {
     NSDictionary *sleepSession = message;
-    NSArray *names = [NSArray arrayWithObject:[sleepSession objectForKey:@"Name"]];
-    NSArray *start = [NSArray arrayWithObject:[sleepSession objectForKey:@"Start"]];
-    
-    NSLog(@"[DEBUG] the contents of name array in iOS is: %@", names);
-    NSLog(@"[DEBUG] the contents of start array in iOS is: %@", start);
+    self.object = [sleepSession objectForKey:@"Sleep Session"];
+    self.objectToSave = [NSEntityDescription insertNewObjectForEntityForName:@"Session" inManagedObjectContext:[self managedObjectContext]];
+    self.objectToSave = self.object;
     
     dispatch_async(dispatch_get_main_queue(), ^{
-        
-        [sessionTitles addObject:[names lastObject]];
-        [sampleObjects addObject:[start lastObject]];
-        [self.tableView reloadData];
+        NSError *error = nil;
+        if ([[self managedObjectContext] save:&error] == NO) {
+            NSAssert(NO, @"Error saving context: %@\n%@", [error localizedDescription], [error userInfo]);
+        }
     });
 }
 
@@ -163,13 +162,6 @@
 }
 
 - (IBAction)fetchCoreData:(id)sender {
-//    // Fetch the devices from persistent data store
-//    NSManagedObjectContext *managedObjectContext = [self managedObjectContext];
-//    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"Session"];
-//    self.devices = [[managedObjectContext executeFetchRequest:fetchRequest error:nil] mutableCopy];
-//    NSLog(@"[DEBUG] contents of coreData object: %@", self.devices);
-//    NSLog(@"[DEBUG] contents of coreData: %@ and %@", [self.devices valueForKey:@"name"], [self.devices valueForKey:@"inBedStart"]);
-    
     [self initializeFetchedResultsController];
     [self.tableView reloadData];
 }

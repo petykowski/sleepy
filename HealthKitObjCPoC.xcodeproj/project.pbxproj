@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		C20091721D750FA6003682D9 /* SessionDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C20091711D750FA6003682D9 /* SessionDetailViewController.m */; };
+		C200919F1D75473B003682D9 /* session.m in Sources */ = {isa = PBXBuildFile; fileRef = C245D3DC1D56925E0047D2FD /* session.m */; };
 		C2391DEC1D35D92C00808835 /* Utility.m in Sources */ = {isa = PBXBuildFile; fileRef = C2391DEB1D35D92C00808835 /* Utility.m */; };
 		C2391DED1D35D92C00808835 /* Utility.m in Sources */ = {isa = PBXBuildFile; fileRef = C2391DEB1D35D92C00808835 /* Utility.m */; };
 		C243C1541C57D32400DB8803 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C243C1531C57D32400DB8803 /* main.m */; };
@@ -27,6 +28,8 @@
 		C245D3DD1D56925E0047D2FD /* session.m in Sources */ = {isa = PBXBuildFile; fileRef = C245D3DC1D56925E0047D2FD /* session.m */; };
 		C2508E571C582A5B00900AC1 /* Health.plist in Resources */ = {isa = PBXBuildFile; fileRef = C2508E561C582A5B00900AC1 /* Health.plist */; };
 		C2508E581C582A5B00900AC1 /* Health.plist in Resources */ = {isa = PBXBuildFile; fileRef = C2508E561C582A5B00900AC1 /* Health.plist */; };
+		C26F15C61D75481D00FB139A /* SleepSession.m in Sources */ = {isa = PBXBuildFile; fileRef = C26F15C51D75481D00FB139A /* SleepSession.m */; };
+		C26F15C71D75481D00FB139A /* SleepSession.m in Sources */ = {isa = PBXBuildFile; fileRef = C26F15C51D75481D00FB139A /* SleepSession.m */; };
 		C2AB02131D5652430051CFCF /* coreData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C2AB02111D5652430051CFCF /* coreData.xcdatamodeld */; };
 		C2BA05E11D2FEC1800438CC7 /* InterfaceControllerSleep.m in Sources */ = {isa = PBXBuildFile; fileRef = C2BA05E01D2FEC1800438CC7 /* InterfaceControllerSleep.m */; };
 		C2BBAAA31D6FCCC0000ACD2B /* SessionsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2BBAAA21D6FCCC0000ACD2B /* SessionsTableViewController.m */; };
@@ -111,6 +114,8 @@
 		C245D3DB1D56925E0047D2FD /* session.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = session.h; sourceTree = "<group>"; };
 		C245D3DC1D56925E0047D2FD /* session.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = session.m; sourceTree = "<group>"; };
 		C2508E561C582A5B00900AC1 /* Health.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Health.plist; sourceTree = "<group>"; };
+		C26F15C41D75481D00FB139A /* SleepSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SleepSession.h; sourceTree = SOURCE_ROOT; };
+		C26F15C51D75481D00FB139A /* SleepSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SleepSession.m; sourceTree = SOURCE_ROOT; };
 		C2AB02121D5652430051CFCF /* coreData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = coreData.xcdatamodel; sourceTree = "<group>"; };
 		C2BA05DF1D2FEC1800438CC7 /* InterfaceControllerSleep.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InterfaceControllerSleep.h; sourceTree = "<group>"; };
 		C2BA05E01D2FEC1800438CC7 /* InterfaceControllerSleep.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InterfaceControllerSleep.m; sourceTree = "<group>"; };
@@ -190,6 +195,8 @@
 				C243C15B1C57D32400DB8803 /* Main.storyboard */,
 				C2BBAAA11D6FCCC0000ACD2B /* SessionsTableViewController.h */,
 				C2BBAAA21D6FCCC0000ACD2B /* SessionsTableViewController.m */,
+				C26F15C41D75481D00FB139A /* SleepSession.h */,
+				C26F15C51D75481D00FB139A /* SleepSession.m */,
 				C20091701D750FA6003682D9 /* SessionDetailViewController.h */,
 				C20091711D750FA6003682D9 /* SessionDetailViewController.m */,
 				C243C15E1C57D32400DB8803 /* Assets.xcassets */,
@@ -430,6 +437,7 @@
 				C243C15A1C57D32400DB8803 /* ViewController.m in Sources */,
 				C2391DEC1D35D92C00808835 /* Utility.m in Sources */,
 				C2BBAAA31D6FCCC0000ACD2B /* SessionsTableViewController.m in Sources */,
+				C26F15C61D75481D00FB139A /* SleepSession.m in Sources */,
 				C243C1571C57D32400DB8803 /* AppDelegate.m in Sources */,
 				C243C1541C57D32400DB8803 /* main.m in Sources */,
 				C2AB02131D5652430051CFCF /* coreData.xcdatamodeld in Sources */,
@@ -443,8 +451,10 @@
 				C2FB86521D31D0B900FCC143 /* SleepMilestoneInterfaceController.m in Sources */,
 				C243C17F1C57D32400DB8803 /* ExtensionDelegate.m in Sources */,
 				C243C17C1C57D32400DB8803 /* InterfaceController.m in Sources */,
+				C200919F1D75473B003682D9 /* session.m in Sources */,
 				C2BA05E11D2FEC1800438CC7 /* InterfaceControllerSleep.m in Sources */,
 				C2391DED1D35D92C00808835 /* Utility.m in Sources */,
+				C26F15C71D75481D00FB139A /* SleepSession.m in Sources */,
 				C2FB86561D31D93800FCC143 /* MilestoneRowController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
