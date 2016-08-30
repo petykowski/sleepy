@@ -10,9 +10,11 @@
 #import <WatchConnectivity/WatchConnectivity.h>
 #import "SessionsTableViewController.h"
 #import "AppDelegate.h"
+#import "SessionDetailViewController.h"
+#import "session.h"
 
 
-@interface SessionsTableViewController () <WCSessionDelegate>
+@interface SessionsTableViewController () <WCSessionDelegate, NSFetchedResultsControllerDelegate>
 
 // Debug Core Data
 - (IBAction)debugCoreData:(id)sender;
@@ -21,6 +23,7 @@
 
 // core data test
 @property (strong) NSMutableArray *devices;
+@property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
 
 @end
 
@@ -28,10 +31,22 @@
     NSMutableArray *sampleObjects;
     NSMutableArray *sessionTitles;
     NSManagedObject *sleepExample;
+    NSString *segueTest;
+}
+
+- (id)init
+{
+    self = [super init];
+    if (!self) return nil;
+    
+    [self initializeCoreData];
+    
+    return self;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     
     if ([WCSession isSupported]) {
         WCSession *session = [WCSession defaultSession];
@@ -99,7 +114,7 @@
 #pragma mark - Navigation
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+
 }
 
 /*
@@ -122,17 +137,26 @@
 }
 
 - (IBAction)debugCoreData:(id)sender {
-    NSManagedObjectContext *context = [self managedObjectContext];
+//    NSManagedObjectContext *context = [self managedObjectContext];
+//    
+//    // Create a new managed object
+//    NSManagedObject *newDevice = [NSEntityDescription insertNewObjectForEntityForName:@"Session" inManagedObjectContext:context];
+//    [newDevice setValue:@"August 26th" forKey:@"name"];
+//    [newDevice setValue:[NSDate date] forKey:@"inBedStart"];
+//    
+//    NSError *error = nil;
+//    // Save the object to persistent store
+//    if (![context save:&error]) {
+//        NSLog(@"Can't Save! %@ %@", error, [error localizedDescription]);
+//    }
     
-    // Create a new managed object
-    NSManagedObject *newDevice = [NSEntityDescription insertNewObjectForEntityForName:@"Session" inManagedObjectContext:context];
-    [newDevice setValue:@"August 26th" forKey:@"name"];
-    [newDevice setValue:[NSDate date] forKey:@"inBedStart"];
+    session *sleepSession = [NSEntityDescription insertNewObjectForEntityForName:@"Session" inManagedObjectContext:[self managedObjectContext]];
+    
+    sleepSession.name = @"This is the Session Name";
     
     NSError *error = nil;
-    // Save the object to persistent store
-    if (![context save:&error]) {
-        NSLog(@"Can't Save! %@ %@", error, [error localizedDescription]);
+    if ([[self managedObjectContext] save:&error] == NO) {
+        NSAssert(NO, @"Error saving context: %@\n%@", [error localizedDescription], [error userInfo]);
     }
 }
 
@@ -163,4 +187,30 @@
     [managedObjectContext save:&saveError];
     //more error handling here
 }
+
+
+// Core Data 8/29
+
+- (void)initializeCoreData
+{
+    NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"coreData" withExtension:@"momd"];
+    NSManagedObjectModel *mom = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
+    NSAssert(mom != nil, @"Error initializing Managed Object Model");
+    
+    NSPersistentStoreCoordinator *psc = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:mom];
+    NSManagedObjectContext *moc = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
+    [moc setPersistentStoreCoordinator:psc];
+    [self setManagedObjectContext:moc];
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSURL *documentsURL = [[fileManager URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
+    NSURL *storeURL = [documentsURL URLByAppendingPathComponent:@"DataModel.sqlite"];
+    
+    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
+        NSError *error = nil;
+        NSPersistentStoreCoordinator *psc = [[self managedObjectContext] persistentStoreCoordinator];
+        NSPersistentStore *store = [psc addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error];
+        NSAssert(store != nil, @"Error initializing PSC: %@\n%@", [error localizedDescription], [error userInfo]);
+    });
+}
+
 @end

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C20091721D750FA6003682D9 /* SessionDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C20091711D750FA6003682D9 /* SessionDetailViewController.m */; };
 		C2391DEC1D35D92C00808835 /* Utility.m in Sources */ = {isa = PBXBuildFile; fileRef = C2391DEB1D35D92C00808835 /* Utility.m */; };
 		C2391DED1D35D92C00808835 /* Utility.m in Sources */ = {isa = PBXBuildFile; fileRef = C2391DEB1D35D92C00808835 /* Utility.m */; };
 		C243C1541C57D32400DB8803 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C243C1531C57D32400DB8803 /* main.m */; };
@@ -79,6 +80,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		C20091701D750FA6003682D9 /* SessionDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SessionDetailViewController.h; sourceTree = "<group>"; };
+		C20091711D750FA6003682D9 /* SessionDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SessionDetailViewController.m; sourceTree = "<group>"; };
 		C22F3B0A1D331B7900FE6F9B /* HealthKitObjCPoC WatchKit App.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "HealthKitObjCPoC WatchKit App.entitlements"; sourceTree = "<group>"; };
 		C2391DEA1D35D92C00808835 /* Utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utility.h; sourceTree = "<group>"; };
 		C2391DEB1D35D92C00808835 /* Utility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Utility.m; sourceTree = "<group>"; };
@@ -192,6 +195,8 @@
 				C243C15B1C57D32400DB8803 /* Main.storyboard */,
 				C2BBAAA11D6FCCC0000ACD2B /* SessionsTableViewController.h */,
 				C2BBAAA21D6FCCC0000ACD2B /* SessionsTableViewController.m */,
+				C20091701D750FA6003682D9 /* SessionDetailViewController.h */,
+				C20091711D750FA6003682D9 /* SessionDetailViewController.m */,
 				C243C15E1C57D32400DB8803 /* Assets.xcassets */,
 				C243C1601C57D32400DB8803 /* LaunchScreen.storyboard */,
 				C243C1631C57D32400DB8803 /* Info.plist */,
@@ -426,6 +431,7 @@
 			files = (
 				C245D3DD1D56925E0047D2FD /* session.m in Sources */,
 				C2FB86511D31D0B900FCC143 /* SleepMilestoneInterfaceController.m in Sources */,
+				C20091721D750FA6003682D9 /* SessionDetailViewController.m in Sources */,
 				C245D3DA1D568E8B0047D2FD /* dataController.m in Sources */,
 				C243C15A1C57D32400DB8803 /* ViewController.m in Sources */,
 				C2391DEC1D35D92C00808835 /* Utility.m in Sources */,

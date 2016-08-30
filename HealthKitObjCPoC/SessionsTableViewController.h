@@ -10,4 +10,11 @@
 
 @interface SessionsTableViewController : UITableViewController
 
+// Core Data Objects 8/29
+@property (strong) NSManagedObjectContext *managedObjectContext;
+
+
+// Core Data Methods 8/29
+- (void)initializeCoreData;
+
 @end

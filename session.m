@@ -11,6 +11,14 @@
 @implementation session
 
 @dynamic name;
+@dynamic isCurrentSession;
+@dynamic creationDate;
+@dynamic awakeStart;
+@dynamic awakeStop;
 @dynamic inBedStart;
+@dynamic inBedStop;
+@dynamic sleepStart;
+@dynamic sleepStartProposed;
+@dynamic sleepStop;
 
 @end
