@@ -11,6 +11,4 @@
 
 @interface SessionDetailViewController : UIViewController
 
-@property (weak) session *sessionDetails;
-
 @end

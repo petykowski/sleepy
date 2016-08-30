@@ -24,7 +24,6 @@
 		C243C17F1C57D32400DB8803 /* ExtensionDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C243C17E1C57D32400DB8803 /* ExtensionDelegate.m */; };
 		C243C1811C57D32400DB8803 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C243C1801C57D32400DB8803 /* Assets.xcassets */; };
 		C243C1911C57D34800DB8803 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C243C1901C57D34800DB8803 /* HealthKit.framework */; };
-		C245D3DA1D568E8B0047D2FD /* dataController.m in Sources */ = {isa = PBXBuildFile; fileRef = C245D3D91D568E8B0047D2FD /* dataController.m */; };
 		C245D3DD1D56925E0047D2FD /* session.m in Sources */ = {isa = PBXBuildFile; fileRef = C245D3DC1D56925E0047D2FD /* session.m */; };
 		C2508E571C582A5B00900AC1 /* Health.plist in Resources */ = {isa = PBXBuildFile; fileRef = C2508E561C582A5B00900AC1 /* Health.plist */; };
 		C2508E581C582A5B00900AC1 /* Health.plist in Resources */ = {isa = PBXBuildFile; fileRef = C2508E561C582A5B00900AC1 /* Health.plist */; };
@@ -109,8 +108,6 @@
 		C243C1901C57D34800DB8803 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
 		C243C1921C57D34800DB8803 /* HealthKitObjCPoC.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = HealthKitObjCPoC.entitlements; sourceTree = "<group>"; };
 		C243C1931C57D35900DB8803 /* HealthKitObjCPoC WatchKit Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "HealthKitObjCPoC WatchKit Extension.entitlements"; sourceTree = "<group>"; };
-		C245D3D81D568E8B0047D2FD /* dataController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dataController.h; sourceTree = "<group>"; };
-		C245D3D91D568E8B0047D2FD /* dataController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = dataController.m; sourceTree = "<group>"; };
 		C245D3DB1D56925E0047D2FD /* session.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = session.h; sourceTree = "<group>"; };
 		C245D3DC1D56925E0047D2FD /* session.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = session.m; sourceTree = "<group>"; };
 		C2508E561C582A5B00900AC1 /* Health.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Health.plist; sourceTree = "<group>"; };
@@ -162,8 +159,6 @@
 				C2AB02111D5652430051CFCF /* coreData.xcdatamodeld */,
 				C245D3DB1D56925E0047D2FD /* session.h */,
 				C245D3DC1D56925E0047D2FD /* session.m */,
-				C245D3D81D568E8B0047D2FD /* dataController.h */,
-				C245D3D91D568E8B0047D2FD /* dataController.m */,
 				C243C1901C57D34800DB8803 /* HealthKit.framework */,
 				C243C1511C57D32400DB8803 /* HealthKitObjCPoC */,
 				C243C16A1C57D32400DB8803 /* HealthKitObjCPoC WatchKit App */,
@@ -432,7 +427,6 @@
 				C245D3DD1D56925E0047D2FD /* session.m in Sources */,
 				C2FB86511D31D0B900FCC143 /* SleepMilestoneInterfaceController.m in Sources */,
 				C20091721D750FA6003682D9 /* SessionDetailViewController.m in Sources */,
-				C245D3DA1D568E8B0047D2FD /* dataController.m in Sources */,
 				C243C15A1C57D32400DB8803 /* ViewController.m in Sources */,
 				C2391DEC1D35D92C00808835 /* Utility.m in Sources */,
 				C2BBAAA31D6FCCC0000ACD2B /* SessionsTableViewController.m in Sources */,

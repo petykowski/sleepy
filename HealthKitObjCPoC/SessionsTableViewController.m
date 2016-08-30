@@ -14,7 +14,7 @@
 #import "session.h"
 
 
-@interface SessionsTableViewController () <WCSessionDelegate, NSFetchedResultsControllerDelegate>
+@interface SessionsTableViewController () <WCSessionDelegate, NSFetchedResultsControllerDelegate, NSFetchedResultsControllerDelegate>
 
 // Debug Core Data
 - (IBAction)debugCoreData:(id)sender;
@@ -24,6 +24,7 @@
 // core data test
 @property (strong) NSMutableArray *devices;
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
+@property (nonatomic, strong) session *object;
 
 @end
 
@@ -34,18 +35,9 @@
     NSString *segueTest;
 }
 
-- (id)init
-{
-    self = [super init];
-    if (!self) return nil;
-    
-    [self initializeCoreData];
-    
-    return self;
-}
-
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self initializeFetchedResultsController];
     
     
     if ([WCSession isSupported]) {
@@ -87,17 +79,18 @@
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
+    return [[[self fetchedResultsController] sections] count];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-
-    return [sessionTitles count];
+    id< NSFetchedResultsSectionInfo> sectionInfo = [[self fetchedResultsController] sections][section];
+    return [sectionInfo numberOfObjects];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *sessionsIdentifier = @"sessions";
+    self.object = [self.fetchedResultsController objectAtIndexPath:indexPath];
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:sessionsIdentifier];
     
@@ -105,8 +98,7 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:sessionsIdentifier];
     }
     
-    cell.textLabel.text = [sessionTitles objectAtIndex:indexPath.row];
-    cell.detailTextLabel.text = [sampleObjects objectAtIndex:indexPath.row];
+    cell.textLabel.text = self.object.name;
     
     return cell;
 }
@@ -126,6 +118,8 @@
 }
 */
 
+#pragma mark - CoreData Stack
+
 // Sets Managed Object
 - (NSManagedObjectContext *)managedObjectContext {
     NSManagedObjectContext *context = nil;
@@ -136,20 +130,28 @@
     return context;
 }
 
-- (IBAction)debugCoreData:(id)sender {
-//    NSManagedObjectContext *context = [self managedObjectContext];
-//    
-//    // Create a new managed object
-//    NSManagedObject *newDevice = [NSEntityDescription insertNewObjectForEntityForName:@"Session" inManagedObjectContext:context];
-//    [newDevice setValue:@"August 26th" forKey:@"name"];
-//    [newDevice setValue:[NSDate date] forKey:@"inBedStart"];
-//    
-//    NSError *error = nil;
-//    // Save the object to persistent store
-//    if (![context save:&error]) {
-//        NSLog(@"Can't Save! %@ %@", error, [error localizedDescription]);
-//    }
+// Sets Managed Object
+- (void)initializeFetchedResultsController
+{
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Session"];
     
+    NSSortDescriptor *lastNameSort = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES];
+    
+    [request setSortDescriptors:@[lastNameSort]];
+    
+    NSManagedObjectContext *moc = self.managedObjectContext; //Retrieve the main queue NSManagedObjectContext
+    
+    [self setFetchedResultsController:[[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:moc sectionNameKeyPath:nil cacheName:nil]];
+    [[self fetchedResultsController] setDelegate:self];
+    
+    NSError *error = nil;
+    if (![[self fetchedResultsController] performFetch:&error]) {
+        NSLog(@"Failed to initialize FetchedResultsController: %@\n%@", [error localizedDescription], [error userInfo]);
+        abort();
+    }
+}
+
+- (IBAction)debugCoreData:(id)sender {
     session *sleepSession = [NSEntityDescription insertNewObjectForEntityForName:@"Session" inManagedObjectContext:[self managedObjectContext]];
     
     sleepSession.name = @"This is the Session Name";
@@ -161,13 +163,15 @@
 }
 
 - (IBAction)fetchCoreData:(id)sender {
-    // Fetch the devices from persistent data store
-    NSManagedObjectContext *managedObjectContext = [self managedObjectContext];
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"Session"];
-    self.devices = [[managedObjectContext executeFetchRequest:fetchRequest error:nil] mutableCopy];
+//    // Fetch the devices from persistent data store
+//    NSManagedObjectContext *managedObjectContext = [self managedObjectContext];
+//    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"Session"];
+//    self.devices = [[managedObjectContext executeFetchRequest:fetchRequest error:nil] mutableCopy];
+//    NSLog(@"[DEBUG] contents of coreData object: %@", self.devices);
+//    NSLog(@"[DEBUG] contents of coreData: %@ and %@", [self.devices valueForKey:@"name"], [self.devices valueForKey:@"inBedStart"]);
     
-    NSLog(@"[DEBUG] contents of coreData object: %@", self.devices);
-    NSLog(@"[DEBUG] contents of coreData: %@ and %@", [self.devices valueForKey:@"name"], [self.devices valueForKey:@"inBedStart"]);
+    [self initializeFetchedResultsController];
+    [self.tableView reloadData];
 }
 
 - (IBAction)deleteCoreData:(id)sender {
@@ -189,28 +193,46 @@
 }
 
 
-// Core Data 8/29
+#pragma mark - NSFetchedResultsControllerDelegate
 
-- (void)initializeCoreData
+- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller
 {
-    NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"coreData" withExtension:@"momd"];
-    NSManagedObjectModel *mom = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
-    NSAssert(mom != nil, @"Error initializing Managed Object Model");
-    
-    NSPersistentStoreCoordinator *psc = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:mom];
-    NSManagedObjectContext *moc = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
-    [moc setPersistentStoreCoordinator:psc];
-    [self setManagedObjectContext:moc];
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSURL *documentsURL = [[fileManager URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
-    NSURL *storeURL = [documentsURL URLByAppendingPathComponent:@"DataModel.sqlite"];
-    
-    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
-        NSError *error = nil;
-        NSPersistentStoreCoordinator *psc = [[self managedObjectContext] persistentStoreCoordinator];
-        NSPersistentStore *store = [psc addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error];
-        NSAssert(store != nil, @"Error initializing PSC: %@\n%@", [error localizedDescription], [error userInfo]);
-    });
+    [[self tableView] beginUpdates];
+}
+- (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id <NSFetchedResultsSectionInfo>)sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type
+{
+    switch(type) {
+        case NSFetchedResultsChangeInsert:
+            [[self tableView] insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
+            break;
+        case NSFetchedResultsChangeDelete:
+            [[self tableView] deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
+            break;
+        case NSFetchedResultsChangeMove:
+        case NSFetchedResultsChangeUpdate:
+            break;
+    }
+}
+- (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath
+{
+    switch(type) {
+        case NSFetchedResultsChangeInsert:
+            [[self tableView] insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+            break;
+        case NSFetchedResultsChangeDelete:
+            [[self tableView] deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            break;
+        case NSFetchedResultsChangeUpdate:
+            break;
+        case NSFetchedResultsChangeMove:
+            [[self tableView] deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            [[self tableView] insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+            break;
+    }
+}
+- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
+{
+    [[self tableView] endUpdates];
 }
 
 @end
