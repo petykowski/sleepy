@@ -20,6 +20,14 @@
     
 }
 
++(NSDateFormatter*)dateFormatterForCellLabel {
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"EEE, MMMM d"];
+    return dateFormatter;
+    
+}
+
 +(NSDictionary*)contentsOfHealthPlist {
     
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);

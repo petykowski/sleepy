@@ -12,6 +12,7 @@
 #import "AppDelegate.h"
 #import "SessionDetailViewController.h"
 #import "session.h"
+#import "Utility.h"
 
 
 @interface SessionsTableViewController () <WCSessionDelegate, NSFetchedResultsControllerDelegate, NSFetchedResultsControllerDelegate>
@@ -30,10 +31,6 @@
 @end
 
 @implementation SessionsTableViewController {
-    NSMutableArray *sampleObjects;
-    NSMutableArray *sessionTitles;
-    NSManagedObject *sleepExample;
-    NSString *segueTest;
 }
 
 - (void)viewDidLoad {
@@ -47,10 +44,6 @@
         [session activateSession];
     }
     
-    sessionTitles = [NSMutableArray arrayWithObjects:@"August 25", @"August 24", @"August 23", @"August 22", nil];
-    sampleObjects = [NSMutableArray arrayWithObjects:@"10:45 PM", @"11:12 PM", @"7:45 AM", @"7:53 AM", nil];
-    
-    
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
 }
@@ -62,10 +55,17 @@
 #pragma mark - Watch Connectivity
 
 -(void)session:(WCSession *)session didReceiveMessage:(NSDictionary<NSString *,id> *)message replyHandler:(void (^)(NSDictionary<NSString *,id> * _Nonnull))replyHandler {
+    
+    
     NSDictionary *sleepSession = message;
-    self.object = [sleepSession objectForKey:@"Sleep Session"];
+    
     self.objectToSave = [NSEntityDescription insertNewObjectForEntityForName:@"Session" inManagedObjectContext:[self managedObjectContext]];
-    self.objectToSave = self.object;
+    self.objectToSave.name = [sleepSession objectForKey:@"name"];
+    self.objectToSave.creationDate = [sleepSession objectForKey:@"creationDate"];
+    self.objectToSave.inBed = [sleepSession objectForKey:@"inBed"];
+    self.objectToSave.sleep = [sleepSession objectForKey:@"sleep"];
+    self.objectToSave.wake = [sleepSession objectForKey:@"wake"];
+    self.objectToSave.outBed = [sleepSession objectForKey:@"outBed"];
     
     dispatch_async(dispatch_get_main_queue(), ^{
         NSError *error = nil;
@@ -89,7 +89,14 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *sessionsIdentifier = @"sessions";
+    
+    NSDateFormatter *dateFormatter = [Utility dateFormatterForCellLabel];
+    NSDateFormatter *timeFormatter = [Utility dateFormatterForTimeLabels];
+    
     self.object = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    NSMutableArray *inBedArray = [NSKeyedUnarchiver unarchiveObjectWithData:self.object.inBed];
+    NSMutableArray *outBedArray = [NSKeyedUnarchiver unarchiveObjectWithData:self.object.outBed];
+    
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:sessionsIdentifier];
     
@@ -97,7 +104,8 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:sessionsIdentifier];
     }
     
-    cell.textLabel.text = self.object.name;
+    cell.textLabel.text = [dateFormatter stringFromDate:self.object.creationDate];
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ - %@", [timeFormatter stringFromDate:[inBedArray lastObject]], [timeFormatter stringFromDate:[outBedArray lastObject]]];
     
     return cell;
 }
@@ -134,9 +142,9 @@
 {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Session"];
     
-    NSSortDescriptor *lastNameSort = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES];
+    NSSortDescriptor *creationDateSore = [NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO];
     
-    [request setSortDescriptors:@[lastNameSort]];
+    [request setSortDescriptors:@[creationDateSore]];
     
     NSManagedObjectContext *moc = self.managedObjectContext; //Retrieve the main queue NSManagedObjectContext
     
@@ -148,22 +156,6 @@
         NSLog(@"Failed to initialize FetchedResultsController: %@\n%@", [error localizedDescription], [error userInfo]);
         abort();
     }
-}
-
-- (IBAction)debugCoreData:(id)sender {
-    session *sleepSession = [NSEntityDescription insertNewObjectForEntityForName:@"Session" inManagedObjectContext:[self managedObjectContext]];
-    
-    sleepSession.name = @"This is the Session Name";
-    
-    NSError *error = nil;
-    if ([[self managedObjectContext] save:&error] == NO) {
-        NSAssert(NO, @"Error saving context: %@\n%@", [error localizedDescription], [error userInfo]);
-    }
-}
-
-- (IBAction)fetchCoreData:(id)sender {
-    [self initializeFetchedResultsController];
-    [self.tableView reloadData];
 }
 
 - (IBAction)deleteCoreData:(id)sender {

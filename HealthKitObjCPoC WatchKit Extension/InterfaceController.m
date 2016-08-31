@@ -11,7 +11,6 @@
 #import "InterfaceControllerSleep.h"
 #import "SleepMilestoneInterfaceController.h"
 #import "Utility.h"
-#import "SleepSession.h"
 
 @import HealthKit;
 
@@ -21,9 +20,6 @@
 // HEALTHKIT PROPERTIES //
 
 @property (nonatomic, retain) HKHealthStore *healthStore;
-
-// SESSION PROPERTIES
-@property (nonatomic, strong) SleepSession *sleepSession;
 
 // Sleeping
 @property (nonatomic, readwrite) BOOL isSleeping;
@@ -77,11 +73,6 @@
     self.sleep = [[NSMutableArray alloc] init];
     self.wake = [[NSMutableArray alloc] init];
     self.outBed = [[NSMutableArray alloc] init];
-    
-    // Remove! Only for testing
-    self.sleepSession = [[SleepSession alloc] init];
-    self.sleepSession.name = @"August 30th";
-    self.sleepSession.inBedStart = [NSDate date];
     
     [self checkForPlist];
     
@@ -427,7 +418,7 @@
 #pragma mark - Watch Connectivity Methods
 
 - (void)sendSleepSessionDataToiOSApp {
-    NSDictionary *applicationData = [NSDictionary dictionaryWithObjectsAndKeys:self.sleepSession, @"Sleep Session", nil];
+    NSDictionary *applicationData = [self populateDictionaryWithSleepSessionData];
     NSLog(@"[DEBUG] Plist Data: %@", applicationData);
     [[WCSession defaultSession] sendMessage:applicationData
                                replyHandler:^(NSDictionary *reply) {
@@ -440,12 +431,29 @@
      ];
 }
 
+- (NSMutableDictionary *)populateDictionaryWithSleepSessionData{
+    NSData *inBedData = [NSKeyedArchiver archivedDataWithRootObject:self.inBed];
+    NSData *sleepData = [NSKeyedArchiver archivedDataWithRootObject:self.sleep];
+    NSData *wakeData = [NSKeyedArchiver archivedDataWithRootObject:self.wake];
+    NSData *outBedData = [NSKeyedArchiver archivedDataWithRootObject:self.outBed];
+    
+    NSMutableDictionary *sleepSessionDictionary = [[NSMutableDictionary alloc] init];
+
+    [sleepSessionDictionary setObject:@"August 30th" forKey:@"name"];
+    [sleepSessionDictionary setObject:[NSDate date] forKey:@"creationDate"];
+    [sleepSessionDictionary setObject:inBedData forKey:@"inBed"];
+    [sleepSessionDictionary setObject:sleepData forKey:@"sleep"];
+    [sleepSessionDictionary setObject:wakeData forKey:@"wake"];
+    [sleepSessionDictionary setObject:outBedData forKey:@"outBed"];
+    
+    return sleepSessionDictionary;
+}
+
 
 #pragma mark - Menu Icon Methods
 - (void)prepareMenuIconsForUserNotInSleepSession {
     [self clearAllMenuItems];
     [self addMenuItemWithImageNamed:@"sleepMenuIcon" title:@"Sleep" action:@selector(sleepDidStartMenuButton)];
-    [self addMenuItemWithImageNamed:@"sleepMenuIcon" title:@"Send Sleep" action:@selector(sendSleepSessionDataToiOSApp)];
 }
 
 - (void)prepareMenuIconsForUserAsleepInSleepSession {
@@ -551,6 +559,7 @@
 }
 
 - (void)proposedSleepStartWasDenied {
+    [self sendSleepSessionDataToiOSApp];
     [self writeSleepSessionDataToHealthKit];
     [self updateLabelsForSleepSessionEnded];
     [self saveSleepDataToDataStore];

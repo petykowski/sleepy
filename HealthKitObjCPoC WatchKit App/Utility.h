@@ -12,5 +12,6 @@
 
 + (NSDateFormatter*)dateFormatterForTimeLabels;
 + (NSDictionary*)contentsOfHealthPlist;
++ (NSDateFormatter*)dateFormatterForCellLabel;
 
 @end
