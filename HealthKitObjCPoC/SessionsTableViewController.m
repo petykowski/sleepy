@@ -17,10 +17,7 @@
 
 @interface SessionsTableViewController () <WCSessionDelegate, NSFetchedResultsControllerDelegate, NSFetchedResultsControllerDelegate>
 
-// Debug Core Data
-- (IBAction)debugCoreData:(id)sender;
-- (IBAction)fetchCoreData:(id)sender;
-- (IBAction)deleteCoreData:(id)sender;
+
 
 // core data test
 @property (strong) NSMutableArray *devices;
@@ -54,7 +51,7 @@
 
 #pragma mark - Watch Connectivity
 
--(void)session:(WCSession *)session didReceiveMessage:(NSDictionary<NSString *,id> *)message replyHandler:(void (^)(NSDictionary<NSString *,id> * _Nonnull))replyHandler {
+-(void)session:(WCSession *)session didReceiveMessage:(NSDictionary<NSString *,id> *)message {
     
     
     NSDictionary *sleepSession = message;
@@ -73,6 +70,18 @@
             NSAssert(NO, @"Error saving context: %@\n%@", [error localizedDescription], [error userInfo]);
         }
     });
+}
+
+-(void)sessionDidBecomeInactive:(WCSession *)session {
+    
+}
+
+-(void)session:(WCSession *)session activationDidCompleteWithState:(WCSessionActivationState)activationState error:(NSError *)error {
+    NSLog(@"[DEBUG] WatchConnectivity Session state: %ld", activationState);
+}
+
+-(void)sessionDidDeactivate:(WCSession *)session {
+    
 }
 
 #pragma mark - Table view data source

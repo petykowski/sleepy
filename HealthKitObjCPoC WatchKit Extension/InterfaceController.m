@@ -14,7 +14,7 @@
 
 @import HealthKit;
 
-@interface InterfaceController() <InterfaceControllerSleepDelegate>
+@interface InterfaceController() <InterfaceControllerSleepDelegate, WCSessionDelegate>
 
 
 // HEALTHKIT PROPERTIES //
@@ -418,12 +418,11 @@
 #pragma mark - Watch Connectivity Methods
 
 - (void)sendSleepSessionDataToiOSApp {
+    
     NSDictionary *applicationData = [self populateDictionaryWithSleepSessionData];
     NSLog(@"[DEBUG] Plist Data: %@", applicationData);
     [[WCSession defaultSession] sendMessage:applicationData
-                               replyHandler:^(NSDictionary *reply) {
-                                   //handle reply from iPhone app here
-                               }
+                               replyHandler:nil
                                errorHandler:^(NSError *error) {
                                    //catch any errors here
                                    NSLog(@"[DEBUG] ERROR: %@", error);
@@ -439,7 +438,7 @@
     
     NSMutableDictionary *sleepSessionDictionary = [[NSMutableDictionary alloc] init];
 
-    [sleepSessionDictionary setObject:@"August 30th" forKey:@"name"];
+    [sleepSessionDictionary setObject:@"Sleep Session" forKey:@"name"];
     [sleepSessionDictionary setObject:[NSDate date] forKey:@"creationDate"];
     [sleepSessionDictionary setObject:inBedData forKey:@"inBed"];
     [sleepSessionDictionary setObject:sleepData forKey:@"sleep"];
