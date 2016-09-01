@@ -35,6 +35,11 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <color key="separatorColor" name="scrollBarColor" catalog="System" colorSpace="catalog"/>
+                        <view key="tableFooterView" contentMode="scaleToFill" id="Fdp-R4-UMf" userLabel="footer">
+                            <rect key="frame" x="0.0" y="136" width="375" height="44"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <rect key="contentStretch" x="0.0" y="0.0" width="1" height="0.0"/>
+                        </view>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="sessions" textLabel="gUP-vW-kq4" detailTextLabel="g7g-w9-SxR" style="IBUITableViewCellStyleSubtitle" id="BgN-ZG-VgA">
                                 <rect key="frame" x="0.0" y="92" width="375" height="44"/>

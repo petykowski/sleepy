@@ -41,6 +41,9 @@
         [session activateSession];
     }
     
+    // Remove extra separators from tableview
+    self.tableView.tableFooterView = [UIView new];
+    
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
 }
