@@ -57,7 +57,9 @@
 @property (unsafe_unretained, nonatomic) IBOutlet WKInterfaceLabel *inBedLabel;
 @property (unsafe_unretained, nonatomic) IBOutlet WKInterfaceLabel *sleepStartLabel;
 
-@property (unsafe_unretained, nonatomic) IBOutlet WKInterfaceSeparator *separator;
+// Groups
+@property (unsafe_unretained, nonatomic) IBOutlet WKInterfaceGroup *inBedGroup;
+@property (unsafe_unretained, nonatomic) IBOutlet WKInterfaceGroup *stillAwakeGroup;
 
 @end
 
@@ -477,33 +479,26 @@
     NSDateFormatter *dateFormatter = [Utility dateFormatterForTimeLabels];
     
     [self.mainLabel setHidden:true];
-    [self.inBedLabel setHidden:false];
-    [self.sleepStartLabel setHidden:true];
-    [self.separator setHidden:true];
     
     [self.inBedLabel setText:[dateFormatter stringFromDate:[self.inBed firstObject]]];
-    
-    [self debugArrays];
+    [self.inBedGroup setHidden:false];
 }
 
 - (void)updateLabelsForSleepSessionEnded {
     
     [self.mainLabel setHidden:false];
-    [self.inBedLabel setHidden:true];
-    [self.sleepStartLabel setHidden:true];
-    [self.separator setHidden:true];
+    [self.inBedGroup setHidden:true];
+    [self.stillAwakeGroup setHidden:true];
 }
 
 - (void)updateLabelsForSleepStartDeferred {
     NSDateFormatter *dateFormatter = [Utility dateFormatterForTimeLabels];
     
     [self.mainLabel setHidden:true];
-    [self.inBedLabel setHidden:false];
-    [self.sleepStartLabel setHidden:false];
-    [self.separator setHidden:false];
-    
     [self.inBedLabel setText:[dateFormatter stringFromDate:[self.inBed firstObject]]];
     [self.sleepStartLabel setText:[dateFormatter stringFromDate:[self.sleep lastObject]]];
+    [self.inBedGroup setHidden:false];
+    [self.stillAwakeGroup setHidden:false];
 }
 
 - (void)presentControllerToConfirmProposedSleepTime {

@@ -15,13 +15,31 @@
                         <label alignment="center" verticalAlignment="center" text="Press To Sleep" textAlignment="center" numberOfLines="2" id="Bq9-XQ-8sA">
                             <fontDescription key="font" type="boldSystem" pointSize="30"/>
                         </label>
-                        <label alignment="center" verticalAlignment="center" hidden="YES" text="9:40 PM" textAlignment="center" id="P2X-iN-doj" userLabel="In Bed">
-                            <fontDescription key="font" type="boldSystem" pointSize="30"/>
-                        </label>
-                        <separator alignment="center" verticalAlignment="center" hidden="YES" id="gwV-AV-DqL"/>
-                        <label alignment="center" verticalAlignment="center" hidden="YES" text="11:45 PM" id="VTD-Ai-sUW" userLabel="Sleep Start">
-                            <fontDescription key="font" type="boldSystem" pointSize="30"/>
-                        </label>
+                        <group width="1" alignment="center" verticalAlignment="center" layout="vertical" id="vgZ-Sk-U0Y" userLabel="Sleep Session Group">
+                            <items>
+                                <group alignment="center" verticalAlignment="center" hidden="YES" layout="vertical" spacing="0.0" id="fhZ-7G-B6m" userLabel="In Bed Group">
+                                    <items>
+                                        <label alignment="left" text="IN BED" textAlignment="left" id="7CL-2U-yoq">
+                                            <fontDescription key="font" style="UICTFontTextStyleCaption1"/>
+                                        </label>
+                                        <label alignment="center" verticalAlignment="bottom" text="9:40 PM" textAlignment="center" id="IlJ-1x-MBO" userLabel="In Bed">
+                                            <fontDescription key="font" type="boldSystem" pointSize="30"/>
+                                        </label>
+                                    </items>
+                                </group>
+                                <group alignment="center" verticalAlignment="center" hidden="YES" layout="vertical" spacing="0.0" id="RIv-q4-PRN" userLabel="Still Awake Group">
+                                    <items>
+                                        <separator alignment="center" id="LJf-j4-WYg"/>
+                                        <label alignment="left" text="STILL AWAKE" textAlignment="left" id="3fH-WU-eHW">
+                                            <fontDescription key="font" style="UICTFontTextStyleCaption1"/>
+                                        </label>
+                                        <label alignment="center" verticalAlignment="center" text="11:45 PM" id="h3f-gq-ifV" userLabel="Sleep Start">
+                                            <fontDescription key="font" type="boldSystem" pointSize="30"/>
+                                        </label>
+                                    </items>
+                                </group>
+                            </items>
+                        </group>
                     </items>
                     <menu key="menu" id="XDw-HB-zg6">
                         <items>
@@ -44,10 +62,11 @@
                         </variation>
                     </menu>
                     <connections>
-                        <outlet property="inBedLabel" destination="P2X-iN-doj" id="yka-Hu-avv"/>
+                        <outlet property="inBedGroup" destination="fhZ-7G-B6m" id="yip-cG-CcZ"/>
+                        <outlet property="inBedLabel" destination="IlJ-1x-MBO" id="njs-PS-FbR"/>
                         <outlet property="mainLabel" destination="Bq9-XQ-8sA" id="04B-5i-kqk"/>
-                        <outlet property="separator" destination="gwV-AV-DqL" id="i6z-Np-3dW"/>
-                        <outlet property="sleepStartLabel" destination="VTD-Ai-sUW" id="xG8-cw-AEe"/>
+                        <outlet property="sleepStartLabel" destination="h3f-gq-ifV" id="dkN-XM-gIN"/>
+                        <outlet property="stillAwakeGroup" destination="RIv-q4-PRN" id="KC7-Ot-PoU"/>
                         <outlet property="wakeIndicator" destination="ptQ-Tp-H4F" id="sk9-zN-QLq"/>
                         <segue destination="DDy-KD-bGw" kind="relationship" relationship="nextPage" id="Ptu-Qi-z7G"/>
                     </connections>
