@@ -133,6 +133,11 @@
     
 }
 
+- (void)reloadMilestoneInterfaceData {
+    BOOL hasMilestoneData = true;
+    [WKInterfaceController reloadRootControllersWithNames:[NSArray arrayWithObjects:@"mainInterface",@"lastNightInterface", nil] contexts:[NSArray arrayWithObjects:@"", [NSNumber numberWithBool:hasMilestoneData], nil]];
+}
+
 #pragma mark - Data Store Methods
 
 - (void)checkForPlist {
@@ -228,6 +233,7 @@
     BOOL didWrite = [plistDictionary writeToFile:filePath atomically:YES];
     if (didWrite) {
         NSLog(@"[VERBOSE] Data sucessfully written to plist.");
+        [self reloadMilestoneInterfaceData];
     } else {
         NSLog(@"[DEBUG] Failed to write data to plist.");
     }
@@ -621,6 +627,5 @@
     NSLog(@"[DEBUG] Contents of outBed: %@", self.outBed);
     
 }
-
 
 @end

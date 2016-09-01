@@ -26,6 +26,17 @@
 - (void)awakeWithContext:(id)context {
     [super awakeWithContext:context];
     
+    if (context != nil) {
+        self.sleepDataExsists = [self doesMilestoneDataExsist];
+        
+        if (self.sleepDataExsists) {
+            [self hideNewUserMessage];
+            [self getMilestoneTimes];
+            [self updateMilestoneTableData];
+        } else {
+            [self displayNewUserMessage];
+        }
+    }
     
 }
 

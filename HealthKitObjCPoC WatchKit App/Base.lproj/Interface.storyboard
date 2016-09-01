@@ -6,10 +6,10 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="11077"/>
     </dependencies>
     <scenes>
-        <!--Interface Controller-->
+        <!--mainInterface-->
         <scene sceneID="aou-V4-d1y">
             <objects>
-                <controller id="AgC-eL-Hgc" customClass="InterfaceController">
+                <controller identifier="mainInterface" id="AgC-eL-Hgc" customClass="InterfaceController">
                     <items>
                         <imageView alignment="center" contentMode="scaleAspectFit" id="ptQ-Tp-H4F"/>
                         <label alignment="center" verticalAlignment="center" text="Press To Sleep" textAlignment="center" numberOfLines="2" id="Bq9-XQ-8sA">
@@ -77,7 +77,7 @@
         <!--Last Night-->
         <scene sceneID="GOh-kK-oWw">
             <objects>
-                <controller title="Last Night" id="DDy-KD-bGw" customClass="SleepMilestoneInterfaceController">
+                <controller identifier="lastNightInterface" title="Last Night" id="DDy-KD-bGw" customClass="SleepMilestoneInterfaceController">
                     <items>
                         <table alignment="left" id="mgo-3o-CLP">
                             <items>
