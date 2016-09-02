@@ -91,7 +91,7 @@
     self.lastNightTimes = formattedTimes;
 }
 
--(void)updateMilestoneTableData {
+- (void)updateMilestoneTableData {
     NSArray *titleArray = [NSArray arrayWithObjects:@"IN BED", @"ASLEEP", @"AWAKE", @"END", nil];
     
     [self.milestoneTable setNumberOfRows:titleArray.count withRowType:@"main"];

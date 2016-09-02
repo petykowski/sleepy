@@ -75,7 +75,6 @@
     self.sleep = [[NSMutableArray alloc] init];
     self.wake = [[NSMutableArray alloc] init];
     self.outBed = [[NSMutableArray alloc] init];
-    
     [self checkForPlist];
     
     self.healthStore = [[HKHealthStore alloc] init];
@@ -438,6 +437,21 @@
      ];
 }
 
+- (void)requestMostRecentSleepSessionFromiOSApp {
+    NSDictionary *applicationData = [NSDictionary dictionaryWithObject:@"getData" forKey:@"Request"];
+    
+    NSLog(@"[DEBUG] Sending Data!");
+    
+    [[WCSession defaultSession] sendMessage:applicationData
+                               replyHandler:^(NSDictionary<NSString *,id> * _Nonnull replyMessage) {
+                                   NSLog(@"[DEBUG] Contents of Dict: %@", replyMessage);
+                               }
+                               errorHandler:^(NSError * _Nonnull error) {
+                                   NSLog(@"[DEBUG] ERROR: %@", error);
+                               }
+     ];
+}
+
 - (NSMutableDictionary *)populateDictionaryWithSleepSessionData{
     NSData *inBedData = [NSKeyedArchiver archivedDataWithRootObject:self.inBed];
     NSData *sleepData = [NSKeyedArchiver archivedDataWithRootObject:self.sleep];
@@ -461,6 +475,7 @@
 - (void)prepareMenuIconsForUserNotInSleepSession {
     [self clearAllMenuItems];
     [self addMenuItemWithImageNamed:@"sleepMenuIcon" title:@"Sleep" action:@selector(sleepDidStartMenuButton)];
+    [self addMenuItemWithImageNamed:@"sleepMenuIcon" title:@"Debug" action:@selector(requestMostRecentSleepSessionFromiOSApp)];
 }
 
 - (void)prepareMenuIconsForUserAsleepInSleepSession {

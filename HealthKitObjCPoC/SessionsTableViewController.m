@@ -75,6 +75,18 @@
     });
 }
 
+- (void)session:(WCSession *)session didReceiveMessage:(NSDictionary<NSString *,id> *)message replyHandler:(void (^)(NSDictionary<NSString *,id> *replyMessage))replyHandler {
+    NSString *request = [message objectForKey:@"Request"];
+    NSString *actionPerformed;
+    if ([request  isEqual: @"getData"]) {
+        NSLog(@"[DEBUG] Perform this request!!!!");
+        [self getMostRecentSleepSessionForWatchOS];
+        actionPerformed = @"Here's your data back!";
+        
+    }
+    replyHandler(@{@"actionPerformed":actionPerformed});
+}
+
 -(void)sessionDidBecomeInactive:(WCSession *)session {
     
 }
@@ -162,9 +174,9 @@
 {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Session"];
     
-    NSSortDescriptor *creationDateSore = [NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO];
+    NSSortDescriptor *creationDateSort = [NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO];
     
-    [request setSortDescriptors:@[creationDateSore]];
+    [request setSortDescriptors:@[creationDateSort]];
     
     NSManagedObjectContext *moc = self.managedObjectContext; //Retrieve the main queue NSManagedObjectContext
     
@@ -176,6 +188,21 @@
         NSLog(@"Failed to initialize FetchedResultsController: %@\n%@", [error localizedDescription], [error userInfo]);
         abort();
     }
+}
+
+- (void)getMostRecentSleepSessionForWatchOS {
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Session"];
+    
+    // Results should be in descending order of timeStamp.
+    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO];
+    [request setSortDescriptors:[NSArray arrayWithObject:sortDescriptor]];
+    
+    NSManagedObjectContext *moc = self.managedObjectContext;
+    
+    NSArray *results = [moc executeFetchRequest:request error:NULL];
+    session *latestEntity = [results objectAtIndex:0];
+    
+    NSLog(@"[DEBUG] The most recenet entity: %@", latestEntity);
 }
 
 - (IBAction)deleteCoreData:(id)sender {
