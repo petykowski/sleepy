@@ -24,6 +24,7 @@
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, strong) session *object;
 @property (nonatomic, strong) session *objectToSave;
+@property (nonatomic, strong) session *mostRecentSleepSession;
 
 @end
 
@@ -77,14 +78,30 @@
 
 - (void)session:(WCSession *)session didReceiveMessage:(NSDictionary<NSString *,id> *)message replyHandler:(void (^)(NSDictionary<NSString *,id> *replyMessage))replyHandler {
     NSString *request = [message objectForKey:@"Request"];
-    NSString *actionPerformed;
-    if ([request  isEqual: @"getData"]) {
-        NSLog(@"[DEBUG] Perform this request!!!!");
-        [self getMostRecentSleepSessionForWatchOS];
-        actionPerformed = @"Here's your data back!";
-        
+    NSDictionary *response;
+    NSLog(@"[DEBUG] Recieved Request.");
+    if ([request  isEqual: @"getMostRecentSleepSessionForWatchOS"]) {
+        self.mostRecentSleepSession = [self getMostRecentSleepSessionForWatchOS];
+        response = [self populateDictionaryWithSleepSessionData:self.mostRecentSleepSession];
+        NSLog(@"[DEBUG] Requesting recent data.");
+    } else {
+        NSLog(@"[DEBUG] Could not determine iOS request from Watch App.");
     }
-    replyHandler(@{@"actionPerformed":actionPerformed});
+    NSLog(@"[DEBUG] Responding with %@.", response);
+    replyHandler(@{@"reply":response});
+}
+
+- (NSMutableDictionary *)populateDictionaryWithSleepSessionData: (session *)mostRecentSleepSession{
+    NSMutableDictionary *sleepSessionDictionary = [[NSMutableDictionary alloc] init];
+    
+    [sleepSessionDictionary setObject:@"Sleep Session" forKey:@"name"];
+    [sleepSessionDictionary setObject:[NSDate date] forKey:@"creationDate"];
+    [sleepSessionDictionary setObject:mostRecentSleepSession.inBed forKey:@"inBed"];
+    [sleepSessionDictionary setObject:mostRecentSleepSession.sleep forKey:@"sleep"];
+    [sleepSessionDictionary setObject:mostRecentSleepSession.wake forKey:@"wake"];
+    [sleepSessionDictionary setObject:mostRecentSleepSession.outBed forKey:@"outBed"];
+    
+    return sleepSessionDictionary;
 }
 
 -(void)sessionDidBecomeInactive:(WCSession *)session {
@@ -190,7 +207,7 @@
     }
 }
 
-- (void)getMostRecentSleepSessionForWatchOS {
+- (session *)getMostRecentSleepSessionForWatchOS {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Session"];
     
     // Results should be in descending order of timeStamp.
@@ -202,7 +219,7 @@
     NSArray *results = [moc executeFetchRequest:request error:NULL];
     session *latestEntity = [results objectAtIndex:0];
     
-    NSLog(@"[DEBUG] The most recenet entity: %@", latestEntity);
+    return latestEntity;
 }
 
 - (IBAction)deleteCoreData:(id)sender {

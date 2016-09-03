@@ -15,6 +15,7 @@
 @property (unsafe_unretained, nonatomic) IBOutlet WKInterfaceTable *milestoneTable;
 @property (nonatomic, readwrite) NSArray *lastNightTimes;
 @property (nonatomic, readwrite) BOOL sleepDataExsists;
+@property (nonatomic, readwrite) NSMutableArray *milestoneData;
 
 // LABELS //
 @property (unsafe_unretained, nonatomic) IBOutlet WKInterfaceLabel *userMsgLabel;
@@ -27,16 +28,21 @@
     [super awakeWithContext:context];
     
     if (context != nil) {
-        self.sleepDataExsists = [self doesMilestoneDataExsist];
-        
-        if (self.sleepDataExsists) {
-            [self hideNewUserMessage];
-            [self getMilestoneTimes];
-            [self updateMilestoneTableData];
-        } else {
-            [self displayNewUserMessage];
-        }
+        self.milestoneData = [Utility convertAndPopulateSleepSessionDataForMilestone:context];
+        [self updateMilestoneTableData:self.milestoneData];
     }
+    
+//    if (context != nil) {
+//        self.sleepDataExsists = [self doesMilestoneDataExsist];
+//        
+//        if (self.sleepDataExsists) {
+//            [self hideNewUserMessage];
+//            [self getMilestoneTimes];
+//            [self updateMilestoneTableData];
+//        } else {
+//            [self displayNewUserMessage];
+//        }
+//    }
     
 }
 
@@ -44,15 +50,15 @@
     // This method is called when watch view controller is about to be visible to user
     [super willActivate];
     
-    self.sleepDataExsists = [self doesMilestoneDataExsist];
-    
-    if (self.sleepDataExsists) {
-        [self hideNewUserMessage];
-        [self getMilestoneTimes];
-        [self updateMilestoneTableData];
-    } else {
-        [self displayNewUserMessage];
-    }
+//    self.sleepDataExsists = [self doesMilestoneDataExsist];
+//    
+//    if (self.sleepDataExsists) {
+//        [self hideNewUserMessage];
+//        [self getMilestoneTimes];
+//        [self updateMilestoneTableData];
+//    } else {
+//        [self displayNewUserMessage];
+//    }
     
 }
 
@@ -91,16 +97,28 @@
     self.lastNightTimes = formattedTimes;
 }
 
-- (void)updateMilestoneTableData {
-    NSArray *titleArray = [NSArray arrayWithObjects:@"IN BED", @"ASLEEP", @"AWAKE", @"END", nil];
+- (void)updateMilestoneTableData: (NSMutableArray*)sleepSessionData {
+    NSArray *titleArray = [NSArray arrayWithObjects:@"IN BED", @"ASLEEP", @"AWAKE", @"OUT BED", @"BACK TO BED", @"BACK TO SLEEP", @"AWAKE", @"OUT BED", nil];
     
-    [self.milestoneTable setNumberOfRows:titleArray.count withRowType:@"main"];
-    for (NSInteger i = 0; i < self.milestoneTable.numberOfRows; i++) {
+    
+    [self.milestoneTable setNumberOfRows:sleepSessionData.count withRowType:@"main"];
+    for (int i = 0; i < self.milestoneTable.numberOfRows; i++) {
         MilestoneRowController* theRow = [self.milestoneTable rowControllerAtIndex:i];
         [theRow.milestoneLabel setText:[titleArray objectAtIndex:i]];
-        [theRow.milestoneTimeLabel setText:[self.lastNightTimes objectAtIndex:i]];
+        [theRow.milestoneTimeLabel setText:[sleepSessionData objectAtIndex:i]];
     }
 }
+
+//- (void)updateMilestoneTableData {
+//    NSArray *titleArray = [NSArray arrayWithObjects:@"IN BED", @"ASLEEP", @"AWAKE", @"END", nil];
+//    
+//    [self.milestoneTable setNumberOfRows:titleArray.count withRowType:@"main"];
+//    for (NSInteger i = 0; i < self.milestoneTable.numberOfRows; i++) {
+//        MilestoneRowController* theRow = [self.milestoneTable rowControllerAtIndex:i];
+//        [theRow.milestoneLabel setText:[titleArray objectAtIndex:i]];
+//        [theRow.milestoneTimeLabel setText:[self.lastNightTimes objectAtIndex:i]];
+//    }
+//}
 
 -(void)displayNewUserMessage {
     [self.userMsgLabel setHidden:false];

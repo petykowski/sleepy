@@ -21,6 +21,8 @@
 
 @property (nonatomic, retain) HKHealthStore *healthStore;
 
+@property (nonatomic, retain) WCSession *connectedSession;
+
 // Sleeping
 @property (nonatomic, readwrite) BOOL isSleeping;
 
@@ -113,9 +115,9 @@
     
     // Initate WatchConnectivity
     if ([WCSession isSupported]) {
-        WCSession *session = [WCSession defaultSession];
-        session.delegate = self;
-        [session activateSession];
+        self.connectedSession = [WCSession defaultSession];
+        self.connectedSession.delegate = self;
+        [self.connectedSession activateSession];
     }
 
     HKAuthorizationStatus hasAccessToSleepData = [self.healthStore authorizationStatusForType:[HKObjectType categoryTypeForIdentifier:HKCategoryTypeIdentifierSleepAnalysis]];
@@ -232,7 +234,6 @@
     BOOL didWrite = [plistDictionary writeToFile:filePath atomically:YES];
     if (didWrite) {
         NSLog(@"[VERBOSE] Data sucessfully written to plist.");
-        [self reloadMilestoneInterfaceData];
     } else {
         NSLog(@"[DEBUG] Failed to write data to plist.");
     }
@@ -438,13 +439,15 @@
 }
 
 - (void)requestMostRecentSleepSessionFromiOSApp {
-    NSDictionary *applicationData = [NSDictionary dictionaryWithObject:@"getData" forKey:@"Request"];
-    
-    NSLog(@"[DEBUG] Sending Data!");
+    NSDictionary *applicationData = [NSDictionary dictionaryWithObject:@"getMostRecentSleepSessionForWatchOS" forKey:@"Request"];
     
     [[WCSession defaultSession] sendMessage:applicationData
                                replyHandler:^(NSDictionary<NSString *,id> * _Nonnull replyMessage) {
+                                   // Remove
                                    NSLog(@"[DEBUG] Contents of Dict: %@", replyMessage);
+                                   [WKInterfaceController reloadRootControllersWithNames:[NSArray arrayWithObjects:@"mainInterface",@"lastNightInterface", nil] contexts:[NSArray arrayWithObjects:@"", replyMessage, nil]];
+                                   
+                                   
                                }
                                errorHandler:^(NSError * _Nonnull error) {
                                    NSLog(@"[DEBUG] ERROR: %@", error);
@@ -469,6 +472,8 @@
     
     return sleepSessionDictionary;
 }
+
+
 
 
 #pragma mark - Menu Icon Methods
@@ -567,7 +572,12 @@
 
 - (void)proposedSleepStartWasConfirmed {
     [self.sleep replaceObjectAtIndex:0 withObject:self.proposedSleepStart];
-    [self sendSleepSessionDataToiOSApp];
+    if (self.connectedSession.reachable) {
+        NSLog(@"[DEBUG] Session Available");
+        [self sendSleepSessionDataToiOSApp];
+    } else {
+        NSLog(@"[DEBUG] Session Unavailable");
+    }
     [self writeSleepSessionDataToHealthKit];
     [self updateLabelsForSleepSessionEnded];
     [self saveSleepDataToDataStore];

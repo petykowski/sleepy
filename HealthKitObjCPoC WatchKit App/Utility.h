@@ -13,5 +13,6 @@
 + (NSDateFormatter*)dateFormatterForTimeLabels;
 + (NSDictionary*)contentsOfHealthPlist;
 + (NSDateFormatter*)dateFormatterForCellLabel;
++ (NSMutableArray*)convertAndPopulateSleepSessionDataForMilestone:(NSDictionary*)sleepSessionData;
 
 @end

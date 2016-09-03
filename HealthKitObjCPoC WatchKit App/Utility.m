@@ -38,4 +38,29 @@
     return plistDictionary;
 }
 
++(NSMutableArray*)convertAndPopulateSleepSessionDataForMilestone: (NSDictionary*)sleepSessionData {
+    NSMutableArray *convertedData = [[NSMutableArray alloc] init];
+    NSMutableDictionary *response = [sleepSessionData objectForKey:@"reply"];
+    
+    NSDateFormatter *dateFormatter = [Utility dateFormatterForTimeLabels];
+    
+    NSArray *inBed = [NSKeyedUnarchiver unarchiveObjectWithData:[response objectForKey:@"inBed"]];
+    NSArray *sleep = [NSKeyedUnarchiver unarchiveObjectWithData:[response objectForKey:@"sleep"]];
+    NSArray *wake = [NSKeyedUnarchiver unarchiveObjectWithData:[response objectForKey:@"wake"]];
+    NSArray *outBed = [NSKeyedUnarchiver unarchiveObjectWithData:[response objectForKey:@"outBed"]];
+    
+    for (int i = 0; i < inBed.count; i++) {
+        [convertedData addObject:[inBed objectAtIndex:i]];
+        [convertedData addObject:[sleep objectAtIndex:i]];
+        [convertedData addObject:[wake objectAtIndex:i]];
+        [convertedData addObject:[outBed objectAtIndex:i]];
+    }
+    
+    for (int i = 0; i < convertedData.count; i++) {
+        [convertedData replaceObjectAtIndex:i withObject:[dateFormatter stringFromDate:convertedData[i]]];
+    }
+
+    return convertedData;
+}
+
 @end
