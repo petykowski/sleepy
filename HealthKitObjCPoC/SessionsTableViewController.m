@@ -55,40 +55,44 @@
 
 #pragma mark - Watch Connectivity
 
--(void)session:(WCSession *)session didReceiveMessage:(NSDictionary<NSString *,id> *)message {
-    
-    
-    NSDictionary *sleepSession = message;
-    
-    self.objectToSave = [NSEntityDescription insertNewObjectForEntityForName:@"Session" inManagedObjectContext:[self managedObjectContext]];
-    self.objectToSave.name = [sleepSession objectForKey:@"name"];
-    self.objectToSave.creationDate = [sleepSession objectForKey:@"creationDate"];
-    self.objectToSave.inBed = [sleepSession objectForKey:@"inBed"];
-    self.objectToSave.sleep = [sleepSession objectForKey:@"sleep"];
-    self.objectToSave.wake = [sleepSession objectForKey:@"wake"];
-    self.objectToSave.outBed = [sleepSession objectForKey:@"outBed"];
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
-        NSError *error = nil;
-        if ([[self managedObjectContext] save:&error] == NO) {
-            NSAssert(NO, @"Error saving context: %@\n%@", [error localizedDescription], [error userInfo]);
-        }
-    });
-}
-
 - (void)session:(WCSession *)session didReceiveMessage:(NSDictionary<NSString *,id> *)message replyHandler:(void (^)(NSDictionary<NSString *,id> *replyMessage))replyHandler {
     NSString *request = [message objectForKey:@"Request"];
     NSDictionary *response;
     NSLog(@"[DEBUG] Recieved Request.");
+    
     if ([request  isEqual: @"getMostRecentSleepSessionForWatchOS"]) {
         self.mostRecentSleepSession = [self getMostRecentSleepSessionForWatchOS];
-        response = [self populateDictionaryWithSleepSessionData:self.mostRecentSleepSession];
-        NSLog(@"[DEBUG] Requesting recent data.");
+        if (self.mostRecentSleepSession != nil) {
+            response = [self populateDictionaryWithSleepSessionData:self.mostRecentSleepSession];
+            replyHandler(@{@"reply":response});
+        } else {
+            replyHandler(@{@"reply":@"No Data"});
+            NSLog(@"[DEBUG] No data to provide.");
+        }
+    } else if ([request  isEqual: @"sendSleepSessionDataToiOSApp"]) {
+        NSLog(@"[DEBUG] SAVING SLEEP DATA");
+        NSDictionary *sleepSession = message;
+        
+        self.objectToSave = [NSEntityDescription insertNewObjectForEntityForName:@"Session" inManagedObjectContext:[self managedObjectContext]];
+        self.objectToSave.name = [sleepSession objectForKey:@"name"];
+        self.objectToSave.creationDate = [sleepSession objectForKey:@"creationDate"];
+        self.objectToSave.inBed = [sleepSession objectForKey:@"inBed"];
+        self.objectToSave.sleep = [sleepSession objectForKey:@"sleep"];
+        self.objectToSave.wake = [sleepSession objectForKey:@"wake"];
+        self.objectToSave.outBed = [sleepSession objectForKey:@"outBed"];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSError *error = nil;
+            if ([[self managedObjectContext] save:&error] == NO) {
+                NSAssert(NO, @"Error saving context: %@\n%@", [error localizedDescription], [error userInfo]);
+            } else {
+                replyHandler(@{@"reply":@"Saved Sucessfully!"});
+            }
+        });
+        
     } else {
         NSLog(@"[DEBUG] Could not determine iOS request from Watch App.");
     }
-    NSLog(@"[DEBUG] Responding with %@.", response);
-    replyHandler(@{@"reply":response});
 }
 
 - (NSMutableDictionary *)populateDictionaryWithSleepSessionData: (session *)mostRecentSleepSession{
@@ -217,8 +221,14 @@
     NSManagedObjectContext *moc = self.managedObjectContext;
     
     NSArray *results = [moc executeFetchRequest:request error:NULL];
-    session *latestEntity = [results objectAtIndex:0];
+    session *latestEntity;
     
+    if (!results || !results.count){
+        return nil;
+    } else {
+        latestEntity = [results objectAtIndex:0];
+    }
+
     return latestEntity;
 }
 

@@ -23,6 +23,8 @@
 
 @property (nonatomic, retain) WCSession *connectedSession;
 
+@property (nonatomic, readwrite) NSDictionary *sleepSessionDataToSave;
+
 // Sleeping
 @property (nonatomic, readwrite) BOOL isSleeping;
 
@@ -95,11 +97,6 @@
     } else {
         [self updateLabelsForSleepSessionEnded];
         [self prepareMenuIconsForUserNotInSleepSession];
-        
-        // Debug Menu Items
-//        [self addMenuItemWithItemIcon:WKMenuItemIconPlay title:@"Save" action:@selector(saveSleepDataToDataStore)];
-//        [self addMenuItemWithItemIcon:WKMenuItemIconPlay title:@"Del" action:@selector(deleteSleepDataToDataStore)];
-//        [self addMenuItemWithItemIcon:WKMenuItemIconAdd title:@"Add Data" action:@selector(populateHRData)];
     }
     
     return self;
@@ -135,8 +132,7 @@
 }
 
 - (void)reloadMilestoneInterfaceData {
-    BOOL hasMilestoneData = true;
-    [WKInterfaceController reloadRootControllersWithNames:[NSArray arrayWithObjects:@"mainInterface",@"lastNightInterface", nil] contexts:[NSArray arrayWithObjects:@"", [NSNumber numberWithBool:hasMilestoneData], nil]];
+    [WKInterfaceController reloadRootControllersWithNames:[NSArray arrayWithObjects:@"mainInterface",@"lastNightInterface", nil] contexts:[NSArray arrayWithObjects:@"", @"", nil]];
 }
 
 #pragma mark - Data Store Methods
@@ -427,10 +423,12 @@
 
 - (void)sendSleepSessionDataToiOSApp {
     
-    NSDictionary *applicationData = [self populateDictionaryWithSleepSessionData];
-    NSLog(@"[DEBUG] Plist Data: %@", applicationData);
-    [[WCSession defaultSession] sendMessage:applicationData
-                               replyHandler:nil
+    _sleepSessionDataToSave = [self populateDictionaryWithSleepSessionData];
+    [[WCSession defaultSession] sendMessage:_sleepSessionDataToSave
+                               replyHandler:^(NSDictionary<NSString *,id> * _Nonnull replyMessage) {
+                                   // Remove
+                                   NSLog(@"[DEBUG] Contents of reply: %@", replyMessage);
+                               }
                                errorHandler:^(NSError *error) {
                                    //catch any errors here
                                    NSLog(@"[DEBUG] ERROR: %@", error);
@@ -462,7 +460,7 @@
     NSData *outBedData = [NSKeyedArchiver archivedDataWithRootObject:self.outBed];
     
     NSMutableDictionary *sleepSessionDictionary = [[NSMutableDictionary alloc] init];
-
+    [sleepSessionDictionary setObject:@"sendSleepSessionDataToiOSApp" forKey:@"Request"];
     [sleepSessionDictionary setObject:@"Sleep Session" forKey:@"name"];
     [sleepSessionDictionary setObject:[NSDate date] forKey:@"creationDate"];
     [sleepSessionDictionary setObject:inBedData forKey:@"inBed"];
@@ -480,7 +478,6 @@
 - (void)prepareMenuIconsForUserNotInSleepSession {
     [self clearAllMenuItems];
     [self addMenuItemWithImageNamed:@"sleepMenuIcon" title:@"Sleep" action:@selector(sleepDidStartMenuButton)];
-    [self addMenuItemWithImageNamed:@"sleepMenuIcon" title:@"Debug" action:@selector(requestMostRecentSleepSessionFromiOSApp)];
 }
 
 - (void)prepareMenuIconsForUserAsleepInSleepSession {
@@ -564,14 +561,14 @@
 - (void)proposedSleepStartDecision:(int)buttonValue {
     
     if (buttonValue == 1) {
-        [self proposedSleepStartWasConfirmed];
-    } else {
-        [self proposedSleepStartWasDenied];
+        // Proposed Sleep Was Confirmed
+        [self.sleep replaceObjectAtIndex:0 withObject:self.proposedSleepStart];
     }
+    
+    [self performSleepSessionCloseout];
 }
 
-- (void)proposedSleepStartWasConfirmed {
-    [self.sleep replaceObjectAtIndex:0 withObject:self.proposedSleepStart];
+- (void)performSleepSessionCloseout {
     if (self.connectedSession.reachable) {
         NSLog(@"[DEBUG] Session Available");
         [self sendSleepSessionDataToiOSApp];
@@ -581,13 +578,7 @@
     [self writeSleepSessionDataToHealthKit];
     [self updateLabelsForSleepSessionEnded];
     [self saveSleepDataToDataStore];
-}
-
-- (void)proposedSleepStartWasDenied {
-    [self sendSleepSessionDataToiOSApp];
-    [self writeSleepSessionDataToHealthKit];
-    [self updateLabelsForSleepSessionEnded];
-    [self saveSleepDataToDataStore];
+    [self reloadMilestoneInterfaceData];
 }
 
 #pragma mark - Reset Values
