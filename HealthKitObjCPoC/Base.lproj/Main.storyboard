@@ -16,6 +16,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="tintColor" red="0.29803921568627451" green="0.21176470588235294" blue="0.6588235294117647" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="separatorColor" name="scrollBarColor" catalog="System" colorSpace="catalog"/>
                         <view key="tableFooterView" contentMode="scaleToFill" id="Fdp-R4-UMf" userLabel="footer">
                             <rect key="frame" x="0.0" y="152" width="375" height="44"/>

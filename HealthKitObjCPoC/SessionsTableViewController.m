@@ -32,6 +32,18 @@
 @implementation SessionsTableViewController {
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    // this UIViewController is about to re-appear, make sure we remove the current selection in our table view
+    NSIndexPath *tableSelection = [self.tableView indexPathForSelectedRow];
+    [self.tableView deselectRowAtIndexPath:tableSelection animated:NO];
+    
+    // some over view controller could have changed our nav bar tint color, so reset it here
+    self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:0.3725490196 green:0.3058823529 blue:0.7176470588 alpha:1];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self initializeFetchedResultsController];
