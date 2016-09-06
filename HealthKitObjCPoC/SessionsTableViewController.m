@@ -13,6 +13,7 @@
 #import "SessionDetailViewController.h"
 #import "session.h"
 #import "Utility.h"
+#import "SleepSessionTableViewCell.h"
 
 
 @interface SessionsTableViewController () <WCSessionDelegate, NSFetchedResultsControllerDelegate, NSFetchedResultsControllerDelegate>
@@ -133,25 +134,9 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *sessionsIdentifier = @"sessions";
-    
-    NSDateFormatter *dateFormatter = [Utility dateFormatterForCellLabel];
-    NSDateFormatter *timeFormatter = [Utility dateFormatterForTimeLabels];
-    
-    self.object = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    NSMutableArray *inBedArray = [NSKeyedUnarchiver unarchiveObjectWithData:self.object.inBed];
-    NSMutableArray *outBedArray = [NSKeyedUnarchiver unarchiveObjectWithData:self.object.outBed];
-    
-    
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:sessionsIdentifier];
-    
-    if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:sessionsIdentifier];
-    }
-    
-    cell.textLabel.text = [dateFormatter stringFromDate:self.object.creationDate];
-    cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ - %@", [timeFormatter stringFromDate:[inBedArray lastObject]], [timeFormatter stringFromDate:[outBedArray lastObject]]];
-    
+    static NSString *cellIdentifier = @"SleepSessionCell";
+    SleepSessionTableViewCell *cell = (SleepSessionTableViewCell *)[tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    [self configureCell:cell forIndexPath:indexPath];
     return cell;
 }
 
@@ -161,6 +146,42 @@
         [self.managedObjectContext deleteObject:managedObject];
         [self.managedObjectContext save:nil];
     }
+}
+
+#pragma mark - Configuring table view cells
+
+- (void)configureCell:(SleepSessionTableViewCell *)cell forIndexPath:(NSIndexPath *)indexPath {
+    
+    static NSDateFormatter *dateFormatter = nil;
+    static NSDateFormatter *timeFormatter = nil;
+    
+    NSDateComponents *components;
+    
+    dateFormatter = [Utility dateFormatterForCellLabel];
+    timeFormatter = [Utility dateFormatterForTimeLabels];
+    
+    self.object = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    
+    NSMutableArray *inBedArray = [NSKeyedUnarchiver unarchiveObjectWithData:self.object.sleep];
+    NSMutableArray *outBedArray = [NSKeyedUnarchiver unarchiveObjectWithData:self.object.wake];
+    
+    components = [[NSCalendar currentCalendar] components:NSCalendarUnitHour|NSCalendarUnitMinute fromDate:[inBedArray firstObject] toDate:[outBedArray lastObject] options:0];
+    
+    NSInteger hours = [components hour];
+    NSInteger minutes = [components minute];
+    
+    cell.sessionLabel.text = [dateFormatter stringFromDate:self.object.creationDate];
+    
+    if (hours == 0) {
+        cell.sessionDurationLabel.text = [NSString stringWithFormat:@"%ldm", (long)minutes];
+    } else if (hours > 0) {
+        cell.sessionDurationLabel.text = [NSString stringWithFormat:@"%ldh %ldm", (long)hours, (long)minutes];
+    }
+    
+    cell.sleepStartLabel.text = [timeFormatter stringFromDate:[inBedArray firstObject]];
+    cell.sleepEndLabel.text = [timeFormatter stringFromDate:[outBedArray lastObject]];
+    cell.sleepIconImageView.image = [UIImage imageNamed:@"SleepIcon"];
+    cell.wakeIconImageView.image = [UIImage imageNamed:@"WakeIcon"];
 }
 
 #pragma mark - Navigation

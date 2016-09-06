@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11198.2" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="zjt-zR-bYq">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11198.2" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="zjt-zR-bYq">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
@@ -8,64 +8,84 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
-        <scene sceneID="tne-QT-ifu">
-            <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
-                        <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="136.80000000000001" y="137.18140929535232"/>
-        </scene>
         <!--Sleep Sessions-->
         <scene sceneID="LmQ-YD-KGF">
             <objects>
                 <tableViewController id="VCN-DA-n4O" customClass="SessionsTableViewController" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="dav-TO-kPl">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="60" sectionHeaderHeight="28" sectionFooterHeight="28" id="dav-TO-kPl">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <color key="separatorColor" name="scrollBarColor" catalog="System" colorSpace="catalog"/>
                         <view key="tableFooterView" contentMode="scaleToFill" id="Fdp-R4-UMf" userLabel="footer">
-                            <rect key="frame" x="0.0" y="136" width="375" height="44"/>
+                            <rect key="frame" x="0.0" y="152" width="375" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <rect key="contentStretch" x="0.0" y="0.0" width="1" height="0.0"/>
                         </view>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="sessions" textLabel="gUP-vW-kq4" detailTextLabel="g7g-w9-SxR" style="IBUITableViewCellStyleSubtitle" id="BgN-ZG-VgA">
-                                <rect key="frame" x="0.0" y="92" width="375" height="44"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="SleepSessionCell" id="BgN-ZG-VgA" customClass="SleepSessionTableViewCell">
+                                <rect key="frame" x="0.0" y="92" width="375" height="60"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="BgN-ZG-VgA" id="Lbi-er-HYw">
-                                    <frame key="frameInset" width="342" height="43"/>
+                                    <frame key="frameInset" width="342" height="59"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="gUP-vW-kq4">
-                                            <frame key="frameInset" minX="15" minY="4" width="34" height="21"/>
-                                            <autoresizingMask key="autoresizingMask"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sleep Session Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cEW-pe-Qoe" userLabel="Sleep Session Label">
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <color key="textColor" name="alternateSelectedControlTextColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Detail" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="g7g-w9-SxR">
-                                            <frame key="frameInset" minX="15" minY="25" width="33" height="15"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="0.0"/>
-                                            <color key="textColor" name="alternateSelectedControlTextColor" catalog="System" colorSpace="catalog"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="8h32m" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2gr-dF-G9i" userLabel="Sleep Duration">
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Trd-1H-hak">
+                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="EQr-Dl-RvB">
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="8" id="P2Y-ok-d8D"/>
+                                                <constraint firstAttribute="width" constant="8" id="qMl-gw-xJj"/>
+                                            </constraints>
+                                        </imageView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0gO-Hy-fYx" userLabel="Sleep End Label">
+                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="cG3-dp-Fna" userLabel="Wake Icon Image View">
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="8" id="b33-Bz-TjL"/>
+                                                <constraint firstAttribute="width" constant="8" id="cBz-ZS-sdf"/>
+                                            </constraints>
+                                        </imageView>
                                     </subviews>
+                                    <constraints>
+                                        <constraint firstItem="EQr-Dl-RvB" firstAttribute="leading" secondItem="Lbi-er-HYw" secondAttribute="leading" constant="15" id="8V0-Ko-ufq"/>
+                                        <constraint firstItem="cG3-dp-Fna" firstAttribute="top" secondItem="cEW-pe-Qoe" secondAttribute="bottom" constant="13" id="8tv-Uy-zjV"/>
+                                        <constraint firstItem="0gO-Hy-fYx" firstAttribute="top" secondItem="cEW-pe-Qoe" secondAttribute="bottom" constant="10" id="ABd-2y-9GQ"/>
+                                        <constraint firstItem="Trd-1H-hak" firstAttribute="leading" secondItem="EQr-Dl-RvB" secondAttribute="trailing" constant="6" id="BFj-2c-Qvh"/>
+                                        <constraint firstItem="2gr-dF-G9i" firstAttribute="centerY" secondItem="Lbi-er-HYw" secondAttribute="centerY" id="OR9-WF-u95"/>
+                                        <constraint firstItem="Trd-1H-hak" firstAttribute="top" secondItem="cEW-pe-Qoe" secondAttribute="bottom" constant="10" id="RUN-r3-dRu"/>
+                                        <constraint firstItem="cEW-pe-Qoe" firstAttribute="leading" secondItem="Lbi-er-HYw" secondAttribute="leadingMargin" constant="7" id="XM9-DC-SRf"/>
+                                        <constraint firstItem="EQr-Dl-RvB" firstAttribute="top" secondItem="cEW-pe-Qoe" secondAttribute="bottom" constant="13" id="dKc-5M-SNz"/>
+                                        <constraint firstItem="0gO-Hy-fYx" firstAttribute="leading" secondItem="cG3-dp-Fna" secondAttribute="trailing" constant="6" id="j4j-wo-L5H"/>
+                                        <constraint firstItem="cG3-dp-Fna" firstAttribute="leading" secondItem="Trd-1H-hak" secondAttribute="trailing" constant="30" id="kz5-IU-CoP"/>
+                                        <constraint firstAttribute="trailing" secondItem="2gr-dF-G9i" secondAttribute="trailing" id="q7v-zu-5xT"/>
+                                        <constraint firstItem="cEW-pe-Qoe" firstAttribute="top" secondItem="Lbi-er-HYw" secondAttribute="topMargin" id="wv0-eQ-1Fd"/>
+                                    </constraints>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <connections>
+                                    <outlet property="sessionDurationLabel" destination="2gr-dF-G9i" id="9VZ-kf-uBI"/>
+                                    <outlet property="sessionLabel" destination="cEW-pe-Qoe" id="Apn-eF-HCg"/>
+                                    <outlet property="sleepEndLabel" destination="0gO-Hy-fYx" id="6HV-jo-ufS"/>
+                                    <outlet property="sleepIconImageView" destination="EQr-Dl-RvB" id="bsm-to-I1t"/>
+                                    <outlet property="sleepStartLabel" destination="Trd-1H-hak" id="pKC-tY-FFR"/>
+                                    <outlet property="wakeIconImageView" destination="cG3-dp-Fna" id="931-DF-59n"/>
                                     <segue destination="rrm-Dx-pQg" kind="show" identifier="DetailSegue" id="xyH-fc-N8B">
                                         <segue key="commit" inheritsFrom="parent" id="laB-vS-VW8"/>
                                         <segue key="preview" inheritsFrom="commit" id="2ro-ks-GLH"/>
