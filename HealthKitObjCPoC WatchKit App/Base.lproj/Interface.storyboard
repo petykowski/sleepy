@@ -11,12 +11,12 @@
             <objects>
                 <controller identifier="mainInterface" id="AgC-eL-Hgc" customClass="InterfaceController">
                     <items>
-                        <imageView alignment="center" contentMode="scaleAspectFit" id="ptQ-Tp-H4F"/>
                         <label alignment="center" verticalAlignment="center" text="Press To Sleep" textAlignment="center" numberOfLines="2" id="Bq9-XQ-8sA">
                             <fontDescription key="font" type="boldSystem" pointSize="30"/>
                         </label>
-                        <group width="1" alignment="center" verticalAlignment="center" layout="vertical" id="vgZ-Sk-U0Y" userLabel="Sleep Session Group">
+                        <group width="1" height="1" alignment="center" verticalAlignment="center" layout="vertical" id="vgZ-Sk-U0Y" userLabel="Sleep Session Group">
                             <items>
+                                <imageView height="8" alignment="center" contentMode="scaleAspectFit" id="ptQ-Tp-H4F"/>
                                 <group alignment="center" verticalAlignment="center" hidden="YES" layout="vertical" spacing="0.0" id="fhZ-7G-B6m" userLabel="In Bed Group">
                                     <items>
                                         <label alignment="left" text="IN BED" textAlignment="left" id="7CL-2U-yoq">
@@ -65,6 +65,7 @@
                         <outlet property="inBedGroup" destination="fhZ-7G-B6m" id="yip-cG-CcZ"/>
                         <outlet property="inBedLabel" destination="IlJ-1x-MBO" id="njs-PS-FbR"/>
                         <outlet property="mainLabel" destination="Bq9-XQ-8sA" id="04B-5i-kqk"/>
+                        <outlet property="sleepSessionGroup" destination="vgZ-Sk-U0Y" id="usu-V9-08E"/>
                         <outlet property="sleepStartLabel" destination="h3f-gq-ifV" id="dkN-XM-gIN"/>
                         <outlet property="stillAwakeGroup" destination="RIv-q4-PRN" id="KC7-Ot-PoU"/>
                         <outlet property="wakeIndicator" destination="ptQ-Tp-H4F" id="sk9-zN-QLq"/>
@@ -72,7 +73,7 @@
                     </connections>
                 </controller>
             </objects>
-            <point key="canvasLocation" x="59" y="92"/>
+            <point key="canvasLocation" x="58.410256410256416" y="91.974358974358978"/>
         </scene>
         <!--Last Night-->
         <scene sceneID="GOh-kK-oWw">
@@ -138,7 +139,7 @@
                     </connections>
                 </controller>
             </objects>
-            <point key="canvasLocation" x="60" y="400"/>
+            <point key="canvasLocation" x="58" y="422"/>
         </scene>
     </scenes>
 </document>

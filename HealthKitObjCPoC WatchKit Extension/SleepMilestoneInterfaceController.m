@@ -51,8 +51,9 @@
     }
     
     self.sleepDataExsists = [self doesMilestoneDataExsist];
+    BOOL isSleepInProgress = [self isSleepinProgress];
     
-    if (self.sleepDataExsists && _isInitialLaunch) {
+    if (self.sleepDataExsists && _isInitialLaunch && !isSleepInProgress) {
         [self hideNewUserMessage];
         [self getMilestoneTimes];
         [self updateMilestoneTableData];
@@ -80,13 +81,20 @@
     }
 }
 
+- (BOOL)isSleepinProgress {
+    NSDictionary *plistDictionary = [Utility contentsOfHealthPlist];
+    NSNumber *sleeping = [plistDictionary objectForKey:@"SleepInProgress"];
+    BOOL thebool = [sleeping boolValue];
+    return thebool;
+}
+
 - (void)getMilestoneTimes {
     NSDictionary *plistDictionary = [Utility contentsOfHealthPlist];
     self.lastNightTimes = [Utility convertAndPopulateSleepSessionDataForMilestone:plistDictionary];
 }
 
 - (void)updateMilestoneTableData {
-    NSArray *titleArray = [NSArray arrayWithObjects:@"IN BED", @"ASLEEP", @"AWAKE", @"OUT BED", @"BACK TO BED", @"BACK TO SLEEP", @"AWAKE", @"OUT BED", nil];
+    NSArray *titleArray = [NSArray arrayWithObjects:@"IN BED", @"ASLEEP", @"AWAKE", @"OUT BED", @"BACK TO BED", @"BACK TO SLEEP", @"AWAKE", @"OUT BED", @"BACK TO BED", @"BACK TO SLEEP", @"AWAKE", @"OUT BED", @"BACK TO BED", @"BACK TO SLEEP", @"AWAKE", @"OUT BED", nil];
     
     [self.milestoneTable setNumberOfRows:self.lastNightTimes.count withRowType:@"main"];
     for (NSInteger i = 0; i < self.milestoneTable.numberOfRows; i++) {

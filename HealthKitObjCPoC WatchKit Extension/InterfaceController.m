@@ -62,6 +62,7 @@
 @property (unsafe_unretained, nonatomic) IBOutlet WKInterfaceLabel *sleepStartLabel;
 
 // Groups
+@property (unsafe_unretained, nonatomic) IBOutlet WKInterfaceGroup *sleepSessionGroup;
 @property (unsafe_unretained, nonatomic) IBOutlet WKInterfaceGroup *inBedGroup;
 @property (unsafe_unretained, nonatomic) IBOutlet WKInterfaceGroup *stillAwakeGroup;
 
@@ -502,6 +503,7 @@
     NSDateFormatter *dateFormatter = [Utility dateFormatterForTimeLabels];
     
     [self.mainLabel setHidden:true];
+    [self.sleepSessionGroup setHidden:false];
     
     [self.inBedLabel setText:[dateFormatter stringFromDate:[self.inBed firstObject]]];
     [self.inBedGroup setHidden:false];
@@ -510,6 +512,7 @@
 - (void)updateLabelsForSleepSessionEnded {
     
     [self.mainLabel setHidden:false];
+    [self.sleepSessionGroup setHidden:true];
     [self.inBedGroup setHidden:true];
     [self.stillAwakeGroup setHidden:true];
 }
@@ -518,6 +521,7 @@
     NSDateFormatter *dateFormatter = [Utility dateFormatterForTimeLabels];
     
     [self.mainLabel setHidden:true];
+    [self.sleepSessionGroup setHidden:false];
     [self.inBedLabel setText:[dateFormatter stringFromDate:[self.inBed firstObject]]];
     [self.sleepStartLabel setText:[dateFormatter stringFromDate:[self.sleep lastObject]]];
     [self.inBedGroup setHidden:false];
@@ -538,6 +542,8 @@
 -(void)displayWakeIndicator{
     NSRange range = NSMakeRange(0, 11);
     [self.wakeIndicator setImageNamed:@"wakeIndicator"];
+    [self.wakeIndicator setHeight:8.0];
+    [self.wakeIndicator setWidth:8.0];
     [self.wakeIndicator setHidden:false];
     [self.wakeIndicator startAnimatingWithImagesInRange:range duration:0.8 repeatCount:1];
 }
@@ -576,8 +582,8 @@
         NSLog(@"[DEBUG] Session Unavailable");
     }
     [self writeSleepSessionDataToHealthKit];
-    [self updateLabelsForSleepSessionEnded];
     [self saveSleepDataToDataStore];
+    [self updateLabelsForSleepSessionEnded];
     [self reloadMilestoneInterfaceData];
 }
 
