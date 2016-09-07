@@ -46,13 +46,13 @@
 }
 
 - (IBAction)denyButton {
-    [self.delegate proposedSleepStartDecision:0];
     [self dismissController];
+    [self.delegate proposedSleepStartDecision:0];
 }
 
 - (IBAction)confirmButton {
-    [self.delegate proposedSleepStartDecision:1];
     [self dismissController];
+    [self.delegate proposedSleepStartDecision:1];
 }
 @end
 

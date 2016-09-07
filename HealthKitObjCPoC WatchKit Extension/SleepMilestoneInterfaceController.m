@@ -11,7 +11,7 @@
 #import "MilestoneRowController.h"
 #import "Utility.h"
 
-@interface SleepMilestoneInterfaceController () <WCSessionDelegate>
+@interface SleepMilestoneInterfaceController ()
 
 @property (unsafe_unretained, nonatomic) IBOutlet WKInterfaceTable *milestoneTable;
 @property (nonatomic, readwrite) NSArray *lastNightTimes;
@@ -44,24 +44,16 @@
     // This method is called when watch view controller is about to be visible to user
     [super willActivate];
     
-    if ([WCSession isSupported]) {
-        WCSession *session = [WCSession defaultSession];
-        session.delegate = self;
-        [session activateSession];
-    }
-    
     self.sleepDataExsists = [self doesMilestoneDataExsist];
     BOOL isSleepInProgress = [self isSleepinProgress];
     
-    if (self.sleepDataExsists && _isInitialLaunch && !isSleepInProgress) {
+    if (self.sleepDataExsists && !isSleepInProgress) {
         [self hideNewUserMessage];
         [self getMilestoneTimes];
         [self updateMilestoneTableData];
-        _isInitialLaunch = false;
     } else if (!self.sleepDataExsists){
         [self displayNewUserMessage];
     }
-    
 }
 
 - (void)didDeactivate {

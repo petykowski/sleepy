@@ -584,7 +584,13 @@
     [self writeSleepSessionDataToHealthKit];
     [self saveSleepDataToDataStore];
     [self updateLabelsForSleepSessionEnded];
-    [self reloadMilestoneInterfaceData];
+    
+    // Allows for proposed sleep interface to dismiss
+    [NSTimer scheduledTimerWithTimeInterval:1.0
+                                     target:self
+                                   selector:@selector(reloadMilestoneInterfaceData)
+                                   userInfo:nil
+                                    repeats:NO];
 }
 
 #pragma mark - Reset Values
