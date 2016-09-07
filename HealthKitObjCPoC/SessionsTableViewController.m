@@ -199,17 +199,18 @@
 #pragma mark - Navigation
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-
+    
 }
 
-/*
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+    if ([[segue identifier] isEqualToString:@"DetailSegue"]) {
+        NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+        self.object = [self.fetchedResultsController objectAtIndexPath:indexPath];
+        SessionDetailViewController *vc = [segue destinationViewController];
+        vc.sleepSession = self.object;
+    }
 }
-*/
 
 #pragma mark - CoreData Stack
 

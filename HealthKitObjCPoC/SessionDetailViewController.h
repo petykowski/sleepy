@@ -11,4 +11,11 @@
 
 @interface SessionDetailViewController : UIViewController
 
+@property (nonatomic, strong) session *sleepSession;
+@property (weak, nonatomic) IBOutlet UILabel *sleepSessionLabel;
+@property (weak, nonatomic) IBOutlet UILabel *inBedLabel;
+@property (weak, nonatomic) IBOutlet UILabel *sleepLabel;
+@property (weak, nonatomic) IBOutlet UILabel *wakeLabel;
+@property (weak, nonatomic) IBOutlet UILabel *outBedLabel;
+
 @end
