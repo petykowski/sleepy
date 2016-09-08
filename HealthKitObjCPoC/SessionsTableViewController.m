@@ -139,6 +139,17 @@
     return [[[self fetchedResultsController] sections] count];
 }
 
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    id <NSFetchedResultsSectionInfo> sectionInfo = [[self.fetchedResultsController sections] objectAtIndex:section];
+    return [sectionInfo name];
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
+{
+    UITableViewHeaderFooterView *v = (UITableViewHeaderFooterView *)view;
+    v.textLabel.textColor = [UIColor whiteColor];
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     id< NSFetchedResultsSectionInfo> sectionInfo = [[self fetchedResultsController] sections][section];
     return [sectionInfo numberOfObjects];
@@ -204,11 +215,16 @@
 
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    
     if ([[segue identifier] isEqualToString:@"DetailSegue"]) {
+        
+        SessionDetailViewController *detailViewController = [segue destinationViewController];
+        session *sleepSession = nil;
+        
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-        self.object = [self.fetchedResultsController objectAtIndexPath:indexPath];
-        SessionDetailViewController *vc = [segue destinationViewController];
-        vc.sleepSession = self.object;
+        sleepSession = (session *)[self.fetchedResultsController objectAtIndexPath:indexPath];
+        
+        detailViewController.sleepSession = sleepSession;
     }
 }
 
@@ -232,10 +248,10 @@
     NSSortDescriptor *creationDateSort = [NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO];
     
     [request setSortDescriptors:@[creationDateSort]];
+
+    NSManagedObjectContext *moc = self.managedObjectContext;
     
-    NSManagedObjectContext *moc = self.managedObjectContext; //Retrieve the main queue NSManagedObjectContext
-    
-    [self setFetchedResultsController:[[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:moc sectionNameKeyPath:nil cacheName:nil]];
+    [self setFetchedResultsController:[[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:moc sectionNameKeyPath:@"sectionByMonthAndYearUsingCreationDate" cacheName:nil]];
     [[self fetchedResultsController] setDelegate:self];
     
     NSError *error = nil;

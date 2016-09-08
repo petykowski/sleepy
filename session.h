@@ -18,6 +18,6 @@
 @property (nonatomic, strong) NSData *wake;
 @property (nonatomic, strong) NSData *outBed;
 
-
+-(NSString *)sectionByMonthAndYearUsingCreationDate;
 
 @end

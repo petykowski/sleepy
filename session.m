@@ -18,4 +18,17 @@
 @dynamic wake;
 @dynamic outBed;
 
+-(NSString *)sectionByMonthAndYearUsingCreationDate{
+    NSDateComponents *components;
+    components = [[NSCalendar currentCalendar] components:NSCalendarUnitMonth|NSCalendarUnitYear fromDate:self.creationDate];
+    
+    NSInteger month = [components month];
+    NSInteger year = [components year];
+    
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    
+    NSString *result = [NSString stringWithFormat:@"%@ %ld", [[formatter monthSymbols] objectAtIndex:(month-1)], (long)year];
+    return result;
+}
+
 @end
