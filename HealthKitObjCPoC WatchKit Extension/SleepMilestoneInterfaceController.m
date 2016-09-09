@@ -10,6 +10,7 @@
 #import <WatchConnectivity/WatchConnectivity.h>
 #import "MilestoneRowController.h"
 #import "Utility.h"
+#import "SleepSession.h"
 
 @interface SleepMilestoneInterfaceController ()
 
@@ -30,7 +31,6 @@
 {
     self = [super init];
     if (self) {
-        _isInitialLaunch = true;
     }
     return self;
 }
@@ -62,10 +62,9 @@
 }
 
 -(BOOL)doesMilestoneDataExsist {
-    NSDictionary *plistDictionary = [Utility contentsOfHealthPlist];
-    NSMutableArray *milestoneTimes = [plistDictionary objectForKey:@"milestoneTimes"];
+    SleepSession *previousSession = [Utility contentsOfPreviousSleepSession];
     
-    if (milestoneTimes) {
+    if (previousSession.inBed) {
         return true;
     }
     else {
@@ -74,15 +73,16 @@
 }
 
 - (BOOL)isSleepinProgress {
-    NSDictionary *plistDictionary = [Utility contentsOfHealthPlist];
-    NSNumber *sleeping = [plistDictionary objectForKey:@"SleepInProgress"];
-    BOOL thebool = [sleeping boolValue];
+    SleepSession *theSession = [Utility contentsOfCurrentSleepSession];
+    BOOL thebool = theSession.isSleepSessionInProgress;
+    NSLog(@"[VERBOSE] Sleep session is %s in progress.", thebool  ? "currently" : "not");
     return thebool;
 }
 
 - (void)getMilestoneTimes {
-    NSDictionary *plistDictionary = [Utility contentsOfHealthPlist];
-    self.lastNightTimes = [Utility convertAndPopulateSleepSessionDataForMilestone:plistDictionary];
+    SleepSession *previousSession = [Utility contentsOfPreviousSleepSession];
+    self.lastNightTimes = [Utility convertAndPopulatePreviousSleepSessionDataForMilestone:previousSession];
+    NSLog(@"[DEBUG] from milestone: %@", self.lastNightTimes);
 }
 
 - (void)updateMilestoneTableData {

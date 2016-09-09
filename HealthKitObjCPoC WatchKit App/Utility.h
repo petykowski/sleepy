@@ -7,12 +7,17 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "SleepSession.h"
 
 @interface Utility : NSObject
 
 + (NSDateFormatter*)dateFormatterForTimeLabels;
++ (NSString*)pathToSleepSessionDataFile;
++ (SleepSession*)contentsOfCurrentSleepSession;
++ (SleepSession*)contentsOfPreviousSleepSession;
 + (NSDictionary*)contentsOfHealthPlist;
 + (NSDateFormatter*)dateFormatterForCellLabel;
 + (NSMutableArray*)convertAndPopulateSleepSessionDataForMilestone:(NSDictionary*)sleepSessionData;
++ (NSMutableArray*)convertAndPopulatePreviousSleepSessionDataForMilestone:(SleepSession*)previousSleepSession;
 
 @end

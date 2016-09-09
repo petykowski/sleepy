@@ -2,11 +2,31 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>StartInBedDate</key>
-	<date>2016-01-26T23:29:07Z</date>
-	<key>StartSleepDate</key>
-	<date>2016-01-26T23:28:24Z</date>
-	<key>SleepInProgress</key>
-	<false/>
+	<key>Current Sleep Session</key>
+	<dict>
+		<key>isSleepSessionInProgress</key>
+		<false/>
+		<key>inBed</key>
+		<array/>
+		<key>sleep</key>
+		<array/>
+		<key>wake</key>
+		<array/>
+		<key>outBed</key>
+		<array/>
+	</dict>
+	<key>Previous Sleep Session</key>
+	<dict>
+		<key>isSleepSessionInProgress</key>
+		<false/>
+		<key>inBed</key>
+		<array/>
+		<key>sleep</key>
+		<array/>
+		<key>wake</key>
+		<array/>
+		<key>outBed</key>
+		<array/>
+	</dict>
 </dict>
 </plist>

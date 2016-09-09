@@ -7,6 +7,7 @@
 //
 
 #import "Utility.h"
+#import "SleepSession.h"
 
 @implementation Utility
 
@@ -28,6 +29,40 @@
     
 }
 
++(NSString*)pathToSleepSessionDataFile {
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString *filePath = [documentsDirectory stringByAppendingPathComponent:@"Health.plist"];
+    
+    return filePath;
+}
+
++(SleepSession*)contentsOfCurrentSleepSession {
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString *filePath = [documentsDirectory stringByAppendingPathComponent:@"Health.plist"];
+    
+    NSMutableDictionary *sleepSessionFile = [NSMutableDictionary dictionaryWithContentsOfFile:filePath];
+    NSMutableDictionary *currentSleepSessionDictionary = [[NSMutableDictionary alloc] initWithDictionary:[sleepSessionFile objectForKey:@"Current Sleep Session"]];
+    
+    SleepSession *currentSleepSession = [[SleepSession alloc] initWithSleepSession:currentSleepSessionDictionary];
+    
+    return currentSleepSession;
+}
+
++(SleepSession*)contentsOfPreviousSleepSession {
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString *filePath = [documentsDirectory stringByAppendingPathComponent:@"Health.plist"];
+    
+    NSMutableDictionary *sleepSessionFile = [NSMutableDictionary dictionaryWithContentsOfFile:filePath];
+    NSMutableDictionary *previousleepSessionDictionary = [[NSMutableDictionary alloc] initWithDictionary:[sleepSessionFile objectForKey:@"Previous Sleep Session"]];
+    
+    SleepSession *previousSleepSession = [[SleepSession alloc] initWithSleepSession:previousleepSessionDictionary];
+    
+    return previousSleepSession;
+}
+
 +(NSDictionary*)contentsOfHealthPlist {
     
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
@@ -36,6 +71,24 @@
     NSDictionary *plistDictionary = [NSDictionary dictionaryWithContentsOfFile:filePath];
     
     return plistDictionary;
+}
+
++(NSMutableArray*)convertAndPopulatePreviousSleepSessionDataForMilestone: (SleepSession*)previousSleepSession {
+    NSMutableArray *convertedData = [[NSMutableArray alloc] init];
+    NSDateFormatter *dateFormatter = [Utility dateFormatterForTimeLabels];
+    
+    for (int i = 0; i < previousSleepSession.inBed.count; i++) {
+        [convertedData addObject:[previousSleepSession.inBed objectAtIndex:i]];
+        [convertedData addObject:[previousSleepSession.sleep objectAtIndex:i]];
+        [convertedData addObject:[previousSleepSession.wake objectAtIndex:i]];
+        [convertedData addObject:[previousSleepSession.outBed objectAtIndex:i]];
+    }
+    
+    for (int i = 0; i < convertedData.count; i++) {
+        [convertedData replaceObjectAtIndex:i withObject:[dateFormatter stringFromDate:convertedData[i]]];
+    }
+    NSLog(@"[DEBUG] Passing convertedData of: %@", convertedData);
+    return convertedData;
 }
 
 +(NSMutableArray*)convertAndPopulateSleepSessionDataForMilestone: (NSDictionary*)sleepSessionData {

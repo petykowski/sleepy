@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		C20091721D750FA6003682D9 /* SessionDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C20091711D750FA6003682D9 /* SessionDetailViewController.m */; };
 		C200919F1D75473B003682D9 /* session.m in Sources */ = {isa = PBXBuildFile; fileRef = C245D3DC1D56925E0047D2FD /* session.m */; };
+		C22EFCA91D82518500A64D3B /* SleepSession.m in Sources */ = {isa = PBXBuildFile; fileRef = C22EFCA81D82518500A64D3B /* SleepSession.m */; };
+		C22EFCAA1D82518500A64D3B /* SleepSession.m in Sources */ = {isa = PBXBuildFile; fileRef = C22EFCA81D82518500A64D3B /* SleepSession.m */; };
 		C2391DEC1D35D92C00808835 /* Utility.m in Sources */ = {isa = PBXBuildFile; fileRef = C2391DEB1D35D92C00808835 /* Utility.m */; };
 		C2391DED1D35D92C00808835 /* Utility.m in Sources */ = {isa = PBXBuildFile; fileRef = C2391DEB1D35D92C00808835 /* Utility.m */; };
 		C243C1541C57D32400DB8803 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C243C1531C57D32400DB8803 /* main.m */; };
@@ -82,6 +84,8 @@
 /* Begin PBXFileReference section */
 		C20091701D750FA6003682D9 /* SessionDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SessionDetailViewController.h; sourceTree = "<group>"; };
 		C20091711D750FA6003682D9 /* SessionDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SessionDetailViewController.m; sourceTree = "<group>"; };
+		C22EFCA71D82518500A64D3B /* SleepSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SleepSession.h; sourceTree = "<group>"; };
+		C22EFCA81D82518500A64D3B /* SleepSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SleepSession.m; sourceTree = "<group>"; };
 		C22F3B0A1D331B7900FE6F9B /* HealthKitObjCPoC WatchKit App.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "HealthKitObjCPoC WatchKit App.entitlements"; sourceTree = "<group>"; };
 		C2391DEA1D35D92C00808835 /* Utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utility.h; sourceTree = "<group>"; };
 		C2391DEB1D35D92C00808835 /* Utility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Utility.m; sourceTree = "<group>"; };
@@ -157,6 +161,8 @@
 		C243C1461C57D32400DB8803 = {
 			isa = PBXGroup;
 			children = (
+				C22EFCA71D82518500A64D3B /* SleepSession.h */,
+				C22EFCA81D82518500A64D3B /* SleepSession.m */,
 				C2AB02111D5652430051CFCF /* coreData.xcdatamodeld */,
 				C245D3DB1D56925E0047D2FD /* session.h */,
 				C245D3DC1D56925E0047D2FD /* session.m */,
@@ -431,6 +437,7 @@
 				C20091721D750FA6003682D9 /* SessionDetailViewController.m in Sources */,
 				C2391DEC1D35D92C00808835 /* Utility.m in Sources */,
 				C2BBAAA31D6FCCC0000ACD2B /* SessionsTableViewController.m in Sources */,
+				C22EFCA91D82518500A64D3B /* SleepSession.m in Sources */,
 				C243C1571C57D32400DB8803 /* AppDelegate.m in Sources */,
 				C243C1541C57D32400DB8803 /* main.m in Sources */,
 				C2AB02131D5652430051CFCF /* coreData.xcdatamodeld in Sources */,
@@ -447,6 +454,7 @@
 				C200919F1D75473B003682D9 /* session.m in Sources */,
 				C2BA05E11D2FEC1800438CC7 /* InterfaceControllerSleep.m in Sources */,
 				C2391DED1D35D92C00808835 /* Utility.m in Sources */,
+				C22EFCAA1D82518500A64D3B /* SleepSession.m in Sources */,
 				C2FB86561D31D93800FCC143 /* MilestoneRowController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
