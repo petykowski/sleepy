@@ -64,11 +64,11 @@
 -(BOOL)doesMilestoneDataExsist {
     SleepSession *previousSession = [Utility contentsOfPreviousSleepSession];
     
-    if (previousSession.inBed) {
-        return true;
+    if (!previousSession.inBed || !previousSession.inBed.count) {
+        return false;
     }
     else {
-       return false;
+       return true;
     }
 }
 

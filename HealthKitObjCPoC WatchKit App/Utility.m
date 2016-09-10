@@ -7,12 +7,12 @@
 //
 
 #import "Utility.h"
+#import "Constants.h"
 #import "SleepSession.h"
 
 @implementation Utility
 
 +(NSDateFormatter*)dateFormatterForTimeLabels {
-    
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     dateFormatter.dateStyle = NSDateFormatterNoStyle;
     dateFormatter.timeStyle = NSDateFormatterShortStyle;
@@ -22,7 +22,6 @@
 }
 
 +(NSDateFormatter*)dateFormatterForCellLabel {
-    
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"EEE, MMMM d"];
     return dateFormatter;
@@ -32,7 +31,7 @@
 +(NSString*)pathToSleepSessionDataFile {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
-    NSString *filePath = [documentsDirectory stringByAppendingPathComponent:@"Health.plist"];
+    NSString *filePath = [documentsDirectory stringByAppendingPathComponent:sleepSessionFileNameForWatch];
     
     return filePath;
 }
@@ -40,7 +39,7 @@
 +(SleepSession*)contentsOfCurrentSleepSession {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
-    NSString *filePath = [documentsDirectory stringByAppendingPathComponent:@"Health.plist"];
+    NSString *filePath = [documentsDirectory stringByAppendingPathComponent:sleepSessionFileNameForWatch];
     
     NSMutableDictionary *sleepSessionFile = [NSMutableDictionary dictionaryWithContentsOfFile:filePath];
     NSMutableDictionary *currentSleepSessionDictionary = [[NSMutableDictionary alloc] initWithDictionary:[sleepSessionFile objectForKey:@"Current Sleep Session"]];
@@ -53,7 +52,7 @@
 +(SleepSession*)contentsOfPreviousSleepSession {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
-    NSString *filePath = [documentsDirectory stringByAppendingPathComponent:@"Health.plist"];
+    NSString *filePath = [documentsDirectory stringByAppendingPathComponent:sleepSessionFileNameForWatch];
     
     NSMutableDictionary *sleepSessionFile = [NSMutableDictionary dictionaryWithContentsOfFile:filePath];
     NSMutableDictionary *previousleepSessionDictionary = [[NSMutableDictionary alloc] initWithDictionary:[sleepSessionFile objectForKey:@"Previous Sleep Session"]];
@@ -67,7 +66,7 @@
     
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
-    NSString *filePath = [documentsDirectory stringByAppendingPathComponent:@"Health.plist"];
+    NSString *filePath = [documentsDirectory stringByAppendingPathComponent:sleepSessionFileNameForWatch];
     NSDictionary *plistDictionary = [NSDictionary dictionaryWithContentsOfFile:filePath];
     
     return plistDictionary;

@@ -11,6 +11,7 @@
 #import "InterfaceControllerSleep.h"
 #import "SleepMilestoneInterfaceController.h"
 #import "Utility.h"
+#import "Constants.h"
 #import "SleepSession.h"
 
 @import HealthKit;
@@ -122,7 +123,7 @@
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
-    NSString *filePath = [documentsDirectory stringByAppendingPathComponent:@"Health.plist"];
+    NSString *filePath = [documentsDirectory stringByAppendingPathComponent:sleepSessionFileNameForWatch];
     
     success = [fileManager fileExistsAtPath:filePath];
     
@@ -208,7 +209,7 @@
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
-    NSString *filePath = [documentsDirectory stringByAppendingPathComponent:@"Health.plist"];
+    NSString *filePath = [documentsDirectory stringByAppendingPathComponent:sleepSessionFileNameForWatch];
     
     success = [fileManager fileExistsAtPath:filePath];
     
@@ -269,7 +270,7 @@
     [self hideWakeIndicator];
     [self.currentSleepSession.outBed addObject:[NSDate date]];
     self.currentSleepSession.isSleepSessionInProgress = false;
-    if (self.currentSleepSession.wake.count == 0) {
+    if (self.currentSleepSession.wake.count != self.currentSleepSession.outBed.count) {
         [self.currentSleepSession.wake addObject:[NSDate dateWithTimeInterval:-1 sinceDate:[NSDate date]]];
     }
     [self writeCurrentSleepSessionToFile];
