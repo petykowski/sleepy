@@ -129,16 +129,15 @@
     
     if (!success) {
         BOOL didWrite;
-        NSLog(@"[DEBUG] No file currently exsists at this path.");
+        NSLog(@"[DEBUG] File not found in users documents directory.");
         NSString *path = [[NSBundle mainBundle] pathForResource:@"Health" ofType:@"plist"];
         didWrite = [fileManager copyItemAtPath:path toPath:filePath error:&error];
         
         if (didWrite) {
-            NSLog(@"[DEBUG] Sucessfully created Health.plist.");
+            NSLog(@"[DEBUG] File Health.plist copied to users documents directory.");
         } else if (!didWrite) {
-            NSLog(@"[DEBUG] Failed to create Health.plist");
+            NSLog(@"[DEBUG] Unable to create file, Health.plist, at users document directory. Failed with error: %@", error);
         }
-        
     }
 }
 
@@ -150,7 +149,6 @@
 }
 
 - (void)populateSleepSessionWithCurrentSessionData {
-    NSLog(@"[VERBOSE] Sleep is currently in progress.");
     self.currentSleepSession = [Utility contentsOfCurrentSleepSession];
 }
 
@@ -180,7 +178,6 @@
 - (void)writeCurrentSleepSessionAndRetainAsPreviousSleepSessionAtFile {
     NSString *filePath = [Utility pathToSleepSessionDataFile];
     NSMutableDictionary *sleepSessionFile = [NSMutableDictionary dictionaryWithContentsOfFile:filePath];
-    NSLog(@"[DEBUG] PRE ADD CONTENTS: %@", sleepSessionFile);
     NSMutableDictionary *currentSleepSessionDictionary = [[NSMutableDictionary alloc] initWithDictionary:[sleepSessionFile objectForKey:@"Current Sleep Session"]];
     
     [currentSleepSessionDictionary setObject:[NSNumber numberWithBool:self.currentSleepSession.isSleepSessionInProgress]  forKey:@"isSleepSessionInProgress"];
@@ -191,8 +188,6 @@
     
     [sleepSessionFile setObject:currentSleepSessionDictionary forKey:@"Current Sleep Session"];
     [sleepSessionFile setObject:currentSleepSessionDictionary forKey:@"Previous Sleep Session"];
-    
-    NSLog(@"[DEBUG] POST ADD CONTENTS: %@", sleepSessionFile);
     
     BOOL didWrite = [sleepSessionFile writeToFile:filePath atomically:YES];
     if (didWrite) {
@@ -456,7 +451,6 @@
 - (void)prepareMenuIconsForUserNotInSleepSession {
     [self clearAllMenuItems];
     [self addMenuItemWithImageNamed:@"sleepMenuIcon" title:@"Sleep" action:@selector(sleepDidStartMenuButton)];
-    [self addMenuItemWithImageNamed:@"sleepMenuIcon" title:@"Delete File" action:@selector(deleteSleepSessionDataFile)];
 }
 
 - (void)prepareMenuIconsForUserAsleepInSleepSession {
