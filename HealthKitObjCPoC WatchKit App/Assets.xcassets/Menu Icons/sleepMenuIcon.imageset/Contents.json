@@ -2,7 +2,14 @@
   "images" : [
     {
       "idiom" : "watch",
+      "filename" : "sleepMenuIcon@2x-1.png",
+      "screen-width" : "<=145",
+      "scale" : "2x"
+    },
+    {
+      "idiom" : "watch",
       "filename" : "sleepMenuIcon@2x.png",
+      "screen-width" : ">145",
       "scale" : "2x"
     }
   ],
