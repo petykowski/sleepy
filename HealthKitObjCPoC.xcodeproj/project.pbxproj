@@ -37,6 +37,7 @@
 		C2BA05E11D2FEC1800438CC7 /* InterfaceControllerSleep.m in Sources */ = {isa = PBXBuildFile; fileRef = C2BA05E01D2FEC1800438CC7 /* InterfaceControllerSleep.m */; };
 		C2BBAAA31D6FCCC0000ACD2B /* SessionsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2BBAAA21D6FCCC0000ACD2B /* SessionsTableViewController.m */; };
 		C2CCCF1D1D7E2C84004C82F8 /* SleepSessionTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CCCF1C1D7E2C84004C82F8 /* SleepSessionTableViewCell.m */; };
+		C2D808C91D8658C3007FEB19 /* HealthKit.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = C2D808C81D8658C3007FEB19 /* HealthKit.mp4 */; };
 		C2FB86511D31D0B900FCC143 /* SleepMilestoneInterfaceController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2FB86501D31D0B900FCC143 /* SleepMilestoneInterfaceController.m */; };
 		C2FB86521D31D0B900FCC143 /* SleepMilestoneInterfaceController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2FB86501D31D0B900FCC143 /* SleepMilestoneInterfaceController.m */; };
 		C2FB86561D31D93800FCC143 /* MilestoneRowController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2FB86541D31D93800FCC143 /* MilestoneRowController.m */; };
@@ -132,6 +133,7 @@
 		C2BBAAA21D6FCCC0000ACD2B /* SessionsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SessionsTableViewController.m; sourceTree = "<group>"; };
 		C2CCCF1B1D7E2C84004C82F8 /* SleepSessionTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SleepSessionTableViewCell.h; path = TableViewCellSubviews/SleepSessionTableViewCell.h; sourceTree = "<group>"; };
 		C2CCCF1C1D7E2C84004C82F8 /* SleepSessionTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SleepSessionTableViewCell.m; path = TableViewCellSubviews/SleepSessionTableViewCell.m; sourceTree = "<group>"; };
+		C2D808C81D8658C3007FEB19 /* HealthKit.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = HealthKit.mp4; sourceTree = "<group>"; };
 		C2FB864F1D31D0B900FCC143 /* SleepMilestoneInterfaceController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SleepMilestoneInterfaceController.h; sourceTree = "<group>"; };
 		C2FB86501D31D0B900FCC143 /* SleepMilestoneInterfaceController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SleepMilestoneInterfaceController.m; sourceTree = "<group>"; };
 		C2FB86531D31D93800FCC143 /* MilestoneRowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MilestoneRowController.h; path = "HealthKitObjCPoC WatchKit Extension/MilestoneRowController.h"; sourceTree = SOURCE_ROOT; };
@@ -227,6 +229,7 @@
 				C20091701D750FA6003682D9 /* SessionDetailViewController.h */,
 				C20091711D750FA6003682D9 /* SessionDetailViewController.m */,
 				C243C15E1C57D32400DB8803 /* Assets.xcassets */,
+				C2D808CA1D8658CF007FEB19 /* Media */,
 				C243C1601C57D32400DB8803 /* LaunchScreen.storyboard */,
 				C243C1631C57D32400DB8803 /* Info.plist */,
 				C243C1521C57D32400DB8803 /* Supporting Files */,
@@ -272,6 +275,14 @@
 				C243C1821C57D32400DB8803 /* Info.plist */,
 			);
 			path = "HealthKitObjCPoC WatchKit Extension";
+			sourceTree = "<group>";
+		};
+		C2D808CA1D8658CF007FEB19 /* Media */ = {
+			isa = PBXGroup;
+			children = (
+				C2D808C81D8658C3007FEB19 /* HealthKit.mp4 */,
+			);
+			name = Media;
 			sourceTree = "<group>";
 		};
 		C2FFFCEF1D71313400BF3B6C /* Frameworks */ = {
@@ -411,6 +422,7 @@
 			files = (
 				C243C1621C57D32400DB8803 /* LaunchScreen.storyboard in Resources */,
 				C243C15F1C57D32400DB8803 /* Assets.xcassets in Resources */,
+				C2D808C91D8658C3007FEB19 /* HealthKit.mp4 in Resources */,
 				C243C15D1C57D32400DB8803 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

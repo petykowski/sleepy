@@ -22,7 +22,7 @@ static CGFloat const kDefaultUnderTitlePadding = 30;
 static CGFloat const kDefaultBottomPadding = 0;
 static CGFloat const kDefaultUnderPageControlPadding = 0;
 static CGFloat const kDefaultTitleFontSize = 38;
-static CGFloat const kDefaultBodyFontSize = 28;
+static CGFloat const kDefaultBodyFontSize = 20;
 static CGFloat const kDefaultButtonFontSize = 24;
 
 static CGFloat const kActionButtonHeight = 50;
@@ -115,17 +115,23 @@ NSString * const kOnboardActionButtonAccessibilityIdentifier = @"OnboardActionBu
     self.bodyLabel.font = [UIFont fontWithName:kDefaultOnboardingFont size:kDefaultBodyFontSize];
     self.bodyLabel.numberOfLines = 0;
     self.bodyLabel.textAlignment = NSTextAlignmentCenter;
-
+    
+    
     // Action button
-    self.actionButton = [UIButton new];
-    self.actionButton.accessibilityIdentifier = kOnboardActionButtonAccessibilityIdentifier;
-    self.actionButton.titleLabel.font = [UIFont fontWithName:kDefaultOnboardingFont size:kDefaultButtonFontSize];
-    [self.actionButton setTitle:buttonText forState:UIControlStateNormal];
-    [self.actionButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [self.actionButton addTarget:self action:@selector(handleButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+    if (buttonText != nil){
+        self.actionButton = [UIButton new];
+        self.actionButton.accessibilityIdentifier = kOnboardActionButtonAccessibilityIdentifier;
+        self.actionButton.titleLabel.font = [UIFont fontWithName:kDefaultOnboardingFont size:kDefaultButtonFontSize];
+        [self.actionButton setTitle:buttonText forState:UIControlStateNormal];
+        [self.actionButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [self.actionButton addTarget:self action:@selector(handleButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+        self.actionButton.backgroundColor = [UIColor colorWithRed:0.3725490196 green:0.3058823529 blue:0.7176470588 alpha:1];
+        self.actionButton.layer.borderWidth = 0.5f;
+        self.actionButton.layer.cornerRadius = 10.0f;
 
-    self.buttonActionHandler = actionBlock ?: ^(OnboardingViewController *controller){};
-
+        self.buttonActionHandler = actionBlock ?: ^(OnboardingViewController *controller){};
+    }
+    
     // Movie player
     self.videoURL = videoURL;
 
@@ -164,6 +170,14 @@ NSString * const kOnboardActionButtonAccessibilityIdentifier = @"OnboardActionBu
 
         self.moviePlayerController = [AVPlayerViewController new];
         self.moviePlayerController.player = self.player;
+        //ADDED
+        self.player.actionAtItemEnd = AVPlayerActionAtItemEndNone;
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(playerItemDidReachEnd:)
+                                                     name:AVPlayerItemDidPlayToEndTimeNotification
+                                                   object:[self.player currentItem]];
+        
+        
         self.moviePlayerController.showsPlaybackControls = NO;
 
         [self.view addSubview:self.moviePlayerController.view];
@@ -173,6 +187,11 @@ NSString * const kOnboardActionButtonAccessibilityIdentifier = @"OnboardActionBu
     [self.view addSubview:self.titleLabel];
     [self.view addSubview:self.bodyLabel];
     [self.view addSubview:self.actionButton];
+}
+//ADDED
+- (void)playerItemDidReachEnd:(NSNotification *)notification {
+    AVPlayerItem *p = [notification object];
+    [p seekToTime:kCMTimeZero];
 }
 
 - (void)viewWillAppear:(BOOL)animated {

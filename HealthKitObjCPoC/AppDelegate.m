@@ -96,6 +96,10 @@ static NSString * const kUserHasOnboardedKey = @"user_has_onboarded";
 
 - (OnboardingViewController *)generateStandardOnboardingVC {
     
+    NSBundle *bundle = [NSBundle mainBundle];
+    NSString *moviePath = [bundle pathForResource:@"HealthKit" ofType:@"mp4"];
+    NSURL *movieURL = [NSURL fileURLWithPath:moviePath];
+    
     NSDateComponents *components = [[NSCalendar currentCalendar] components:NSCalendarUnitHour fromDate:[NSDate date]];
     NSInteger currentHour = [components hour];
     NSString *greeting;
@@ -111,19 +115,40 @@ static NSString * const kUserHasOnboardedKey = @"user_has_onboarded";
     
     OnboardingContentViewController *firstPage = [OnboardingContentViewController contentWithTitle:greeting body:@"Sleepy is a sleep tracking app that helps users make sense of their sleep patterns." image:[UIImage imageNamed:@"blue"] buttonText:nil action:nil];
     
-    OnboardingContentViewController *secondPage = [OnboardingContentViewController contentWithTitle:@"Integrate with HealthKit" body:@"Allowing access to HealthKit allows Sleepy to determine when you've fallen asleep and build sleep trends." image:nil buttonText:@"Enable HealthKit Access" action:^{
+    firstPage.topPadding = 0;
+    firstPage.underIconPadding = 0;
+    firstPage.underTitlePadding = 315;
+    
+    
+    OnboardingContentViewController *secondPage = [OnboardingContentViewController contentWithTitle:@"Integrate with HealthKit" body:@"Allowing access to HealthKit allows Sleepy to determine when you've fallen asleep and build sleep trends." videoURL:movieURL buttonText:@"Enable HealthKit Access" action:^{
         if (_hasAccessToSleepData == 0) {
             [self requestAccessToHealthKit];
         }
     }];
     
+    secondPage.topPadding = 0;
+    secondPage.underIconPadding = 0;
+    secondPage.underTitlePadding = 275;
+    
     OnboardingContentViewController *thirdPage = [OnboardingContentViewController contentWithTitle:@"Going To Bed" body:@"Start a sleep session by 3D touching the Sleepy Watch App when you intend to start sleeping." image:[UIImage imageNamed:@"yellow"] buttonText:nil action:nil];
+    
+    thirdPage.topPadding = 0;
+    thirdPage.underIconPadding = 0;
+    thirdPage.underTitlePadding = 315;
     
     OnboardingContentViewController *fourthPage = [OnboardingContentViewController contentWithTitle:@"Waking Up" body:@"In the morning, 3D touch again and select end, or wake if you want a few extra minutes in bed before getting up." image:[UIImage imageNamed:@"yellow"] buttonText:nil action:nil];
     
-    OnboardingContentViewController *fifthPage = [OnboardingContentViewController contentWithTitle:nil body:nil image:nil buttonText:@"Sweet Dreams!" action:^{
+    fourthPage.topPadding = 0;
+    fourthPage.underIconPadding = 0;
+    fourthPage.underTitlePadding = 315;
+    
+    OnboardingContentViewController *fifthPage = [OnboardingContentViewController contentWithTitle:@"Have a Great Sleep" body:nil image:nil buttonText:@"Sweet Dreams!" action:^{
         [self handleOnboardingCompletion];
     }];
+    
+    fifthPage.topPadding = 0;
+    fifthPage.underIconPadding = 0;
+    fifthPage.underTitlePadding = 315;
     
     OnboardingViewController *onboardingVC = [OnboardingViewController onboardWithBackgroundImage:nil contents:@[firstPage, secondPage, thirdPage, fourthPage, fifthPage]];
     onboardingVC.shouldFadeTransitions = YES;
