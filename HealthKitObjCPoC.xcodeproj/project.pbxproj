@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		C20091721D750FA6003682D9 /* SessionDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C20091711D750FA6003682D9 /* SessionDetailViewController.m */; };
 		C200919F1D75473B003682D9 /* session.m in Sources */ = {isa = PBXBuildFile; fileRef = C245D3DC1D56925E0047D2FD /* session.m */; };
+		C22625CD1D864BB70013398C /* OnboardingContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C22625CA1D864BB70013398C /* OnboardingContentViewController.m */; };
+		C22625CF1D864BB70013398C /* OnboardingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C22625CC1D864BB70013398C /* OnboardingViewController.m */; };
 		C22EFCA91D82518500A64D3B /* SleepSession.m in Sources */ = {isa = PBXBuildFile; fileRef = C22EFCA81D82518500A64D3B /* SleepSession.m */; };
 		C22EFCAA1D82518500A64D3B /* SleepSession.m in Sources */ = {isa = PBXBuildFile; fileRef = C22EFCA81D82518500A64D3B /* SleepSession.m */; };
 		C2391DEC1D35D92C00808835 /* Utility.m in Sources */ = {isa = PBXBuildFile; fileRef = C2391DEB1D35D92C00808835 /* Utility.m */; };
@@ -86,6 +88,11 @@
 /* Begin PBXFileReference section */
 		C20091701D750FA6003682D9 /* SessionDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SessionDetailViewController.h; sourceTree = "<group>"; };
 		C20091711D750FA6003682D9 /* SessionDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SessionDetailViewController.m; sourceTree = "<group>"; };
+		C22625C81D864BB60013398C /* OnboardingContentViewController_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OnboardingContentViewController_Private.h; sourceTree = "<group>"; };
+		C22625C91D864BB70013398C /* OnboardingContentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OnboardingContentViewController.h; sourceTree = "<group>"; };
+		C22625CA1D864BB70013398C /* OnboardingContentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OnboardingContentViewController.m; sourceTree = "<group>"; };
+		C22625CB1D864BB70013398C /* OnboardingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OnboardingViewController.h; sourceTree = "<group>"; };
+		C22625CC1D864BB70013398C /* OnboardingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OnboardingViewController.m; sourceTree = "<group>"; };
 		C22EFCA71D82518500A64D3B /* SleepSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SleepSession.h; sourceTree = "<group>"; };
 		C22EFCA81D82518500A64D3B /* SleepSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SleepSession.m; sourceTree = "<group>"; };
 		C22F3B0A1D331B7900FE6F9B /* HealthKitObjCPoC WatchKit App.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "HealthKitObjCPoC WatchKit App.entitlements"; sourceTree = "<group>"; };
@@ -152,6 +159,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C22625D11D864BC10013398C /* On Boarding */ = {
+			isa = PBXGroup;
+			children = (
+				C22625C81D864BB60013398C /* OnboardingContentViewController_Private.h */,
+				C22625C91D864BB70013398C /* OnboardingContentViewController.h */,
+				C22625CA1D864BB70013398C /* OnboardingContentViewController.m */,
+				C22625CB1D864BB70013398C /* OnboardingViewController.h */,
+				C22625CC1D864BB70013398C /* OnboardingViewController.m */,
+			);
+			name = "On Boarding";
+			path = "HealthKitObjCPoC WatchKit Extension";
+			sourceTree = "<group>";
+		};
 		C2391DE91D35D8E900808835 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
@@ -177,6 +197,7 @@
 				C243C16A1C57D32400DB8803 /* HealthKitObjCPoC WatchKit App */,
 				C243C1791C57D32400DB8803 /* HealthKitObjCPoC WatchKit Extension */,
 				C243C1501C57D32400DB8803 /* Products */,
+				C22625D11D864BC10013398C /* On Boarding */,
 				C2391DE91D35D8E900808835 /* Utilities */,
 				C2FFFCEF1D71313400BF3B6C /* Frameworks */,
 			);
@@ -440,7 +461,9 @@
 				C2AA52DF1D83AB7600584AF4 /* Constants.m in Sources */,
 				C2CCCF1D1D7E2C84004C82F8 /* SleepSessionTableViewCell.m in Sources */,
 				C245D3DD1D56925E0047D2FD /* session.m in Sources */,
+				C22625CD1D864BB70013398C /* OnboardingContentViewController.m in Sources */,
 				C2FB86511D31D0B900FCC143 /* SleepMilestoneInterfaceController.m in Sources */,
+				C22625CF1D864BB70013398C /* OnboardingViewController.m in Sources */,
 				C20091721D750FA6003682D9 /* SessionDetailViewController.m in Sources */,
 				C2391DEC1D35D92C00808835 /* Utility.m in Sources */,
 				C2BBAAA31D6FCCC0000ACD2B /* SessionsTableViewController.m in Sources */,

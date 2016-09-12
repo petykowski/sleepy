@@ -8,13 +8,18 @@
 
 #import "AppDelegate.h"
 #import <CoreData/CoreData.h>
-
+#import "SessionsTableViewController.h"
+#import "OnboardingContentViewController.h"
+#import "OnboardingViewController.h"
 @import HealthKit;
 
 @interface AppDelegate ()
 
 @property (nonatomic, retain) HKHealthStore *healthStore;
+@property (nonatomic, readwrite) BOOL hasAccessToSleepData;
 @end
+
+static NSString * const kUserHasOnboardedKey = @"user_has_onboarded";
 
 @implementation AppDelegate
 
@@ -40,12 +45,99 @@
     
 }
 
+- (void)requestAccessToHealthKit {
+    NSArray *readTypes = @[[HKObjectType categoryTypeForIdentifier:HKCategoryTypeIdentifierSleepAnalysis],
+                           [HKObjectType quantityTypeForIdentifier:HKQuantityTypeIdentifierHeartRate]];
+    
+    NSArray *writeTypes = @[[HKObjectType categoryTypeForIdentifier:HKCategoryTypeIdentifierSleepAnalysis],
+                            [HKObjectType quantityTypeForIdentifier:HKQuantityTypeIdentifierHeartRate]];
+    
+    [self.healthStore requestAuthorizationToShareTypes:[NSSet setWithArray:writeTypes] readTypes:[NSSet setWithArray:readTypes] completion:^(BOOL success, NSError *error){
+        if (!success) {
+            NSLog(@"[DEBUG] Failed attempt to request access to Health.app with error: %@", error);
+        }
+    }];
+}
 
 #pragma mark - UIApplication
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    // Override point for customization after application launch.
+    self.healthStore = [[HKHealthStore alloc] init];
+    HKAuthorizationStatus hasAccessToSleepData = [self.healthStore authorizationStatusForType:[HKObjectType categoryTypeForIdentifier:HKCategoryTypeIdentifierSleepAnalysis]];
+    
+    
+    // determine if the user has onboarded yet or not
+    BOOL userHasOnboarded = [[NSUserDefaults standardUserDefaults] boolForKey:kUserHasOnboardedKey];
+    
+    if (userHasOnboarded) {
+        // Do Nothing
+    }
+    else {
+        self.window.rootViewController = [self generateStandardOnboardingVC];
+    }
+    
+    [self.window makeKeyAndVisible];
     return YES;
+}
+
+- (void)setupNormalRootViewController {
+    
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    UIViewController *mainViewController = [storyboard instantiateViewControllerWithIdentifier:@"Main Application"];
+    [self.window.rootViewController presentViewController:mainViewController animated:YES completion:NULL];
+}
+
+- (void)handleOnboardingCompletion {
+    //    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kUserHasOnboardedKey];
+    
+    // transition to the main application
+    [self setupNormalRootViewController];
+}
+
+- (OnboardingViewController *)generateStandardOnboardingVC {
+    
+    NSDateComponents *components = [[NSCalendar currentCalendar] components:NSCalendarUnitHour fromDate:[NSDate date]];
+    NSInteger currentHour = [components hour];
+    NSString *greeting;
+    
+    if (currentHour > 5 && currentHour < 12 ) {
+        greeting = [NSString stringWithFormat:@"Good Morning!"];
+    } else if (currentHour > 12 && currentHour < 18) {
+        greeting = [NSString stringWithFormat:@"Good Afternoon!"];
+    } else {
+        greeting = [NSString stringWithFormat:@"Good Evening!"];
+    }
+    
+    
+    OnboardingContentViewController *firstPage = [OnboardingContentViewController contentWithTitle:greeting body:@"Sleepy is a sleep tracking app that helps users make sense of their sleep patterns." image:[UIImage imageNamed:@"blue"] buttonText:nil action:nil];
+    
+    OnboardingContentViewController *secondPage = [OnboardingContentViewController contentWithTitle:@"Integrate with HealthKit" body:@"Allowing access to HealthKit allows Sleepy to determine when you've fallen asleep and build sleep trends." image:nil buttonText:@"Enable HealthKit Access" action:^{
+        if (_hasAccessToSleepData == 0) {
+            [self requestAccessToHealthKit];
+        }
+    }];
+    
+    OnboardingContentViewController *thirdPage = [OnboardingContentViewController contentWithTitle:@"Going To Bed" body:@"Start a sleep session by 3D touching the Sleepy Watch App when you intend to start sleeping." image:[UIImage imageNamed:@"yellow"] buttonText:nil action:nil];
+    
+    OnboardingContentViewController *fourthPage = [OnboardingContentViewController contentWithTitle:@"Waking Up" body:@"In the morning, 3D touch again and select end, or wake if you want a few extra minutes in bed before getting up." image:[UIImage imageNamed:@"yellow"] buttonText:nil action:nil];
+    
+    OnboardingContentViewController *fifthPage = [OnboardingContentViewController contentWithTitle:nil body:nil image:nil buttonText:@"Sweet Dreams!" action:^{
+        [self handleOnboardingCompletion];
+    }];
+    
+    OnboardingViewController *onboardingVC = [OnboardingViewController onboardWithBackgroundImage:nil contents:@[firstPage, secondPage, thirdPage, fourthPage, fifthPage]];
+    onboardingVC.shouldFadeTransitions = YES;
+    onboardingVC.fadePageControlOnLastPage = YES;
+    onboardingVC.fadeSkipButtonOnLastPage = YES;
+    
+    // If you want to allow skipping the onboarding process, enable skipping and set a block to be executed
+    // when the user hits the skip button.
+    onboardingVC.allowSkipping = NO;
+    onboardingVC.skipHandler = ^{
+        [self handleOnboardingCompletion];
+    };
+    
+    return onboardingVC;
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
