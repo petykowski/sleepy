@@ -93,17 +93,19 @@ NSString * const kOnboardActionButtonAccessibilityIdentifier = @"OnboardActionBu
         return nil;
     }
 
+    if (image != nil) {
     // Icon image view
     self.iconImageView = [[UIImageView alloc] initWithImage:image];
     self.iconWidth = image ? image.size.width : kDefaultImageViewSize;
     self.iconHeight = image ? image.size.height : kDefaultImageViewSize;
-
+    }
+    
     // Title label
     self.titleLabel = [UILabel new];
     self.titleLabel.accessibilityIdentifier = kOnboardMainTextAccessibilityIdentifier;
     self.titleLabel.text = title;
     self.titleLabel.textColor = DEFAULT_TEXT_COLOR;
-    self.titleLabel.font = [UIFont fontWithName:kDefaultOnboardingFont size:kDefaultTitleFontSize];
+    self.titleLabel.font = [UIFont systemFontOfSize:kDefaultTitleFontSize];
     self.titleLabel.numberOfLines = 0;
     self.titleLabel.textAlignment = NSTextAlignmentCenter;
 
@@ -112,7 +114,7 @@ NSString * const kOnboardActionButtonAccessibilityIdentifier = @"OnboardActionBu
     self.bodyLabel.accessibilityIdentifier = kOnboardSubTextAccessibilityIdentifier;
     self.bodyLabel.text = body;
     self.bodyLabel.textColor = DEFAULT_TEXT_COLOR;
-    self.bodyLabel.font = [UIFont fontWithName:kDefaultOnboardingFont size:kDefaultBodyFontSize];
+    self.bodyLabel.font =  [UIFont systemFontOfSize:kDefaultBodyFontSize];
     self.bodyLabel.numberOfLines = 0;
     self.bodyLabel.textAlignment = NSTextAlignmentCenter;
     
@@ -121,13 +123,13 @@ NSString * const kOnboardActionButtonAccessibilityIdentifier = @"OnboardActionBu
     if (buttonText != nil){
         self.actionButton = [UIButton new];
         self.actionButton.accessibilityIdentifier = kOnboardActionButtonAccessibilityIdentifier;
-        self.actionButton.titleLabel.font = [UIFont fontWithName:kDefaultOnboardingFont size:kDefaultButtonFontSize];
+        self.actionButton.titleLabel.font = [UIFont systemFontOfSize:kDefaultButtonFontSize];
         [self.actionButton setTitle:buttonText forState:UIControlStateNormal];
         [self.actionButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [self.actionButton addTarget:self action:@selector(handleButtonPressed) forControlEvents:UIControlEventTouchUpInside];
         self.actionButton.backgroundColor = [UIColor colorWithRed:0.3725490196 green:0.3058823529 blue:0.7176470588 alpha:1];
         self.actionButton.layer.borderWidth = 0.5f;
-        self.actionButton.layer.cornerRadius = 10.0f;
+        self.actionButton.layer.cornerRadius = 5.0f;
 
         self.buttonActionHandler = actionBlock ?: ^(OnboardingViewController *controller){};
     }
@@ -163,6 +165,7 @@ NSString * const kOnboardActionButtonAccessibilityIdentifier = @"OnboardActionBu
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleAppEnteredForeground) name:UIApplicationDidBecomeActiveNotification object:nil];
 
     self.view.backgroundColor = [UIColor clearColor];
+    [self setNeedsStatusBarAppearanceUpdate];
 
     // Add all our subviews
     if (self.videoURL) {
@@ -262,6 +265,11 @@ NSString * const kOnboardActionButtonAccessibilityIdentifier = @"OnboardActionBu
     if ((self.player.rate != 0.0) && !self.player.error) {
         [self.player pause];
     }
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleDefault;
 }
 
 

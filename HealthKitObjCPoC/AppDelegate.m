@@ -73,6 +73,7 @@ static NSString * const kUserHasOnboardedKey = @"user_has_onboarded";
         // Do Nothing
     }
     else {
+        application.statusBarStyle = UIStatusBarStyleLightContent;
         self.window.rootViewController = [self generateStandardOnboardingVC];
     }
     
@@ -116,7 +117,7 @@ static NSString * const kUserHasOnboardedKey = @"user_has_onboarded";
     OnboardingContentViewController *firstPage = [OnboardingContentViewController contentWithTitle:greeting body:@"Sleepy is a sleep tracking app that helps users make sense of their sleep patterns." image:[UIImage imageNamed:@"blue"] buttonText:nil action:nil];
     
     firstPage.topPadding = 0;
-    firstPage.underIconPadding = 0;
+    firstPage.underIconPadding = 65;
     firstPage.underTitlePadding = 315;
     
     
@@ -126,20 +127,41 @@ static NSString * const kUserHasOnboardedKey = @"user_has_onboarded";
         }
     }];
     
-    secondPage.topPadding = 0;
-    secondPage.underIconPadding = 0;
-    secondPage.underTitlePadding = 275;
+    if( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone ){
+        
+        CGFloat screenHeight = [UIScreen mainScreen].bounds.size.height;
+        CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
+        if( screenHeight < screenWidth ){
+            screenHeight = screenWidth;
+        }
+        
+        if( screenHeight > 480 && screenHeight < 667 ){
+            NSLog(@"iPhone 5/5s");
+            secondPage.topPadding = 0;
+            secondPage.underIconPadding = 50;
+            secondPage.underTitlePadding = 225;
+        } else if ( screenHeight > 480 && screenHeight < 736 ){
+            NSLog(@"iPhone 6");
+            secondPage.topPadding = 0;
+            secondPage.underIconPadding = 65;
+            secondPage.underTitlePadding = 315;
+        } else if ( screenHeight > 480 ){
+            NSLog(@"iPhone 6 Plus");
+        } else {
+            NSLog(@"iPhone 4/4s");
+        }
+    }
     
     OnboardingContentViewController *thirdPage = [OnboardingContentViewController contentWithTitle:@"Going To Bed" body:@"Start a sleep session by 3D touching the Sleepy Watch App when you intend to start sleeping." image:[UIImage imageNamed:@"yellow"] buttonText:nil action:nil];
     
     thirdPage.topPadding = 0;
-    thirdPage.underIconPadding = 0;
+    thirdPage.underIconPadding = 65;
     thirdPage.underTitlePadding = 315;
     
     OnboardingContentViewController *fourthPage = [OnboardingContentViewController contentWithTitle:@"Waking Up" body:@"In the morning, 3D touch again and select end, or wake if you want a few extra minutes in bed before getting up." image:[UIImage imageNamed:@"yellow"] buttonText:nil action:nil];
     
     fourthPage.topPadding = 0;
-    fourthPage.underIconPadding = 0;
+    fourthPage.underIconPadding = 65;
     fourthPage.underTitlePadding = 315;
     
     OnboardingContentViewController *fifthPage = [OnboardingContentViewController contentWithTitle:@"Have a Great Sleep" body:nil image:nil buttonText:@"Sweet Dreams!" action:^{
@@ -147,7 +169,7 @@ static NSString * const kUserHasOnboardedKey = @"user_has_onboarded";
     }];
     
     fifthPage.topPadding = 0;
-    fifthPage.underIconPadding = 0;
+    fifthPage.underIconPadding = 65;
     fifthPage.underTitlePadding = 315;
     
     OnboardingViewController *onboardingVC = [OnboardingViewController onboardWithBackgroundImage:nil contents:@[firstPage, secondPage, thirdPage, fourthPage, fifthPage]];
