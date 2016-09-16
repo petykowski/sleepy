@@ -98,8 +98,10 @@ static NSString * const kUserHasOnboardedKey = @"user_has_onboarded";
 - (OnboardingViewController *)generateStandardOnboardingVC {
     
     NSBundle *bundle = [NSBundle mainBundle];
-    NSString *moviePath = [bundle pathForResource:@"HealthKit" ofType:@"mp4"];
-    NSURL *movieURL = [NSURL fileURLWithPath:moviePath];
+    NSString *healthKitPath = [bundle pathForResource:@"HealthKit" ofType:@"mp4"];
+    NSString *appleWatchPath = [bundle pathForResource:@"SleepMenu" ofType:@"mp4"];
+    NSURL *healthKitMovieURL = [NSURL fileURLWithPath:healthKitPath];
+    NSURL *appleWatchMovieURL = [NSURL fileURLWithPath:appleWatchPath];
     
     NSDateComponents *components = [[NSCalendar currentCalendar] components:NSCalendarUnitHour fromDate:[NSDate date]];
     NSInteger currentHour = [components hour];
@@ -121,7 +123,7 @@ static NSString * const kUserHasOnboardedKey = @"user_has_onboarded";
     firstPage.underTitlePadding = 315;
     
     
-    OnboardingContentViewController *secondPage = [OnboardingContentViewController contentWithTitle:@"Integrate with HealthKit" body:@"Allowing access to HealthKit allows Sleepy to determine when you've fallen asleep and build sleep trends." videoURL:movieURL buttonText:@"Enable HealthKit Access" action:^{
+    OnboardingContentViewController *secondPage = [OnboardingContentViewController contentWithTitle:@"Integrate with HealthKit" body:@"Allowing access to HealthKit allows Sleepy to determine when you've fallen asleep and build sleep trends." videoURL:healthKitMovieURL buttonText:@"Enable HealthKit Access" action:^{
         if (_hasAccessToSleepData == 0) {
             [self requestAccessToHealthKit];
         }
@@ -152,27 +154,36 @@ static NSString * const kUserHasOnboardedKey = @"user_has_onboarded";
         }
     }
     
-    OnboardingContentViewController *thirdPage = [OnboardingContentViewController contentWithTitle:@"Going To Bed" body:@"Start a sleep session by 3D touching the Sleepy Watch App when you intend to start sleeping." image:[UIImage imageNamed:@"yellow"] buttonText:nil action:nil];
-    
-    thirdPage.topPadding = 0;
-    thirdPage.underIconPadding = 65;
-    thirdPage.underTitlePadding = 315;
-    
-    OnboardingContentViewController *fourthPage = [OnboardingContentViewController contentWithTitle:@"Waking Up" body:@"In the morning, 3D touch again and select end, or wake if you want a few extra minutes in bed before getting up." image:[UIImage imageNamed:@"yellow"] buttonText:nil action:nil];
-    
-    fourthPage.topPadding = 0;
-    fourthPage.underIconPadding = 65;
-    fourthPage.underTitlePadding = 315;
-    
-    OnboardingContentViewController *fifthPage = [OnboardingContentViewController contentWithTitle:@"Have a Great Sleep" body:nil image:nil buttonText:@"Sweet Dreams!" action:^{
+    OnboardingContentViewController *thirdPage = [OnboardingContentViewController contentWithTitle:@"Start Sleeping Smarter" body:@"Simply 3D Touch when using the Sleepy watch app to begin a new sleep session, and touch again to wake." videoURL:appleWatchMovieURL buttonText:@"Sweet Dreams" action:^{
         [self handleOnboardingCompletion];
     }];
     
-    fifthPage.topPadding = 0;
-    fifthPage.underIconPadding = 65;
-    fifthPage.underTitlePadding = 315;
+    if( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone ){
+        
+        CGFloat screenHeight = [UIScreen mainScreen].bounds.size.height;
+        CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
+        if( screenHeight < screenWidth ){
+            screenHeight = screenWidth;
+        }
+        
+        if( screenHeight > 480 && screenHeight < 667 ){
+            NSLog(@"iPhone 5/5s");
+            thirdPage.topPadding = 0;
+            thirdPage.underIconPadding = 50;
+            thirdPage.underTitlePadding = 225;
+        } else if ( screenHeight > 480 && screenHeight < 736 ){
+            NSLog(@"iPhone 6");
+            thirdPage.topPadding = 0;
+            thirdPage.underIconPadding = 65;
+            thirdPage.underTitlePadding = 315;
+        } else if ( screenHeight > 480 ){
+            NSLog(@"iPhone 6 Plus");
+        } else {
+            NSLog(@"iPhone 4/4s");
+        }
+    }
     
-    OnboardingViewController *onboardingVC = [OnboardingViewController onboardWithBackgroundImage:nil contents:@[firstPage, secondPage, thirdPage, fourthPage, fifthPage]];
+    OnboardingViewController *onboardingVC = [OnboardingViewController onboardWithBackgroundImage:nil contents:@[firstPage, secondPage, thirdPage]];
     onboardingVC.shouldFadeTransitions = YES;
     onboardingVC.fadePageControlOnLastPage = YES;
     onboardingVC.fadeSkipButtonOnLastPage = YES;
