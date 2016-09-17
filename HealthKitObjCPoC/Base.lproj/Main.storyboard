@@ -28,7 +28,7 @@
                                 <rect key="frame" x="0.0" y="92" width="375" height="60"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="BgN-ZG-VgA" id="Lbi-er-HYw">
-                                    <frame key="frameInset" width="342" height="60"/>
+                                    <frame key="frameInset" width="342" height="59.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sleep Session Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cEW-pe-Qoe" userLabel="Sleep Session Label">
@@ -74,8 +74,8 @@
                                         <constraint firstItem="cEW-pe-Qoe" firstAttribute="leading" secondItem="Lbi-er-HYw" secondAttribute="leadingMargin" constant="7" id="XM9-DC-SRf"/>
                                         <constraint firstItem="EQr-Dl-RvB" firstAttribute="top" secondItem="cEW-pe-Qoe" secondAttribute="bottom" constant="13" id="dKc-5M-SNz"/>
                                         <constraint firstItem="0gO-Hy-fYx" firstAttribute="leading" secondItem="cG3-dp-Fna" secondAttribute="trailing" constant="6" id="j4j-wo-L5H"/>
-                                        <constraint firstItem="cG3-dp-Fna" firstAttribute="leading" secondItem="Trd-1H-hak" secondAttribute="trailing" constant="30" id="kz5-IU-CoP"/>
                                         <constraint firstAttribute="trailing" secondItem="2gr-dF-G9i" secondAttribute="trailing" id="q7v-zu-5xT"/>
+                                        <constraint firstItem="cG3-dp-Fna" firstAttribute="leading" secondItem="Lbi-er-HYw" secondAttribute="leadingMargin" constant="90" id="ujC-fK-KFx"/>
                                         <constraint firstItem="cEW-pe-Qoe" firstAttribute="top" secondItem="Lbi-er-HYw" secondAttribute="topMargin" id="wv0-eQ-1Fd"/>
                                     </constraints>
                                 </tableViewCellContentView>
