@@ -89,9 +89,7 @@ static NSString * const kUserHasOnboardedKey = @"user_has_onboarded";
 }
 
 - (void)handleOnboardingCompletion {
-    //    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kUserHasOnboardedKey];
-    
-    // transition to the main application
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kUserHasOnboardedKey];
     [self setupNormalRootViewController];
 }
 
