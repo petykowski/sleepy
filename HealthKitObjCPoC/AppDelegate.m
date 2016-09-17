@@ -98,8 +98,10 @@ static NSString * const kUserHasOnboardedKey = @"user_has_onboarded";
 - (OnboardingViewController *)generateStandardOnboardingVC {
     
     NSBundle *bundle = [NSBundle mainBundle];
+    NSString *sleepyMainPath = [bundle pathForResource:@"SleepyMain" ofType:@"mp4"];
     NSString *healthKitPath = [bundle pathForResource:@"HealthKit" ofType:@"mp4"];
-    NSString *appleWatchPath = [bundle pathForResource:@"SleepMenu" ofType:@"mp4"];
+    NSString *appleWatchPath = [bundle pathForResource:@"SleepyWatch" ofType:@"mp4"];
+    NSURL *sleepyMainMovieURL = [NSURL fileURLWithPath:sleepyMainPath];
     NSURL *healthKitMovieURL = [NSURL fileURLWithPath:healthKitPath];
     NSURL *appleWatchMovieURL = [NSURL fileURLWithPath:appleWatchPath];
     
@@ -115,12 +117,35 @@ static NSString * const kUserHasOnboardedKey = @"user_has_onboarded";
         greeting = [NSString stringWithFormat:@"Good Evening!"];
     }
     
+    OnboardingContentViewController *firstPage = [OnboardingContentViewController contentWithTitle:greeting body:@"Sleepy is a sleep tracking app that helps users make sense of their sleep patterns." videoURL:sleepyMainMovieURL buttonText:nil action:nil];
     
-    OnboardingContentViewController *firstPage = [OnboardingContentViewController contentWithTitle:greeting body:@"Sleepy is a sleep tracking app that helps users make sense of their sleep patterns." image:[UIImage imageNamed:@"blue"] buttonText:nil action:nil];
-    
-    firstPage.topPadding = 0;
-    firstPage.underIconPadding = 65;
-    firstPage.underTitlePadding = 315;
+    if( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone ){
+        
+        CGFloat screenHeight = [UIScreen mainScreen].bounds.size.height;
+        CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
+        if( screenHeight < screenWidth ){
+            screenHeight = screenWidth;
+        }
+        
+        if( screenHeight > 480 && screenHeight < 667 ){
+            NSLog(@"iPhone 5/5s");
+            firstPage.topPadding = 0;
+            firstPage.underIconPadding = 50;
+            firstPage.underTitlePadding = 225;
+        } else if ( screenHeight > 480 && screenHeight < 736 ){
+            NSLog(@"iPhone 6");
+            firstPage.topPadding = 0;
+            firstPage.underIconPadding = 65;
+            firstPage.underTitlePadding = 361;
+        } else if ( screenHeight > 480 ){
+            firstPage.topPadding = 0;
+            firstPage.underIconPadding = 75;
+            firstPage.underTitlePadding = 375;
+            NSLog(@"iPhone 6 Plus");
+        } else {
+            NSLog(@"iPhone 4/4s");
+        }
+    }
     
     
     OnboardingContentViewController *secondPage = [OnboardingContentViewController contentWithTitle:@"Integrate with HealthKit" body:@"Allowing access to HealthKit allows Sleepy to determine when you've fallen asleep and build sleep trends." videoURL:healthKitMovieURL buttonText:@"Enable HealthKit Access" action:^{
@@ -146,15 +171,18 @@ static NSString * const kUserHasOnboardedKey = @"user_has_onboarded";
             NSLog(@"iPhone 6");
             secondPage.topPadding = 0;
             secondPage.underIconPadding = 65;
-            secondPage.underTitlePadding = 315;
+            secondPage.underTitlePadding = 316;
         } else if ( screenHeight > 480 ){
+            secondPage.topPadding = 0;
+            secondPage.underIconPadding = 75;
+            secondPage.underTitlePadding = 375;
             NSLog(@"iPhone 6 Plus");
         } else {
             NSLog(@"iPhone 4/4s");
         }
     }
     
-    OnboardingContentViewController *thirdPage = [OnboardingContentViewController contentWithTitle:@"Start Sleeping Smarter" body:@"Simply 3D Touch when using the Sleepy watch app to begin a new sleep session, and touch again to wake." videoURL:appleWatchMovieURL buttonText:@"Sweet Dreams" action:^{
+    OnboardingContentViewController *thirdPage = [OnboardingContentViewController contentWithTitle:@"Start Sleeping Smarter" body:@"When using the Sleepy watch app, 3D Touch to begin a new sleep session, and then again to wake." videoURL:appleWatchMovieURL buttonText:@"Get Started" action:^{
         [self handleOnboardingCompletion];
     }];
     
@@ -175,8 +203,11 @@ static NSString * const kUserHasOnboardedKey = @"user_has_onboarded";
             NSLog(@"iPhone 6");
             thirdPage.topPadding = 0;
             thirdPage.underIconPadding = 65;
-            thirdPage.underTitlePadding = 315;
+            thirdPage.underTitlePadding = 316;
         } else if ( screenHeight > 480 ){
+            thirdPage.topPadding = 0;
+            thirdPage.underIconPadding = 75;
+            thirdPage.underTitlePadding = 375;
             NSLog(@"iPhone 6 Plus");
         } else {
             NSLog(@"iPhone 4/4s");
