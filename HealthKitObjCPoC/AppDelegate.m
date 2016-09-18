@@ -62,6 +62,8 @@ static NSString * const kUserHasOnboardedKey = @"user_has_onboarded";
 #pragma mark - UIApplication
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    application.statusBarStyle = UIStatusBarStyleLightContent;
+    
     self.healthStore = [[HKHealthStore alloc] init];
     
     // determine if the user has onboarded yet or not
@@ -71,7 +73,6 @@ static NSString * const kUserHasOnboardedKey = @"user_has_onboarded";
         // Do Nothing
     }
     else {
-        application.statusBarStyle = UIStatusBarStyleLightContent;
         self.window.rootViewController = [self generateStandardOnboardingVC];
     }
     
