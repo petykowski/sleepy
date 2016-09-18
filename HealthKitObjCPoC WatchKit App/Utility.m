@@ -9,6 +9,7 @@
 #import "Utility.h"
 #import "Constants.h"
 #import "SleepSession.h"
+#import "session.h"
 
 @implementation Utility
 
@@ -107,6 +108,19 @@
         }
 
     return convertedData;
+}
+
++(NSDictionary*)convertSessionToDictionary: (session *)sleepSession {
+    NSMutableDictionary *convertedDict = [[NSMutableDictionary alloc] init];
+    NSDateFormatter *dateTitle = [Utility dateFormatterForCellLabel];
+    
+    [convertedDict setObject:[dateTitle stringFromDate:sleepSession.creationDate] forKey:@"creationDate"];
+    [convertedDict setObject:[NSKeyedUnarchiver unarchiveObjectWithData:sleepSession.inBed] forKey:@"inBedArray"];
+    [convertedDict setObject:[NSKeyedUnarchiver unarchiveObjectWithData:sleepSession.sleep] forKey:@"sleepArray"];
+    [convertedDict setObject:[NSKeyedUnarchiver unarchiveObjectWithData:sleepSession.wake] forKey:@"wakeArray"];
+    [convertedDict setObject:[NSKeyedUnarchiver unarchiveObjectWithData:sleepSession.outBed] forKey:@"outBedArray"];
+    
+    return convertedDict;
 }
 
 @end

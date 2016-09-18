@@ -10,10 +10,11 @@
 #import <WatchConnectivity/WatchConnectivity.h>
 #import "SessionsTableViewController.h"
 #import "AppDelegate.h"
-#import "SessionDetailViewController.h"
 #import "session.h"
 #import "Utility.h"
 #import "SleepSessionTableViewCell.h"
+#import "SleepSession.h"
+#import "SessionDetailTableViewController.h"
 
 
 @interface SessionsTableViewController () <WCSessionDelegate, NSFetchedResultsControllerDelegate, NSFetchedResultsControllerDelegate>
@@ -65,6 +66,7 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }
+
 
 #pragma mark - Watch Connectivity
 
@@ -218,7 +220,7 @@
     
     if ([[segue identifier] isEqualToString:@"DetailSegue"]) {
         
-        SessionDetailViewController *detailViewController = [segue destinationViewController];
+        SessionDetailTableViewController *detailViewController = [segue destinationViewController];
         session *sleepSession = nil;
         
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];

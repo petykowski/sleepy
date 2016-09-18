@@ -63,8 +63,6 @@ static NSString * const kUserHasOnboardedKey = @"user_has_onboarded";
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     self.healthStore = [[HKHealthStore alloc] init];
-    HKAuthorizationStatus hasAccessToSleepData = [self.healthStore authorizationStatusForType:[HKObjectType categoryTypeForIdentifier:HKCategoryTypeIdentifierSleepAnalysis]];
-    
     
     // determine if the user has onboarded yet or not
     BOOL userHasOnboarded = [[NSUserDefaults standardUserDefaults] boolForKey:kUserHasOnboardedKey];

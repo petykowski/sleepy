@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "SleepSession.h"
+#import "session.h"
 
 @interface Utility : NSObject
 
@@ -19,5 +20,6 @@
 + (NSDateFormatter*)dateFormatterForCellLabel;
 + (NSMutableArray*)convertAndPopulateSleepSessionDataForMilestone:(NSDictionary*)sleepSessionData;
 + (NSMutableArray*)convertAndPopulatePreviousSleepSessionDataForMilestone:(SleepSession*)previousSleepSession;
++ (NSDictionary*)convertSessionToDictionary: (session *)sleepSession;
 
 @end

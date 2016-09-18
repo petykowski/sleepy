@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		C20091721D750FA6003682D9 /* SessionDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C20091711D750FA6003682D9 /* SessionDetailViewController.m */; };
 		C200919F1D75473B003682D9 /* session.m in Sources */ = {isa = PBXBuildFile; fileRef = C245D3DC1D56925E0047D2FD /* session.m */; };
 		C22625CD1D864BB70013398C /* OnboardingContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C22625CA1D864BB70013398C /* OnboardingContentViewController.m */; };
 		C22625CF1D864BB70013398C /* OnboardingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C22625CC1D864BB70013398C /* OnboardingViewController.m */; };
@@ -31,6 +30,8 @@
 		C245D3DD1D56925E0047D2FD /* session.m in Sources */ = {isa = PBXBuildFile; fileRef = C245D3DC1D56925E0047D2FD /* session.m */; };
 		C2508E571C582A5B00900AC1 /* Health.plist in Resources */ = {isa = PBXBuildFile; fileRef = C2508E561C582A5B00900AC1 /* Health.plist */; };
 		C2508E581C582A5B00900AC1 /* Health.plist in Resources */ = {isa = PBXBuildFile; fileRef = C2508E561C582A5B00900AC1 /* Health.plist */; };
+		C29A2FB71D8DFC44005B5D29 /* SessionDetailTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C29A2FB61D8DFC44005B5D29 /* SessionDetailTableViewController.m */; };
+		C29A2FBA1D8E0054005B5D29 /* SessionDetailTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C29A2FB91D8E0054005B5D29 /* SessionDetailTableViewCell.m */; };
 		C2A7C7801D8A4DE2000B7A7F /* HealthKit.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = C2A7C77F1D8A4DE2000B7A7F /* HealthKit.mp4 */; };
 		C2AA52DF1D83AB7600584AF4 /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = C2AA52DE1D83AB7600584AF4 /* Constants.m */; };
 		C2AA52E01D83AB7600584AF4 /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = C2AA52DE1D83AB7600584AF4 /* Constants.m */; };
@@ -89,8 +90,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		C20091701D750FA6003682D9 /* SessionDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SessionDetailViewController.h; sourceTree = "<group>"; };
-		C20091711D750FA6003682D9 /* SessionDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SessionDetailViewController.m; sourceTree = "<group>"; };
 		C22625C81D864BB60013398C /* OnboardingContentViewController_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OnboardingContentViewController_Private.h; sourceTree = "<group>"; };
 		C22625C91D864BB70013398C /* OnboardingContentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OnboardingContentViewController.h; sourceTree = "<group>"; };
 		C22625CA1D864BB70013398C /* OnboardingContentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OnboardingContentViewController.m; sourceTree = "<group>"; };
@@ -126,6 +125,10 @@
 		C245D3DB1D56925E0047D2FD /* session.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = session.h; sourceTree = "<group>"; };
 		C245D3DC1D56925E0047D2FD /* session.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = session.m; sourceTree = "<group>"; };
 		C2508E561C582A5B00900AC1 /* Health.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Health.plist; sourceTree = "<group>"; };
+		C29A2FB51D8DFC44005B5D29 /* SessionDetailTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SessionDetailTableViewController.h; sourceTree = "<group>"; };
+		C29A2FB61D8DFC44005B5D29 /* SessionDetailTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SessionDetailTableViewController.m; sourceTree = "<group>"; };
+		C29A2FB81D8E0054005B5D29 /* SessionDetailTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SessionDetailTableViewCell.h; sourceTree = "<group>"; };
+		C29A2FB91D8E0054005B5D29 /* SessionDetailTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SessionDetailTableViewCell.m; sourceTree = "<group>"; };
 		C2A7C77F1D8A4DE2000B7A7F /* HealthKit.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = HealthKit.mp4; sourceTree = "<group>"; };
 		C2AA52DD1D83AB7600584AF4 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		C2AA52DE1D83AB7600584AF4 /* Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
@@ -224,14 +227,16 @@
 			children = (
 				C2CCCF1B1D7E2C84004C82F8 /* SleepSessionTableViewCell.h */,
 				C2CCCF1C1D7E2C84004C82F8 /* SleepSessionTableViewCell.m */,
+				C29A2FB81D8E0054005B5D29 /* SessionDetailTableViewCell.h */,
+				C29A2FB91D8E0054005B5D29 /* SessionDetailTableViewCell.m */,
 				C243C1921C57D34800DB8803 /* HealthKitObjCPoC.entitlements */,
 				C243C1551C57D32400DB8803 /* AppDelegate.h */,
 				C243C1561C57D32400DB8803 /* AppDelegate.m */,
 				C243C15B1C57D32400DB8803 /* Main.storyboard */,
 				C2BBAAA11D6FCCC0000ACD2B /* SessionsTableViewController.h */,
 				C2BBAAA21D6FCCC0000ACD2B /* SessionsTableViewController.m */,
-				C20091701D750FA6003682D9 /* SessionDetailViewController.h */,
-				C20091711D750FA6003682D9 /* SessionDetailViewController.m */,
+				C29A2FB51D8DFC44005B5D29 /* SessionDetailTableViewController.h */,
+				C29A2FB61D8DFC44005B5D29 /* SessionDetailTableViewController.m */,
 				C243C15E1C57D32400DB8803 /* Assets.xcassets */,
 				C2D808CA1D8658CF007FEB19 /* Media */,
 				C243C1601C57D32400DB8803 /* LaunchScreen.storyboard */,
@@ -484,7 +489,8 @@
 				C22625CD1D864BB70013398C /* OnboardingContentViewController.m in Sources */,
 				C2FB86511D31D0B900FCC143 /* SleepMilestoneInterfaceController.m in Sources */,
 				C22625CF1D864BB70013398C /* OnboardingViewController.m in Sources */,
-				C20091721D750FA6003682D9 /* SessionDetailViewController.m in Sources */,
+				C29A2FB71D8DFC44005B5D29 /* SessionDetailTableViewController.m in Sources */,
+				C29A2FBA1D8E0054005B5D29 /* SessionDetailTableViewCell.m in Sources */,
 				C2391DEC1D35D92C00808835 /* Utility.m in Sources */,
 				C2BBAAA31D6FCCC0000ACD2B /* SessionsTableViewController.m in Sources */,
 				C22EFCA91D82518500A64D3B /* SleepSession.m in Sources */,

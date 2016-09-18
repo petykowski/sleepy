@@ -4,7 +4,6 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
-        <capability name="Segues with Peek and Pop" minToolsVersion="7.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -87,10 +86,7 @@
                                     <outlet property="sleepIconImageView" destination="EQr-Dl-RvB" id="bsm-to-I1t"/>
                                     <outlet property="sleepStartLabel" destination="Trd-1H-hak" id="pKC-tY-FFR"/>
                                     <outlet property="wakeIconImageView" destination="cG3-dp-Fna" id="931-DF-59n"/>
-                                    <segue destination="rrm-Dx-pQg" kind="show" identifier="DetailSegue" id="xyH-fc-N8B">
-                                        <segue key="commit" inheritsFrom="parent" id="laB-vS-VW8"/>
-                                        <segue key="preview" inheritsFrom="commit" id="2ro-ks-GLH"/>
-                                    </segue>
+                                    <segue destination="1vy-OF-Z82" kind="show" identifier="DetailSegue" id="tSr-In-4aC"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -100,6 +96,7 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Sleep Sessions" id="m5m-fz-2wF">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="EHq-3H-3sN"/>
                         <barButtonItem key="leftBarButtonItem" id="OQG-bX-10F">
                             <button key="customView" hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="CwL-UU-BPo">
                                 <rect key="frame" x="16" y="7" width="83" height="30"/>
@@ -116,97 +113,57 @@
             </objects>
             <point key="canvasLocation" x="1085.5999999999999" y="823.53823088455783"/>
         </scene>
-        <!--Session Detail View Controller-->
-        <scene sceneID="VfY-z3-5lU">
+        <!--Session Detail Table View Controller-->
+        <scene sceneID="XGB-UI-2UA">
             <objects>
-                <viewController storyboardIdentifier="detailView" useStoryboardIdentifierAsRestorationIdentifier="YES" id="rrm-Dx-pQg" customClass="SessionDetailViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="KEt-CT-lBx"/>
-                        <viewControllerLayoutGuide type="bottom" id="NEy-KW-g7T"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="nSP-f0-xfM">
+                <tableViewController storyboardIdentifier="okay" id="1vy-OF-Z82" customClass="SessionDetailTableViewController" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="hSD-Hn-mvU">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DPe-Yl-aoX" userLabel="Sleep Session Label">
-                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XGG-Fb-I7x" userLabel="In Bed Label">
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0uK-cd-jWq" userLabel="Sleep Label">
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="929-YZ-0JL" userLabel="Wake Label">
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0W4-nW-SqV" userLabel="Out Bed Label">
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="In Bed:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6VY-On-6Bp" userLabel="In Bed">
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
-                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sleep:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DNH-QI-vnc" userLabel="Sleep">
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
-                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Wake:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="itt-jG-ZZC" userLabel="Wake">
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
-                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Out Bed:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VWv-uX-GDP" userLabel="Out Bed">
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
-                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <constraints>
-                            <constraint firstItem="DPe-Yl-aoX" firstAttribute="centerX" secondItem="nSP-f0-xfM" secondAttribute="centerX" id="1L9-Wa-fnL"/>
-                            <constraint firstItem="6VY-On-6Bp" firstAttribute="top" secondItem="KEt-CT-lBx" secondAttribute="bottom" constant="93" id="2M5-RA-6kf"/>
-                            <constraint firstItem="DPe-Yl-aoX" firstAttribute="top" secondItem="KEt-CT-lBx" secondAttribute="bottom" constant="25" id="99u-fN-L5W"/>
-                            <constraint firstItem="0W4-nW-SqV" firstAttribute="top" secondItem="929-YZ-0JL" secondAttribute="bottom" constant="28" id="I5o-Zm-XAT"/>
-                            <constraint firstItem="VWv-uX-GDP" firstAttribute="leading" secondItem="6VY-On-6Bp" secondAttribute="leading" id="Ku8-00-isg"/>
-                            <constraint firstItem="6VY-On-6Bp" firstAttribute="leading" secondItem="nSP-f0-xfM" secondAttribute="leadingMargin" constant="15" id="MJ9-Sh-EIB"/>
-                            <constraint firstItem="XGG-Fb-I7x" firstAttribute="top" secondItem="KEt-CT-lBx" secondAttribute="bottom" constant="93" id="MmA-sK-s4G"/>
-                            <constraint firstItem="DNH-QI-vnc" firstAttribute="leading" secondItem="6VY-On-6Bp" secondAttribute="leading" id="QAS-DK-miZ"/>
-                            <constraint firstItem="0uK-cd-jWq" firstAttribute="top" secondItem="XGG-Fb-I7x" secondAttribute="bottom" constant="28" id="X2B-n9-bZU"/>
-                            <constraint firstItem="0uK-cd-jWq" firstAttribute="leading" secondItem="XGG-Fb-I7x" secondAttribute="leading" id="XTO-Qf-Y7n"/>
-                            <constraint firstItem="itt-jG-ZZC" firstAttribute="top" secondItem="DNH-QI-vnc" secondAttribute="bottom" constant="28" id="aqK-HQ-hh9"/>
-                            <constraint firstItem="DNH-QI-vnc" firstAttribute="top" secondItem="6VY-On-6Bp" secondAttribute="bottom" constant="28" id="m6b-37-xNN"/>
-                            <constraint firstItem="VWv-uX-GDP" firstAttribute="top" secondItem="itt-jG-ZZC" secondAttribute="bottom" constant="28" id="neN-XM-fvF"/>
-                            <constraint firstItem="XGG-Fb-I7x" firstAttribute="leading" secondItem="nSP-f0-xfM" secondAttribute="leadingMargin" constant="98" id="oLm-nQ-Kzp"/>
-                            <constraint firstItem="929-YZ-0JL" firstAttribute="top" secondItem="0uK-cd-jWq" secondAttribute="bottom" constant="28" id="oha-tN-Omo"/>
-                            <constraint firstItem="929-YZ-0JL" firstAttribute="leading" secondItem="XGG-Fb-I7x" secondAttribute="leading" id="sV0-eH-BNa"/>
-                            <constraint firstItem="0W4-nW-SqV" firstAttribute="leading" secondItem="XGG-Fb-I7x" secondAttribute="leading" id="vAM-V5-i1R"/>
-                            <constraint firstItem="itt-jG-ZZC" firstAttribute="leading" secondItem="6VY-On-6Bp" secondAttribute="leading" id="wSR-6K-RKq"/>
-                        </constraints>
-                    </view>
-                    <connections>
-                        <outlet property="inBedLabel" destination="XGG-Fb-I7x" id="lyS-NM-x7c"/>
-                        <outlet property="outBedLabel" destination="0W4-nW-SqV" id="yYQ-Qw-x3E"/>
-                        <outlet property="sleepLabel" destination="0uK-cd-jWq" id="rZg-b6-hWH"/>
-                        <outlet property="sleepSessionLabel" destination="DPe-Yl-aoX" id="uZN-g7-Ihg"/>
-                        <outlet property="wakeLabel" destination="929-YZ-0JL" id="LMH-OV-tx0"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="iTA-Kd-J4q" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="detailViewCell" id="ctL-QL-sXh" customClass="SessionDetailTableViewCell">
+                                <rect key="frame" x="0.0" y="120" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ctL-QL-sXh" id="DMa-jK-DhW">
+                                    <frame key="frameInset" width="375" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xdq-nm-BlO" userLabel="eventTitle">
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YHC-bj-rGh">
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="xdq-nm-BlO" firstAttribute="leading" secondItem="DMa-jK-DhW" secondAttribute="leadingMargin" constant="8" id="4bT-I1-gDn"/>
+                                        <constraint firstItem="YHC-bj-rGh" firstAttribute="trailing" secondItem="DMa-jK-DhW" secondAttribute="trailingMargin" constant="-8" id="IQC-TN-Btp"/>
+                                        <constraint firstItem="YHC-bj-rGh" firstAttribute="centerY" secondItem="DMa-jK-DhW" secondAttribute="centerY" id="PcI-bM-K70"/>
+                                        <constraint firstItem="xdq-nm-BlO" firstAttribute="centerY" secondItem="DMa-jK-DhW" secondAttribute="centerY" id="c9g-ee-Q3n"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="eventTimeLabel" destination="YHC-bj-rGh" id="jH3-QV-7ZW"/>
+                                    <outlet property="eventTitleLabel" destination="xdq-nm-BlO" id="BBt-8j-dU4"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <sections/>
+                        <connections>
+                            <outlet property="dataSource" destination="1vy-OF-Z82" id="tk9-X0-hG8"/>
+                            <outlet property="delegate" destination="1vy-OF-Z82" id="1IU-yy-YHY"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="7Gj-Hl-z0N" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1996" y="827.13643178410803"/>
+            <point key="canvasLocation" x="1996" y="824"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="hXM-M4-8GU">
@@ -225,7 +182,4 @@
             <point key="canvasLocation" x="136" y="824"/>
         </scene>
     </scenes>
-    <inferredMetricsTieBreakers>
-        <segue reference="xyH-fc-N8B"/>
-    </inferredMetricsTieBreakers>
 </document>
