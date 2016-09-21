@@ -20,6 +20,6 @@
 + (NSDateFormatter*)dateFormatterForCellLabel;
 + (NSMutableArray*)convertAndPopulateSleepSessionDataForMilestone:(NSDictionary*)sleepSessionData;
 + (NSMutableArray*)convertAndPopulatePreviousSleepSessionDataForMilestone:(SleepSession*)previousSleepSession;
-+ (NSDictionary*)convertSessionToDictionary: (session *)sleepSession;
++ (NSDictionary*)convertManagedObjectSessionToDictionaryForDetailView: (session *)sleepSession;
 
 @end

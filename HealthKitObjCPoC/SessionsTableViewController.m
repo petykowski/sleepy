@@ -138,6 +138,26 @@
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    
+    if ([[[self fetchedResultsController] sections] count] != 0)
+    {
+        self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+        self.tableView.backgroundView = nil;
+    }
+    else
+    {
+        UILabel *noDataLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.tableView.bounds.size.width, self.tableView.bounds.size.height)];
+        noDataLabel.text = @"No sleep data available. Start a sleep session on Apple Watch and check back here in the morning!";
+        noDataLabel.lineBreakMode = NSLineBreakByWordWrapping;
+        noDataLabel.numberOfLines = 0;
+        noDataLabel.textColor = [UIColor whiteColor];
+        noDataLabel.textAlignment = NSTextAlignmentCenter;
+        self.tableView.backgroundView = noDataLabel;
+        self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    }
+    
+    
+    
     return [[[self fetchedResultsController] sections] count];
 }
 

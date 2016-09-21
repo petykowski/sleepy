@@ -24,7 +24,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    _sleepSessionDetails = [Utility convertSessionToDictionary:sleepSession];
+    _sleepSessionDetails = [Utility convertManagedObjectSessionToDictionaryForDetailView:sleepSession];
     _sleepSessionMilestones = [Utility convertAndPopulateSleepSessionDataForMilestone:_sleepSessionDetails];
     [self.navigationItem setTitle:[_sleepSessionDetails objectForKey:@"creationDate"]];
     
@@ -44,12 +44,12 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     
-    int cell = 0;
+    NSUInteger cell = 0;
     
     if (section == 0) {
         cell = _sleepSessionMilestones.count;
     } else {
-        cell = 1;
+        cell = 2;
     }
     
     return cell;
@@ -80,33 +80,76 @@
     static NSDateFormatter *dateFormatter = nil;
     static NSDateFormatter *timeFormatter = nil;
     
-    NSMutableArray *inBedArray = [NSKeyedUnarchiver unarchiveObjectWithData:self.sleepSession.sleep];
-    NSMutableArray *outBedArray = [NSKeyedUnarchiver unarchiveObjectWithData:self.sleepSession.wake];
+    NSMutableArray *inBedArray = [NSKeyedUnarchiver unarchiveObjectWithData:self.sleepSession.inBed];
+    NSMutableArray *sleepArray = [NSKeyedUnarchiver unarchiveObjectWithData:self.sleepSession.sleep];
+    NSMutableArray *wakeArrary = [NSKeyedUnarchiver unarchiveObjectWithData:self.sleepSession.wake];
+    NSMutableArray *outBedArray = [NSKeyedUnarchiver unarchiveObjectWithData:self.sleepSession.outBed];
     
     NSDateComponents *components;
-    
-    components = [[NSCalendar currentCalendar] components:NSCalendarUnitHour|NSCalendarUnitMinute fromDate:[inBedArray firstObject] toDate:[outBedArray lastObject] options:0];
-    
-    NSInteger hours = [components hour];
-    NSInteger minutes = [components minute];
     
     dateFormatter = [Utility dateFormatterForCellLabel];
     timeFormatter = [Utility dateFormatterForTimeLabels];
     
     NSArray *titleArray = [NSArray arrayWithObjects:@"In Bed", @"Asleep", @"Awake", @"Out Bed", @"Back To Bed", @"Back To Sleep", @"Awake", @"Out Bed", @"Out Bed", @"Back To Bed", @"Back To Sleep", @"Awake", @"Out Bed", @"Out Bed", @"Back To Bed", @"Back To Sleep", @"Awake", @"Out Bed", nil];
     
-    NSArray *statsTitleArray = [NSArray arrayWithObjects:@"Duration", nil];
+    NSArray *statsTitleArray = [NSArray arrayWithObjects:@"Duration", @"Fell Asleep", nil];
     
+    // Configure Sleep Details Here
     if (indexPath.section == 0) {
         cell.eventTitleLabel.text = [titleArray objectAtIndex:indexPath.row];
         cell.eventTimeLabel.text = [_sleepSessionMilestones objectAtIndex:indexPath.row];
     } else if (indexPath.section == 1) {
         cell.eventTitleLabel.text = [statsTitleArray objectAtIndex:indexPath.row];
-        if (hours == 0) {
-            cell.eventTimeLabel.text = [NSString stringWithFormat:@"%ldm", (long)minutes];
-        } else if (hours > 0) {
-            cell.eventTimeLabel.text = [NSString stringWithFormat:@"%ldh %ldm", (long)hours, (long)minutes];
+        
+        // Configures Sleep Stats Here
+        
+        if (indexPath.row == 0) {
+            components = [[NSCalendar currentCalendar] components:NSCalendarUnitHour|NSCalendarUnitMinute fromDate:[sleepArray firstObject] toDate:[wakeArrary lastObject] options:0];
+            NSInteger hours = [components hour];
+            NSInteger minutes = [components minute];
+            if (hours == 0) {
+                if (minutes == 1) {
+                    cell.eventTimeLabel.text = [NSString stringWithFormat:@"%ld minute", (long)minutes];
+                } else {
+                    cell.eventTimeLabel.text = [NSString stringWithFormat:@"%ld minutes", (long)minutes];
+                }
+            } else if (hours > 0) {
+                if (hours == 1 && minutes == 1) {
+                    cell.eventTimeLabel.text = [NSString stringWithFormat:@"%ld hour and %ld minute", (long)hours, (long)minutes];
+                } else if (minutes == 1) {
+                    cell.eventTimeLabel.text = [NSString stringWithFormat:@"%ld hours and %ld minute", (long)hours, (long)minutes];
+                } else if (hours == 1) {
+                    cell.eventTimeLabel.text = [NSString stringWithFormat:@"%ld hour and %ld minutes", (long)hours, (long)minutes];
+                } else {
+                    cell.eventTimeLabel.text = [NSString stringWithFormat:@"%ld hours and %ld minutes", (long)hours, (long)minutes];
+                }
+            }
+        } else if (indexPath.row == 1) {
+            components = [[NSCalendar currentCalendar] components:NSCalendarUnitHour|NSCalendarUnitMinute fromDate:[inBedArray firstObject] toDate:[sleepArray firstObject] options:0];
+            NSInteger hours = [components hour];
+            NSInteger minutes = [components minute];
+            if (hours == 0) {
+                if (minutes == 1) {
+                    cell.eventTimeLabel.text = [NSString stringWithFormat:@"%ld minute", (long)minutes];
+                } else {
+                    cell.eventTimeLabel.text = [NSString stringWithFormat:@"%ld minutes", (long)minutes];
+                }
+            } else if (hours > 0) {
+                if (hours == 1 && minutes == 1) {
+                    cell.eventTimeLabel.text = [NSString stringWithFormat:@"%ld hour and %ld minute", (long)hours, (long)minutes];
+                } else if (minutes == 1) {
+                    cell.eventTimeLabel.text = [NSString stringWithFormat:@"%ld hours and %ld minute", (long)hours, (long)minutes];
+                } else if (hours == 1) {
+                    cell.eventTimeLabel.text = [NSString stringWithFormat:@"%ld hour and %ld minutes", (long)hours, (long)minutes];
+                } else {
+                    cell.eventTimeLabel.text = [NSString stringWithFormat:@"%ld hours and %ld minutes", (long)hours, (long)minutes];
+                }
+            }
         }
+        
+        
+        
+        
     }
 }
 

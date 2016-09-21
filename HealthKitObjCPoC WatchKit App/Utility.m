@@ -110,7 +110,7 @@
     return convertedData;
 }
 
-+(NSDictionary*)convertSessionToDictionary: (session *)sleepSession {
++(NSDictionary*)convertManagedObjectSessionToDictionaryForDetailView: (session *)sleepSession {
     NSMutableDictionary *convertedDict = [[NSMutableDictionary alloc] init];
     NSDateFormatter *dateTitle = [Utility dateFormatterForCellLabel];
     
