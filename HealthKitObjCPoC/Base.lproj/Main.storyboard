@@ -14,9 +14,9 @@
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="60" sectionHeaderHeight="28" sectionFooterHeight="28" id="dav-TO-kPl">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" red="0.070588235294117646" green="0.070588235294117646" blue="0.070588235294117646" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="tintColor" red="0.29803921568627451" green="0.21176470588235294" blue="0.6588235294117647" alpha="1" colorSpace="calibratedRGB"/>
-                        <color key="separatorColor" name="scrollBarColor" catalog="System" colorSpace="catalog"/>
+                        <color key="separatorColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20784313725490197" alpha="1" colorSpace="calibratedRGB"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="SleepSessionCell" id="BgN-ZG-VgA" customClass="SleepSessionTableViewCell">
                                 <rect key="frame" x="0.0" y="92" width="375" height="60"/>
@@ -73,7 +73,7 @@
                                         <constraint firstItem="cEW-pe-Qoe" firstAttribute="top" secondItem="Lbi-er-HYw" secondAttribute="topMargin" id="wv0-eQ-1Fd"/>
                                     </constraints>
                                 </tableViewCellContentView>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="backgroundColor" red="0.086274509803921567" green="0.086274509803921567" blue="0.086274509803921567" alpha="1" colorSpace="calibratedRGB"/>
                                 <connections>
                                     <outlet property="sessionDurationLabel" destination="2gr-dF-G9i" id="9VZ-kf-uBI"/>
                                     <outlet property="sessionLabel" destination="cEW-pe-Qoe" id="Apn-eF-HCg"/>
@@ -115,11 +115,11 @@
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="hSD-Hn-mvU">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                        <color key="separatorColor" name="scrollBarColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" red="0.070588235294117646" green="0.070588235294117646" blue="0.070588235294117646" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="separatorColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20784313725490197" alpha="1" colorSpace="calibratedRGB"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="detailViewCell" id="ctL-QL-sXh" customClass="SessionDetailTableViewCell">
-                                <rect key="frame" x="0.0" y="120" width="375" height="44"/>
+                                <rect key="frame" x="0.0" y="119.5" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ctL-QL-sXh" id="DMa-jK-DhW">
                                     <frame key="frameInset" width="375" height="44"/>
@@ -143,7 +143,7 @@
                                         <constraint firstItem="xdq-nm-BlO" firstAttribute="centerY" secondItem="DMa-jK-DhW" secondAttribute="centerY" id="c9g-ee-Q3n"/>
                                     </constraints>
                                 </tableViewCellContentView>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" red="0.086274509803921567" green="0.086274509803921567" blue="0.086274509803921567" alpha="1" colorSpace="calibratedRGB"/>
                                 <connections>
                                     <outlet property="eventTimeLabel" destination="YHC-bj-rGh" id="jH3-QV-7ZW"/>
                                     <outlet property="eventTitleLabel" destination="xdq-nm-BlO" id="BBt-8j-dU4"/>
@@ -168,6 +168,7 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" barStyle="black" id="tM2-OP-d4C">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" red="0.086274509803921567" green="0.086274509803921567" blue="0.086274509803921567" alpha="1" colorSpace="calibratedRGB"/>
                     </navigationBar>
                     <connections>
                         <segue destination="VCN-DA-n4O" kind="relationship" relationship="rootViewController" id="lcB-70-ncg"/>

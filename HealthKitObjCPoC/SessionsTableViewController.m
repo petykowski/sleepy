@@ -197,6 +197,10 @@
 
 - (void)configureCell:(SleepSessionTableViewCell *)cell forIndexPath:(NSIndexPath *)indexPath {
     
+    UIView *cellSelectedColorView = [[UIView alloc] init];
+    cellSelectedColorView.backgroundColor = [UIColor colorWithRed:0.2117647059 green:0.2117647059 blue:0.2117647059 alpha:1];
+    [cell setSelectedBackgroundView:cellSelectedColorView];
+    
     static NSDateFormatter *dateFormatter = nil;
     static NSDateFormatter *timeFormatter = nil;
     

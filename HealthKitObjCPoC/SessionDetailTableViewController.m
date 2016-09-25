@@ -55,6 +55,11 @@
     return cell;
 }
 
+- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section {
+    UITableViewHeaderFooterView *header = (UITableViewHeaderFooterView *)view;
+    header.textLabel.textColor = [UIColor colorWithRed:0.5568627451 green:0.5568627451 blue:0.5568627451 alpha:1.0];
+}
+
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     NSString *title1 = @"Sleep";
     NSString *title2 = @"Stats";
