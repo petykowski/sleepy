@@ -593,7 +593,7 @@
         HKQuantityType *quantityType = [HKObjectType quantityTypeForIdentifier:HKQuantityTypeIdentifierHeartRate];
         HKUnit *bpm = [HKUnit unitFromString:@"count/min"];
         HKQuantity *quantity = [HKQuantity quantityWithUnit:bpm doubleValue:randomInt];
-        HKQuantitySample *quantitySample = [HKQuantitySample quantitySampleWithType:quantityType quantity:quantity startDate:[now dateByAddingTimeInterval:600*x] endDate:[now dateByAddingTimeInterval:601*x]];
+        HKQuantitySample *quantitySample = [HKQuantitySample quantitySampleWithType:quantityType quantity:quantity startDate:[now dateByAddingTimeInterval:1*x] endDate:[now dateByAddingTimeInterval:2*x]];
         
         NSArray *array = [NSArray arrayWithObjects:quantitySample, nil];
         

@@ -26,6 +26,7 @@
 - (id)init {
     self = [super init];
     if (self) {
+        _name = [[NSString alloc] init];
         _inBed = [[NSMutableArray alloc] init];
         _sleep = [[NSMutableArray alloc] init];
         _wake = [[NSMutableArray alloc] init];

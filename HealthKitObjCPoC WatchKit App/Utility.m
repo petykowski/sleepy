@@ -87,7 +87,6 @@
     for (int i = 0; i < convertedData.count; i++) {
         [convertedData replaceObjectAtIndex:i withObject:[dateFormatter stringFromDate:convertedData[i]]];
     }
-    NSLog(@"[DEBUG] Passing convertedData of: %@", convertedData);
     return convertedData;
 }
 
@@ -121,6 +120,19 @@
     [convertedDict setObject:[NSKeyedUnarchiver unarchiveObjectWithData:sleepSession.outBed] forKey:@"outBedArray"];
     
     return convertedDict;
+}
+
++(SleepSession*)convertManagedObjectSessionToSleepSessionForDetailView: (session *)sleepSession {
+    NSDateFormatter *dateTitle = [Utility dateFormatterForCellLabel];
+    SleepSession *detailSleepSession = [[SleepSession alloc] init];
+    
+    detailSleepSession.name = [dateTitle stringFromDate:sleepSession.creationDate];
+    detailSleepSession.inBed = [NSKeyedUnarchiver unarchiveObjectWithData:sleepSession.inBed];
+    detailSleepSession.sleep = [NSKeyedUnarchiver unarchiveObjectWithData:sleepSession.sleep];
+    detailSleepSession.wake = [NSKeyedUnarchiver unarchiveObjectWithData:sleepSession.wake];
+    detailSleepSession.outBed = [NSKeyedUnarchiver unarchiveObjectWithData:sleepSession.outBed];
+    
+    return detailSleepSession;
 }
 
 @end

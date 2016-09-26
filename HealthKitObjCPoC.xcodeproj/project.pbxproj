@@ -32,6 +32,7 @@
 		C2508E581C582A5B00900AC1 /* Health.plist in Resources */ = {isa = PBXBuildFile; fileRef = C2508E561C582A5B00900AC1 /* Health.plist */; };
 		C29A2FB71D8DFC44005B5D29 /* SessionDetailTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C29A2FB61D8DFC44005B5D29 /* SessionDetailTableViewController.m */; };
 		C29A2FBA1D8E0054005B5D29 /* SessionDetailTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C29A2FB91D8E0054005B5D29 /* SessionDetailTableViewCell.m */; };
+		C29E28A41D98AC00009FD716 /* SleepStatistic.m in Sources */ = {isa = PBXBuildFile; fileRef = C29E28A31D98AC00009FD716 /* SleepStatistic.m */; };
 		C2A7C7801D8A4DE2000B7A7F /* HealthKit.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = C2A7C77F1D8A4DE2000B7A7F /* HealthKit.mp4 */; };
 		C2AA52DF1D83AB7600584AF4 /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = C2AA52DE1D83AB7600584AF4 /* Constants.m */; };
 		C2AA52E01D83AB7600584AF4 /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = C2AA52DE1D83AB7600584AF4 /* Constants.m */; };
@@ -129,6 +130,8 @@
 		C29A2FB61D8DFC44005B5D29 /* SessionDetailTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SessionDetailTableViewController.m; sourceTree = "<group>"; };
 		C29A2FB81D8E0054005B5D29 /* SessionDetailTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SessionDetailTableViewCell.h; sourceTree = "<group>"; };
 		C29A2FB91D8E0054005B5D29 /* SessionDetailTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SessionDetailTableViewCell.m; sourceTree = "<group>"; };
+		C29E28A21D98AC00009FD716 /* SleepStatistic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SleepStatistic.h; sourceTree = "<group>"; };
+		C29E28A31D98AC00009FD716 /* SleepStatistic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SleepStatistic.m; sourceTree = "<group>"; };
 		C2A7C77F1D8A4DE2000B7A7F /* HealthKit.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = HealthKit.mp4; sourceTree = "<group>"; };
 		C2AA52DD1D83AB7600584AF4 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		C2AA52DE1D83AB7600584AF4 /* Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
@@ -237,6 +240,8 @@
 				C2BBAAA21D6FCCC0000ACD2B /* SessionsTableViewController.m */,
 				C29A2FB51D8DFC44005B5D29 /* SessionDetailTableViewController.h */,
 				C29A2FB61D8DFC44005B5D29 /* SessionDetailTableViewController.m */,
+				C29E28A21D98AC00009FD716 /* SleepStatistic.h */,
+				C29E28A31D98AC00009FD716 /* SleepStatistic.m */,
 				C243C15E1C57D32400DB8803 /* Assets.xcassets */,
 				C2D808CA1D8658CF007FEB19 /* Media */,
 				C243C1601C57D32400DB8803 /* LaunchScreen.storyboard */,
@@ -494,6 +499,7 @@
 				C2391DEC1D35D92C00808835 /* Utility.m in Sources */,
 				C2BBAAA31D6FCCC0000ACD2B /* SessionsTableViewController.m in Sources */,
 				C22EFCA91D82518500A64D3B /* SleepSession.m in Sources */,
+				C29E28A41D98AC00009FD716 /* SleepStatistic.m in Sources */,
 				C243C1571C57D32400DB8803 /* AppDelegate.m in Sources */,
 				C243C1541C57D32400DB8803 /* main.m in Sources */,
 				C2AB02131D5652430051CFCF /* coreData.xcdatamodeld in Sources */,

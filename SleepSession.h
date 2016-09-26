@@ -11,6 +11,7 @@
 @interface SleepSession : NSObject
 
 @property (nonatomic) BOOL isSleepSessionInProgress;
+@property (nonatomic, strong) NSString *name;
 @property (nonatomic, strong) NSMutableArray *inBed;
 @property (nonatomic, strong) NSMutableArray *sleep;
 @property (nonatomic, strong) NSMutableArray *wake;

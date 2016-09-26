@@ -8,9 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import "session.h"
+#import <HealthKit/HealthKit.h>
 
 @interface SessionDetailTableViewController : UITableViewController
 
 @property (nonatomic, strong) session *sleepSession;
+@property (nonatomic) HKHealthStore *healthStore;
 
 @end

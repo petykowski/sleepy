@@ -7,10 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <HealthKit/HealthKit.h>
 
 @interface SessionsTableViewController : UITableViewController
 
-// Core Data Objects 8/29
 @property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
+@property (nonatomic) HKHealthStore *healthStore;
 
 @end

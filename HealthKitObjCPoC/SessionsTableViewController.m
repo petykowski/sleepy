@@ -239,7 +239,6 @@
     
 }
 
-
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     
     if ([[segue identifier] isEqualToString:@"DetailSegue"]) {
@@ -247,9 +246,12 @@
         SessionDetailTableViewController *detailViewController = [segue destinationViewController];
         session *sleepSession = nil;
         
+        if ([detailViewController respondsToSelector:@selector(setHealthStore:)]) {
+            [detailViewController setHealthStore:self.healthStore];
+        }
+        
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
         sleepSession = (session *)[self.fetchedResultsController objectAtIndexPath:indexPath];
-        
         detailViewController.sleepSession = sleepSession;
     }
 }

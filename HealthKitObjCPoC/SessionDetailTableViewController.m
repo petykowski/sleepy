@@ -6,14 +6,21 @@
 //  Copyright © 2016 Sean Petykowski. All rights reserved.
 //
 
+#import <HealthKit/HealthKit.h>
+#import "AppDelegate.h"
 #import "SessionDetailTableViewController.h"
 #import "SessionDetailTableViewCell.h"
 #import "Utility.h"
+#import "SleepStatistic.h"
+#import "SleepSession.h"
 
 @interface SessionDetailTableViewController ()
 
-@property NSDictionary *sleepSessionDetails;
 @property NSMutableArray *sleepSessionMilestones;
+@property NSMutableArray *sleepStatistics;
+@property NSMutableArray *heartRateStatistics;
+@property SleepSession *detailSleepSession;
+
 
 @end
 
@@ -23,11 +30,15 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    _heartRateStatistics = [[NSMutableArray alloc] init];
+    _sleepStatistics = [[NSMutableArray alloc] init];
+    _detailSleepSession = [Utility convertManagedObjectSessionToSleepSessionForDetailView:sleepSession];
+    _sleepSessionMilestones = [Utility convertAndPopulatePreviousSleepSessionDataForMilestone:_detailSleepSession];
     
-    _sleepSessionDetails = [Utility convertManagedObjectSessionToDictionaryForDetailView:sleepSession];
-    _sleepSessionMilestones = [Utility convertAndPopulateSleepSessionDataForMilestone:_sleepSessionDetails];
-    [self.navigationItem setTitle:[_sleepSessionDetails objectForKey:@"creationDate"]];
-    
+    [self refreshHealthStatistics];
+    [self refreshSleepStatistics];
+    [self.navigationItem setTitle:_detailSleepSession.name];
+
 }
 
 - (void)didReceiveMemoryWarning {
@@ -39,7 +50,7 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
 
-    return 2;
+    return 3;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -48,8 +59,10 @@
     
     if (section == 0) {
         cell = _sleepSessionMilestones.count;
-    } else {
-        cell = 2;
+    } else if (section == 1){
+        cell = _sleepStatistics.count;
+    } else if (section == 2){
+        cell = _heartRateStatistics.count;
     }
     
     return cell;
@@ -61,9 +74,10 @@
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    NSString *title1 = @"Sleep";
+    NSString *title1 = @"Milestones";
     NSString *title2 = @"Stats";
-    NSArray *titlesArray = [[NSArray alloc] initWithObjects:title1, title2, nil];
+    NSString *title3 = @"Heart";
+    NSArray *titlesArray = [[NSArray alloc] initWithObjects:title1, title2, title3, nil];
     return [titlesArray objectAtIndex:section];
 }
 
@@ -82,80 +96,158 @@
 
 - (void)configureCell:(SessionDetailTableViewCell *)cell forIndexPath:(NSIndexPath *)indexPath {
     
-    static NSDateFormatter *dateFormatter = nil;
-    static NSDateFormatter *timeFormatter = nil;
-    
-    NSMutableArray *inBedArray = [NSKeyedUnarchiver unarchiveObjectWithData:self.sleepSession.inBed];
-    NSMutableArray *sleepArray = [NSKeyedUnarchiver unarchiveObjectWithData:self.sleepSession.sleep];
-    NSMutableArray *wakeArrary = [NSKeyedUnarchiver unarchiveObjectWithData:self.sleepSession.wake];
-    NSMutableArray *outBedArray = [NSKeyedUnarchiver unarchiveObjectWithData:self.sleepSession.outBed];
-    
-    NSDateComponents *components;
-    
-    dateFormatter = [Utility dateFormatterForCellLabel];
-    timeFormatter = [Utility dateFormatterForTimeLabels];
-    
     NSArray *titleArray = [NSArray arrayWithObjects:@"In Bed", @"Asleep", @"Awake", @"Out Bed", @"Back To Bed", @"Back To Sleep", @"Awake", @"Out Bed", @"Out Bed", @"Back To Bed", @"Back To Sleep", @"Awake", @"Out Bed", @"Out Bed", @"Back To Bed", @"Back To Sleep", @"Awake", @"Out Bed", nil];
     
-    NSArray *statsTitleArray = [NSArray arrayWithObjects:@"Duration", @"Fell Asleep", nil];
-    
-    // Configure Sleep Details Here
     if (indexPath.section == 0) {
         cell.eventTitleLabel.text = [titleArray objectAtIndex:indexPath.row];
         cell.eventTimeLabel.text = [_sleepSessionMilestones objectAtIndex:indexPath.row];
     } else if (indexPath.section == 1) {
-        cell.eventTitleLabel.text = [statsTitleArray objectAtIndex:indexPath.row];
-        
-        // Configures Sleep Stats Here
-        
-        if (indexPath.row == 0) {
-            components = [[NSCalendar currentCalendar] components:NSCalendarUnitHour|NSCalendarUnitMinute fromDate:[sleepArray firstObject] toDate:[wakeArrary lastObject] options:0];
-            NSInteger hours = [components hour];
-            NSInteger minutes = [components minute];
-            if (hours == 0) {
-                if (minutes == 1) {
-                    cell.eventTimeLabel.text = [NSString stringWithFormat:@"%ld minute", (long)minutes];
-                } else {
-                    cell.eventTimeLabel.text = [NSString stringWithFormat:@"%ld minutes", (long)minutes];
-                }
-            } else if (hours > 0) {
-                if (hours == 1 && minutes == 1) {
-                    cell.eventTimeLabel.text = [NSString stringWithFormat:@"%ld hour and %ld minute", (long)hours, (long)minutes];
-                } else if (minutes == 1) {
-                    cell.eventTimeLabel.text = [NSString stringWithFormat:@"%ld hours and %ld minute", (long)hours, (long)minutes];
-                } else if (hours == 1) {
-                    cell.eventTimeLabel.text = [NSString stringWithFormat:@"%ld hour and %ld minutes", (long)hours, (long)minutes];
-                } else {
-                    cell.eventTimeLabel.text = [NSString stringWithFormat:@"%ld hours and %ld minutes", (long)hours, (long)minutes];
-                }
+        SleepStatistic *sleepStat = [_sleepStatistics objectAtIndex:indexPath.row];
+        cell.eventTitleLabel.text = sleepStat.name;
+        cell.eventTimeLabel.text = sleepStat.stringResult;
+    } else if (indexPath.section == 2){
+        SleepStatistic *sleepStat = [_heartRateStatistics objectAtIndex:indexPath.row];
+        cell.eventTitleLabel.text = sleepStat.name;
+        cell.eventTimeLabel.text = [NSString stringWithFormat:@"%.0f bpm", sleepStat.result];
+    }
+}
+
+
+#pragma mark - Sleep Statistics
+
+- (void)refreshSleepStatistics {
+    static NSDateFormatter *dateFormatter = nil;
+    static NSDateFormatter *timeFormatter = nil;
+    
+    dateFormatter = [Utility dateFormatterForCellLabel];
+    timeFormatter = [Utility dateFormatterForTimeLabels];
+    
+    NSDateComponents *durationComponents = [[NSCalendar currentCalendar] components:NSCalendarUnitHour|NSCalendarUnitMinute fromDate:[_detailSleepSession.sleep firstObject] toDate:[_detailSleepSession.wake lastObject] options:0];
+    
+    NSDateComponents *timeToSleepComponents = [[NSCalendar currentCalendar] components:NSCalendarUnitHour|NSCalendarUnitMinute fromDate:[_detailSleepSession.sleep firstObject] toDate:[_detailSleepSession.wake lastObject] options:0];
+    
+    NSArray *componentsArrary = [[NSArray alloc] initWithObjects:durationComponents, timeToSleepComponents, nil];
+    
+    int count = 0;
+    for (NSDateComponents *components in componentsArrary) {
+        SleepStatistic *sleepDuration = [[SleepStatistic alloc] init];
+        if (count == 0){
+            sleepDuration.name = [NSString stringWithFormat:@"Duration"];
+        } else {
+            sleepDuration.name = [NSString stringWithFormat:@"Fell Asleep"];
+        }
+        NSInteger hours = [components hour];
+        NSInteger minutes = [components minute];
+        if (hours == 0) {
+            if (minutes == 1) {
+                sleepDuration.stringResult = [NSString stringWithFormat:@"%ld minute", (long)minutes];
+            } else {
+                sleepDuration.stringResult = [NSString stringWithFormat:@"%ld minutes", (long)minutes];
             }
-        } else if (indexPath.row == 1) {
-            components = [[NSCalendar currentCalendar] components:NSCalendarUnitHour|NSCalendarUnitMinute fromDate:[inBedArray firstObject] toDate:[sleepArray firstObject] options:0];
-            NSInteger hours = [components hour];
-            NSInteger minutes = [components minute];
-            if (hours == 0) {
-                if (minutes == 1) {
-                    cell.eventTimeLabel.text = [NSString stringWithFormat:@"%ld minute", (long)minutes];
-                } else {
-                    cell.eventTimeLabel.text = [NSString stringWithFormat:@"%ld minutes", (long)minutes];
-                }
-            } else if (hours > 0) {
-                if (hours == 1 && minutes == 1) {
-                    cell.eventTimeLabel.text = [NSString stringWithFormat:@"%ld hour and %ld minute", (long)hours, (long)minutes];
-                } else if (minutes == 1) {
-                    cell.eventTimeLabel.text = [NSString stringWithFormat:@"%ld hours and %ld minute", (long)hours, (long)minutes];
-                } else if (hours == 1) {
-                    cell.eventTimeLabel.text = [NSString stringWithFormat:@"%ld hour and %ld minutes", (long)hours, (long)minutes];
-                } else {
-                    cell.eventTimeLabel.text = [NSString stringWithFormat:@"%ld hours and %ld minutes", (long)hours, (long)minutes];
-                }
+        } else if (hours > 0) {
+            if (hours == 1 && minutes == 1) {
+                sleepDuration.stringResult = [NSString stringWithFormat:@"%ld hour and %ld minute", (long)hours, (long)minutes];
+            } else if (minutes == 1) {
+                sleepDuration.stringResult = [NSString stringWithFormat:@"%ld hours and %ld minute", (long)hours, (long)minutes];
+            } else if (hours == 1) {
+                sleepDuration.stringResult = [NSString stringWithFormat:@"%ld hour and %ld minutes", (long)hours, (long)minutes];
+            } else {
+                sleepDuration.stringResult = [NSString stringWithFormat:@"%ld hours and %ld minutes", (long)hours, (long)minutes];
             }
         }
-        
-        
-        
-        
+        [_sleepStatistics addObject:sleepDuration];
+        count++;
     }
+   
+}
+
+
+#pragma mark - HealthKit Statistics
+
+- (NSPredicate *)predicateForSleepDuration {
+    
+    return [HKQuery predicateForSamplesWithStartDate:[_detailSleepSession.sleep firstObject] endDate:[_detailSleepSession.wake lastObject] options:HKQueryOptionNone];
+}
+
+- (void)refreshHealthStatistics {
+    [self getAverageHeartRateForSleepSession:^(NSError *error) {
+        [self getMinHeartRateForSleepSession:^(NSError *error) {
+            [self getMaxHeartRateForSleepSession:^(NSError *error) {
+                [self.tableView reloadData];
+            }];
+        }];
+        
+    }];
+}
+
+- (void)getAverageHeartRateForSleepSession:(void (^)(NSError *))completionHandler {
+    NSPredicate *predicate = [self predicateForSleepDuration];
+    
+    HKQuantityType *heartRateQuantityType = [HKQuantityType quantityTypeForIdentifier:HKQuantityTypeIdentifierHeartRate];
+    
+    HKStatisticsQuery *averageHeartRateQuery = [[HKStatisticsQuery alloc] initWithQuantityType:heartRateQuantityType quantitySamplePredicate:predicate options:HKStatisticsOptionDiscreteAverage completionHandler:^(HKStatisticsQuery * _Nonnull query, HKStatistics * _Nullable result, NSError * _Nullable error) {
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            SleepStatistic *avgHeartRate = [[SleepStatistic alloc] init];
+            
+            avgHeartRate.result = [result.averageQuantity doubleValueForUnit:[HKUnit unitFromString:@"count/min"]];
+            avgHeartRate.name = [NSString stringWithFormat:@"Average Heart Rate"];
+            
+            [_heartRateStatistics addObject:avgHeartRate];
+            
+            if (completionHandler) {
+                completionHandler(error);
+            }
+        });
+    }];
+    
+    [self.healthStore executeQuery:averageHeartRateQuery];
+}
+
+- (void)getMinHeartRateForSleepSession:(void (^)(NSError *))completionHandler {
+    NSPredicate *predicate = [self predicateForSleepDuration];
+    HKQuantityType *heartRateQuantityType = [HKQuantityType quantityTypeForIdentifier:HKQuantityTypeIdentifierHeartRate];
+    
+    HKStatisticsQuery *minHeartRateQuery = [[HKStatisticsQuery alloc] initWithQuantityType:heartRateQuantityType quantitySamplePredicate:predicate options:HKStatisticsOptionDiscreteMin completionHandler:^(HKStatisticsQuery * _Nonnull query, HKStatistics * _Nullable result, NSError * _Nullable error) {
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            SleepStatistic *minHeartRate = [[SleepStatistic alloc] init];
+            
+            minHeartRate.result = [result.minimumQuantity doubleValueForUnit:[HKUnit unitFromString:@"count/min"]];
+            minHeartRate.name = [NSString stringWithFormat:@"Minimum Heart Rate"];
+            
+            [_heartRateStatistics addObject:minHeartRate];
+            
+            if (completionHandler) {
+                completionHandler(error);
+            }
+        });
+    }];
+    
+    [self.healthStore executeQuery:minHeartRateQuery];
+}
+
+- (void)getMaxHeartRateForSleepSession:(void (^)(NSError *))completionHandler {
+    NSPredicate *predicate = [self predicateForSleepDuration];
+    HKQuantityType *heartRateQuantityType = [HKQuantityType quantityTypeForIdentifier:HKQuantityTypeIdentifierHeartRate];
+    
+    HKStatisticsQuery *maxHeartRateQuery = [[HKStatisticsQuery alloc] initWithQuantityType:heartRateQuantityType quantitySamplePredicate:predicate options:HKStatisticsOptionDiscreteMax completionHandler:^(HKStatisticsQuery * _Nonnull query, HKStatistics * _Nullable result, NSError * _Nullable error) {
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            SleepStatistic *maxHeartRate = [[SleepStatistic alloc] init];
+            
+            maxHeartRate.result = [result.maximumQuantity doubleValueForUnit:[HKUnit unitFromString:@"count/min"]];
+            maxHeartRate.name = [NSString stringWithFormat:@"Maximum Heart Rate"];
+            
+            [_heartRateStatistics addObject:maxHeartRate];
+            
+            if (completionHandler) {
+                completionHandler(error);
+            }
+        });
+    }];
+    
+    [self.healthStore executeQuery:maxHeartRateQuery];
 }
 
 @end

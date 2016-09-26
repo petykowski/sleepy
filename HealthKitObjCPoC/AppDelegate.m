@@ -32,11 +32,33 @@ static NSString * const kUserHasOnboardedKey = @"user_has_onboarded";
 @synthesize persistentContainer = _persistentContainer;
 
 
+#pragma mark - UIApplication
+
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    application.statusBarStyle = UIStatusBarStyleLightContent;
+    
+    self.healthStore = [[HKHealthStore alloc] init];
+    
+    [self setUpHealthStoreForViewControllers];
+    
+    // determine if the user has onboarded yet or not
+    BOOL userHasOnboarded = [[NSUserDefaults standardUserDefaults] boolForKey:kUserHasOnboardedKey];
+    
+    if (userHasOnboarded) {
+        // Do Nothing
+    }
+    else {
+        self.window.rootViewController = [self generateStandardOnboardingVC];
+    }
+    
+    [self.window makeKeyAndVisible];
+    return YES;
+}
+
+
 #pragma mark - HealthKit
 
 - (void)applicationShouldRequestHealthAuthorization:(UIApplication *)application {
-    self.healthStore = [[HKHealthStore alloc] init];
-    
     [self.healthStore handleAuthorizationForExtensionWithCompletion:^(BOOL success, NSError *error){
         if (!success) {
             NSLog(@"[DEBUG] Failed with error: %@", error);
@@ -59,26 +81,17 @@ static NSString * const kUserHasOnboardedKey = @"user_has_onboarded";
     }];
 }
 
-#pragma mark - UIApplication
-
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    application.statusBarStyle = UIStatusBarStyleLightContent;
-    
-    self.healthStore = [[HKHealthStore alloc] init];
-    
-    // determine if the user has onboarded yet or not
-    BOOL userHasOnboarded = [[NSUserDefaults standardUserDefaults] boolForKey:kUserHasOnboardedKey];
-    
-    if (userHasOnboarded) {
-        // Do Nothing
+- (void)setUpHealthStoreForViewControllers {
+    UINavigationController *navigationController = (UINavigationController *)[self.window rootViewController];
+    id viewController = navigationController.topViewController;
+    if ([viewController respondsToSelector:@selector(setHealthStore:)]) {
+        [viewController setHealthStore:self.healthStore];
+        NSLog(@"[DEBUG] Set HealthStore");
     }
-    else {
-        self.window.rootViewController = [self generateStandardOnboardingVC];
-    }
-    
-    [self.window makeKeyAndVisible];
-    return YES;
 }
+
+
+#pragma mark - On Boarding
 
 - (void)setupNormalRootViewController {
     
