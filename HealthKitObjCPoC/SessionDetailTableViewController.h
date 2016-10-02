@@ -7,8 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "session.h"
 #import <HealthKit/HealthKit.h>
+#import "session.h"
 
 @interface SessionDetailTableViewController : UITableViewController
 

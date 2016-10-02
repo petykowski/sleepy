@@ -82,11 +82,20 @@ static NSString * const kUserHasOnboardedKey = @"user_has_onboarded";
 }
 
 - (void)setUpHealthStoreForViewControllers {
-    UINavigationController *navigationController = (UINavigationController *)[self.window rootViewController];
-    id viewController = navigationController.topViewController;
-    if ([viewController respondsToSelector:@selector(setHealthStore:)]) {
-        [viewController setHealthStore:self.healthStore];
-        NSLog(@"[DEBUG] Set HealthStore");
+    UITabBarController *tabBarController = (UITabBarController *)[self.window rootViewController];
+    NSArray *navigationControllers = tabBarController.viewControllers;
+    
+    // Iterates through UINavigationControllers looking for their child UIViewControllers
+    for (UINavigationController *navigationController in navigationControllers) {
+        NSArray *viewControllers = navigationController.viewControllers;
+        for (id viewController in viewControllers) {
+            
+            // Determines if child UIViewController has a setable HKHealthStore and sets it if true
+            if ([viewController respondsToSelector:@selector(setHealthStore:)]) {
+                [viewController setHealthStore:self.healthStore];
+                NSLog(@"[DEBUG] Set HealthStore for %@", viewController);
+            }
+        }
     }
 }
 
