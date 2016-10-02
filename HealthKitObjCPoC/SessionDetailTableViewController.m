@@ -76,7 +76,7 @@
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     NSString *title1 = @"Milestones";
     NSString *title2 = @"Stats";
-    NSString *title3 = @"Heart";
+    NSString *title3 = @"Heart Rate";
     NSArray *titlesArray = [[NSArray alloc] initWithObjects:title1, title2, title3, nil];
     return [titlesArray objectAtIndex:section];
 }
@@ -170,9 +170,9 @@
 }
 
 - (void)refreshHealthStatistics {
-    [self getAverageHeartRateForSleepSession:^(NSError *error) {
-        [self getMinHeartRateForSleepSession:^(NSError *error) {
-            [self getMaxHeartRateForSleepSession:^(NSError *error) {
+    [self getMinHeartRateForSleepSession:^(NSError *error) {
+        [self getMaxHeartRateForSleepSession:^(NSError *error) {
+            [self getAverageHeartRateForSleepSession:^(NSError *error) {
                 [self.tableView reloadData];
             }];
         }];
@@ -191,7 +191,7 @@
             SleepStatistic *avgHeartRate = [[SleepStatistic alloc] init];
             
             avgHeartRate.result = [result.averageQuantity doubleValueForUnit:[HKUnit unitFromString:@"count/min"]];
-            avgHeartRate.name = [NSString stringWithFormat:@"Average Heart Rate"];
+            avgHeartRate.name = [NSString stringWithFormat:@"Average"];
             
             [_heartRateStatistics addObject:avgHeartRate];
             
@@ -214,7 +214,7 @@
             SleepStatistic *minHeartRate = [[SleepStatistic alloc] init];
             
             minHeartRate.result = [result.minimumQuantity doubleValueForUnit:[HKUnit unitFromString:@"count/min"]];
-            minHeartRate.name = [NSString stringWithFormat:@"Minimum Heart Rate"];
+            minHeartRate.name = [NSString stringWithFormat:@"Minimum"];
             
             [_heartRateStatistics addObject:minHeartRate];
             
@@ -237,7 +237,7 @@
             SleepStatistic *maxHeartRate = [[SleepStatistic alloc] init];
             
             maxHeartRate.result = [result.maximumQuantity doubleValueForUnit:[HKUnit unitFromString:@"count/min"]];
-            maxHeartRate.name = [NSString stringWithFormat:@"Maximum Heart Rate"];
+            maxHeartRate.name = [NSString stringWithFormat:@"Maximum"];
             
             [_heartRateStatistics addObject:maxHeartRate];
             
