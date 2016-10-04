@@ -135,4 +135,15 @@
     return detailSleepSession;
 }
 
++(NSMutableArray *)convertManagedObjectsToSleepSessions: (NSArray *)sleepArray {
+    NSMutableArray *convertedSleepSessions = [[NSMutableArray alloc] init];
+    for (int x = 0; x < sleepArray.count; x++) {
+        SleepSession *sleepSession = [[SleepSession alloc] init];
+        sleepSession = [self convertManagedObjectSessionToSleepSessionForDetailView:[sleepArray objectAtIndex:x]];
+        [convertedSleepSessions addObject:sleepSession];
+    }
+    
+    return convertedSleepSessions;
+}
+
 @end

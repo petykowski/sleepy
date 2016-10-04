@@ -22,5 +22,6 @@
 + (NSMutableArray*)convertAndPopulatePreviousSleepSessionDataForMilestone:(SleepSession*)previousSleepSession;
 + (NSDictionary*)convertManagedObjectSessionToDictionaryForDetailView: (session *)sleepSession;
 + (SleepSession*)convertManagedObjectSessionToSleepSessionForDetailView: (session *)sleepSession;
++ (NSMutableArray *)convertManagedObjectsToSleepSessions: (NSArray *)sleepArray;
 
 @end

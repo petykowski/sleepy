@@ -6,9 +6,19 @@
 //  Copyright © 2016 Sean Petykowski. All rights reserved.
 //
 
+#import <CoreData/CoreData.h>
 #import "StatisticsTableViewController.h"
+#import "session.h"
+#import "Utility.h"
+#import "SleepSession.h"
+#import "SleepStatistic.h"
 
-@interface StatisticsTableViewController ()
+@interface StatisticsTableViewController () <NSFetchedResultsControllerDelegate, NSFetchedResultsControllerDelegate>
+
+// Core Data Properties
+@property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
+@property (nonatomic, strong) NSMutableArray *convertedSessionsFromLastWeek;
+
 
 @end
 
@@ -17,6 +27,8 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    [self getLastWeeksSleepSessions];
     
     // this UIViewController is about to re-appear, make sure we remove the current selection in our table view
     NSIndexPath *tableSelection = [self.tableView indexPathForSelectedRow];
@@ -42,23 +54,27 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
 #warning Incomplete implementation, return the number of sections
-    return 0;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 #warning Incomplete implementation, return the number of rows
-    return 0;
+    return 1;
 }
 
-/*
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#> forIndexPath:indexPath];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"StatisticCell" forIndexPath:indexPath];
     
-    // Configure the cell...
+    SleepStatistic *stat = [self calculateAverageTimeToFallAsleep:_convertedSessionsFromLastWeek];
+    
+    
+    cell.textLabel.text = stat.name;
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"%.0fm", stat.result];
     
     return cell;
 }
-*/
+
 
 /*
 // Override to support conditional editing of the table view.
@@ -103,5 +119,75 @@
     // Pass the selected object to the new view controller.
 }
 */
+
+#pragma mark - Statistics Methods
+
+- (SleepStatistic *)calculateAverageTimeToFallAsleep:(NSArray *)sleepSessions {
+    SleepStatistic *averageTimeToFallAsleep = [[SleepStatistic alloc] init];
+    averageTimeToFallAsleep.name = [NSString stringWithFormat:@"Time To Fall Asleep"];
+    
+    double sum = 0;
+    
+    for (SleepSession *theSession in sleepSessions) {
+        NSDateComponents *timeToSleepComponents = [[NSCalendar currentCalendar] components:NSCalendarUnitHour|NSCalendarUnitMinute|NSCalendarUnitSecond fromDate:[theSession.inBed firstObject] toDate:[theSession.sleep firstObject] options:0];
+        
+        NSInteger hours = [timeToSleepComponents hour];
+        NSInteger minutes = [timeToSleepComponents minute];
+        NSInteger seconds = [timeToSleepComponents second];
+        
+        double totalTimeInSeconds = 0;
+        totalTimeInSeconds = (hours * 3600) + (minutes * 60) + seconds;
+        sum = sum + totalTimeInSeconds;
+    }
+    
+    averageTimeToFallAsleep.result = sum / 7;
+    
+    return averageTimeToFallAsleep;
+}
+
+
+#pragma mark - Core Data
+
+- (NSManagedObjectContext *)managedObjectContext {
+    NSManagedObjectContext *context = nil;
+    id delegate = [[UIApplication sharedApplication] delegate];
+    if ([delegate performSelector:@selector(managedObjectContext)]) {
+        context = [delegate managedObjectContext];
+    }
+    return context;
+}
+
+- (void)initializeFetchedResultsController
+{
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Session"];
+    
+    NSSortDescriptor *creationDateSort = [NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO];
+    
+    [request setSortDescriptors:@[creationDateSort]];
+    
+    NSManagedObjectContext *moc = self.managedObjectContext;
+    
+    [self setFetchedResultsController:[[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:moc sectionNameKeyPath:@"sectionByMonthAndYearUsingCreationDate" cacheName:nil]];
+    [[self fetchedResultsController] setDelegate:self];
+    
+    NSError *error = nil;
+    if (![[self fetchedResultsController] performFetch:&error]) {
+        NSLog(@"Failed to initialize FetchedResultsController: %@\n%@", [error localizedDescription], [error userInfo]);
+        abort();
+    }
+}
+
+- (void)getLastWeeksSleepSessions {
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Session"];
+    
+    // Results should be in descending order of timeStamp.
+    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO];
+    [request setSortDescriptors:[NSArray arrayWithObject:sortDescriptor]];
+    [request setFetchLimit:7];
+    NSManagedObjectContext *moc = self.managedObjectContext;
+    NSArray *results = [moc executeFetchRequest:request error:NULL];
+    
+    _convertedSessionsFromLastWeek = [Utility convertManagedObjectsToSleepSessions:results];
+}
 
 @end
