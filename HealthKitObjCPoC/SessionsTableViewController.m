@@ -96,6 +96,8 @@
         self.objectToSave.wake = [sleepSession objectForKey:@"wake"];
         self.objectToSave.outBed = [sleepSession objectForKey:@"outBed"];
         
+       [[NSNotificationCenter defaultCenter] postNotificationName:@"NewSessionAdded" object:nil];
+        
         dispatch_async(dispatch_get_main_queue(), ^{
             NSError *error = nil;
             if ([[self managedObjectContext] save:&error] == NO) {

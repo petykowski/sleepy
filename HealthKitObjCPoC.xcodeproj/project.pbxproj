@@ -30,6 +30,7 @@
 		C245D3DD1D56925E0047D2FD /* session.m in Sources */ = {isa = PBXBuildFile; fileRef = C245D3DC1D56925E0047D2FD /* session.m */; };
 		C2508E571C582A5B00900AC1 /* Health.plist in Resources */ = {isa = PBXBuildFile; fileRef = C2508E561C582A5B00900AC1 /* Health.plist */; };
 		C2508E581C582A5B00900AC1 /* Health.plist in Resources */ = {isa = PBXBuildFile; fileRef = C2508E561C582A5B00900AC1 /* Health.plist */; };
+		C25FC8F21DA97F5F00B39ACD /* StatisticsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C25FC8F11DA97F5F00B39ACD /* StatisticsTableViewCell.m */; };
 		C29A2FB71D8DFC44005B5D29 /* SessionDetailTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C29A2FB61D8DFC44005B5D29 /* SessionDetailTableViewController.m */; };
 		C29A2FBA1D8E0054005B5D29 /* SessionDetailTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C29A2FB91D8E0054005B5D29 /* SessionDetailTableViewCell.m */; };
 		C29E28A41D98AC00009FD716 /* SleepStatistic.m in Sources */ = {isa = PBXBuildFile; fileRef = C29E28A31D98AC00009FD716 /* SleepStatistic.m */; };
@@ -127,6 +128,8 @@
 		C245D3DB1D56925E0047D2FD /* session.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = session.h; sourceTree = "<group>"; };
 		C245D3DC1D56925E0047D2FD /* session.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = session.m; sourceTree = "<group>"; };
 		C2508E561C582A5B00900AC1 /* Health.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Health.plist; sourceTree = "<group>"; };
+		C25FC8F01DA97F5F00B39ACD /* StatisticsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatisticsTableViewCell.h; sourceTree = "<group>"; };
+		C25FC8F11DA97F5F00B39ACD /* StatisticsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatisticsTableViewCell.m; sourceTree = "<group>"; };
 		C29A2FB51D8DFC44005B5D29 /* SessionDetailTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SessionDetailTableViewController.h; sourceTree = "<group>"; };
 		C29A2FB61D8DFC44005B5D29 /* SessionDetailTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SessionDetailTableViewController.m; sourceTree = "<group>"; };
 		C29A2FB81D8E0054005B5D29 /* SessionDetailTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SessionDetailTableViewCell.h; sourceTree = "<group>"; };
@@ -308,6 +311,8 @@
 			children = (
 				C2D692071DA195CC00DB3876 /* StatisticsTableViewController.h */,
 				C2D692081DA195CC00DB3876 /* StatisticsTableViewController.m */,
+				C25FC8F01DA97F5F00B39ACD /* StatisticsTableViewCell.h */,
+				C25FC8F11DA97F5F00B39ACD /* StatisticsTableViewCell.m */,
 			);
 			name = Stats;
 			sourceTree = "<group>";
@@ -512,6 +517,7 @@
 				C2AA52DF1D83AB7600584AF4 /* Constants.m in Sources */,
 				C2CCCF1D1D7E2C84004C82F8 /* SleepSessionTableViewCell.m in Sources */,
 				C245D3DD1D56925E0047D2FD /* session.m in Sources */,
+				C25FC8F21DA97F5F00B39ACD /* StatisticsTableViewCell.m in Sources */,
 				C22625CD1D864BB70013398C /* OnboardingContentViewController.m in Sources */,
 				C2FB86511D31D0B900FCC143 /* SleepMilestoneInterfaceController.m in Sources */,
 				C22625CF1D864BB70013398C /* OnboardingViewController.m in Sources */,

@@ -13,6 +13,7 @@
 @interface Utility : NSObject
 
 + (NSDateFormatter*)dateFormatterForTimeLabels;
++ (NSString *)timeFormatter:(int)totalSeconds;
 + (NSString*)pathToSleepSessionDataFile;
 + (SleepSession*)contentsOfCurrentSleepSession;
 + (SleepSession*)contentsOfPreviousSleepSession;
