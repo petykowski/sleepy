@@ -37,24 +37,97 @@ static NSString * const kUserHasOnboardedKey = @"user_has_onboarded";
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     application.statusBarStyle = UIStatusBarStyleLightContent;
     
+    // Configure Health Store
     self.healthStore = [[HKHealthStore alloc] init];
     
-    [self setUpHealthStoreForViewControllers];
+    // Override point for customization after application launch.
+    BOOL shouldPerformAdditionalDelegateHandling = YES;
     
-    // determine if the user has onboarded yet or not
-    BOOL userHasOnboarded = [[NSUserDefaults standardUserDefaults] boolForKey:kUserHasOnboardedKey];
+    // If a shortcut was launched, display its information and take the appropriate action
+    UIApplicationShortcutItem *shortcutItem = [launchOptions objectForKeyedSubscript:UIApplicationLaunchOptionsShortcutItemKey];
     
-    if (userHasOnboarded) {
-        // Do Nothing
+    if(shortcutItem)
+    {
+        // When the app launch at first time, this block can not called.
+        [self handleShortcutItem:shortcutItem];
+        
+        // This will block "performActionForShortcutItem:completionHandler" from being called.
+        shouldPerformAdditionalDelegateHandling = NO;
+        
+        
+    }else{
+        // normal app launch process without quick action
+        // Determine if the user has onboarded yet or not
+        BOOL userHasOnboarded = [[NSUserDefaults standardUserDefaults] boolForKey:kUserHasOnboardedKey];
+        
+        if (userHasOnboarded) {
+            [self launchWithoutQuickAction];
+        }
+        else {
+            self.window.rootViewController = [self generateStandardOnboardingVC];
+            [self.window makeKeyAndVisible];
+        }
+        
     }
-    else {
-        self.window.rootViewController = [self generateStandardOnboardingVC];
-    }
     
-    [self.window makeKeyAndVisible];
-    return YES;
+    return shouldPerformAdditionalDelegateHandling;
 }
 
+-(void)launchWithoutQuickAction{
+
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    UIViewController *mainViewController = [storyboard instantiateViewControllerWithIdentifier:@"Main Application"];
+    self.window.rootViewController = mainViewController;
+    [self setUpHealthStoreForViewControllers];
+    [self.window makeKeyAndVisible];
+}
+
+- (void)application:(UIApplication *)application performActionForShortcutItem:(UIApplicationShortcutItem *)shortcutItem completionHandler:(void (^)(BOOL))completionHandler{
+    
+    BOOL handledShortcutItem = [self handleShortcutItem:shortcutItem];
+    
+    completionHandler(handledShortcutItem);
+}
+
+- (BOOL)handleShortcutItem : (UIApplicationShortcutItem *)shortcutItem{
+    
+    BOOL handled = NO;
+    
+    NSString *bundleId = [NSBundle mainBundle].bundleIdentifier;
+    
+    NSString *shortcutStats = [NSString stringWithFormat:@"%@.openstatistics", bundleId];
+    NSString *shortcutLastNightSleep = [NSString stringWithFormat:@"%@.openmostrecentsleep", bundleId];
+    
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    UITabBarController *statsViewController = [storyboard instantiateViewControllerWithIdentifier:@"Main Application"];
+    if ([shortcutItem.type isEqualToString:shortcutStats]) {
+        handled = YES;
+        statsViewController.selectedIndex = 1;
+        self.window.rootViewController = statsViewController;
+        [self setUpHealthStoreForViewControllers];
+        [self.window makeKeyAndVisible];
+        
+    } else if ([shortcutItem.type isEqualToString:shortcutLastNightSleep]){
+        handled = YES;
+        self.window.rootViewController = statsViewController;
+        [self setUpHealthStoreForViewControllers];
+        UITabBarController *tabBarController = (UITabBarController *)[self.window rootViewController];
+        NSArray *navigationControllers = tabBarController.viewControllers;
+        // Iterates through UINavigationControllers looking for their child UIViewControllers
+        for (UINavigationController *navigationController in navigationControllers) {
+            NSArray *viewControllers = navigationController.viewControllers;
+            for (id viewController in viewControllers) {
+                if ([viewController respondsToSelector:@selector(setLoadedFromShortcut:)]) {
+                    [viewController setLoadedFromShortcut:true];
+                }
+            }
+        }
+        
+        
+        [self.window makeKeyAndVisible];
+    }
+    return handled;
+}
 
 #pragma mark - HealthKit
 
@@ -103,9 +176,9 @@ static NSString * const kUserHasOnboardedKey = @"user_has_onboarded";
 #pragma mark - On Boarding
 
 - (void)setupNormalRootViewController {
-    
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     UIViewController *mainViewController = [storyboard instantiateViewControllerWithIdentifier:@"Main Application"];
+    [self setUpHealthStoreForViewControllers];
     [self.window.rootViewController presentViewController:mainViewController animated:YES completion:NULL];
 }
 

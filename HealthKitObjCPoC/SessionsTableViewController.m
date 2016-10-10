@@ -43,6 +43,17 @@
     
     // some other view controller could have changed our nav bar tint color, so reset it here
     self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:0.3725490196 green:0.3058823529 blue:0.7176470588 alpha:1];
+    
+    if (_loadedFromShortcut) {
+        [self displayMostRecentSleepSession];
+    }
+}
+
+- (void)displayMostRecentSleepSession {
+    _loadedFromShortcut = false;
+    NSIndexPath *selectedCellIndexPath= [NSIndexPath indexPathForRow:0 inSection:0];
+    [self.tableView selectRowAtIndexPath:selectedCellIndexPath animated:false scrollPosition:UITableViewScrollPositionNone];
+    [self performSegueWithIdentifier:@"DetailSegue" sender:self];
 }
 
 - (void)viewDidLoad {
