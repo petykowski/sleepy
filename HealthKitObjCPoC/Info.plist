@@ -21,18 +21,18 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>1199</string>
+	<string>1214</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSHealthShareUsageDescription</key>
-	<string>"Sleepy App" will use HealthKit data to better predict when you fall asleep and wake up. It will also be used to analyze sleep patterns in effort to provide more meaningful metrics.</string>
+	<string>&quot;Sleepy App&quot; will use HealthKit data to better predict when you fall asleep and wake up. It will also be used to analyze sleep patterns in effort to provide more meaningful metrics.</string>
 	<key>NSHealthUpdateUsageDescription</key>
-	<string>Allowing write access enables "Sleepy App" to save your In Bed, Asleep, and Awake data points to Heath app.</string>
+	<string>Allowing write access enables &quot;Sleepy App&quot; to save your In Bed, Asleep, and Awake data points to Heath app.</string>
 	<key>UIApplicationShortcutItems</key>
 	<array>
 		<dict>
 			<key>UIApplicationShortcutItemIconFile</key>
-			<string>open-statistics</string>
+			<string>StatsTabBarIcon</string>
 			<key>UIApplicationShortcutItemTitle</key>
 			<string>Statistics</string>
 			<key>UIApplicationShortcutItemType</key>
@@ -45,7 +45,7 @@
 		</dict>
 		<dict>
 			<key>UIApplicationShortcutItemIconFile</key>
-			<string>open-most-recent-sleep</string>
+			<string>SleepIcon</string>
 			<key>UIApplicationShortcutItemTitle</key>
 			<string>Most Recent Sleep</string>
 			<key>UIApplicationShortcutItemType</key>

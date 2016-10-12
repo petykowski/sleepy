@@ -22,7 +22,7 @@
                                 <rect key="frame" x="0.0" y="92" width="375" height="60"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="BgN-ZG-VgA" id="Lbi-er-HYw">
-                                    <frame key="frameInset" width="342" height="60"/>
+                                    <frame key="frameInset" width="342" height="59"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sleep Session Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cEW-pe-Qoe" userLabel="Sleep Session Label">
@@ -119,7 +119,7 @@
                         <color key="separatorColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20784313725490197" alpha="1" colorSpace="calibratedRGB"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="detailViewCell" id="ctL-QL-sXh" customClass="SessionDetailTableViewCell">
-                                <rect key="frame" x="0.0" y="120" width="375" height="44"/>
+                                <rect key="frame" x="0.0" y="119.5" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ctL-QL-sXh" id="DMa-jK-DhW">
                                     <frame key="frameInset" width="375" height="43"/>
@@ -205,7 +205,7 @@
         <scene sceneID="Nfn-TV-unm">
             <objects>
                 <navigationController storyboardIdentifier="Stats Scene" id="fdh-Ui-UjP" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Stats" id="UUi-oe-qlj"/>
+                    <tabBarItem key="tabBarItem" title="Stats" image="StatsTabBarIcon" id="UUi-oe-qlj"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="tgh-OB-BCp">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -232,7 +232,7 @@
                         <color key="separatorColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20784313730000001" alpha="1" colorSpace="calibratedRGB"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="statViewCell" id="9rQ-Zo-lke" customClass="StatisticsTableViewCell">
-                                <rect key="frame" x="0.0" y="119" width="375" height="44"/>
+                                <rect key="frame" x="0.0" y="119.5" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="9rQ-Zo-lke" id="l2y-q8-KWv">
                                     <frame key="frameInset" width="375" height="43"/>
@@ -282,5 +282,6 @@
     </scenes>
     <resources>
         <image name="SleepIcon" width="14" height="14"/>
+        <image name="StatsTabBarIcon" width="37" height="37"/>
     </resources>
 </document>
