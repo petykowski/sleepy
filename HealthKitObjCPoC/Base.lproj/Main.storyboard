@@ -165,7 +165,7 @@
         <scene sceneID="hXM-M4-8GU">
             <objects>
                 <navigationController storyboardIdentifier="Sleep Scene" id="zjt-zR-bYq" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Sleep" image="SleepIcon" id="YwP-Yc-jM8"/>
+                    <tabBarItem key="tabBarItem" title="Sleep" image="SleepTabBarIcon" id="YwP-Yc-jM8"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="tM2-OP-d4C">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -205,7 +205,7 @@
         <scene sceneID="Nfn-TV-unm">
             <objects>
                 <navigationController storyboardIdentifier="Stats Scene" id="fdh-Ui-UjP" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Stats" image="StatsTabBarIcon" id="UUi-oe-qlj"/>
+                    <tabBarItem key="tabBarItem" title="Stats" image="StatisticsIncreasingIcon" id="UUi-oe-qlj"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="tgh-OB-BCp">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -281,7 +281,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="SleepIcon" width="14" height="14"/>
-        <image name="StatsTabBarIcon" width="37" height="37"/>
+        <image name="SleepTabBarIcon" width="30" height="30"/>
+        <image name="StatisticsIncreasingIcon" width="30" height="30"/>
     </resources>
 </document>
