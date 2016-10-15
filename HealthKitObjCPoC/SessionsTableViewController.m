@@ -17,7 +17,7 @@
 #import "SessionDetailTableViewController.h"
 
 
-@interface SessionsTableViewController () <WCSessionDelegate, NSFetchedResultsControllerDelegate, NSFetchedResultsControllerDelegate>
+@interface SessionsTableViewController () <WCSessionDelegate, NSFetchedResultsControllerDelegate, NSFetchedResultsControllerDelegate, UIViewControllerPreviewingDelegate>
 
 
 
@@ -27,6 +27,7 @@
 @property (nonatomic, strong) session *object;
 @property (nonatomic, strong) session *objectToSave;
 @property (nonatomic, strong) session *mostRecentSleepSession;
+@property (nonatomic, strong) id previewingContext;
 
 @end
 
@@ -43,6 +44,10 @@
     
     // some other view controller could have changed our nav bar tint color, so reset it here
     self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:0.3725490196 green:0.3058823529 blue:0.7176470588 alpha:1];
+    
+    if ([self isForceTouchAvailable]) {
+        self.previewingContext = [self registerForPreviewingWithDelegate:self sourceView:self.view];
+    }
     
     if (_loadedFromShortcut) {
         [self displayMostRecentSleepSession];
@@ -141,11 +146,50 @@
 }
 
 -(void)session:(WCSession *)session activationDidCompleteWithState:(WCSessionActivationState)activationState error:(NSError *)error {
-    NSLog(@"[DEBUG] WatchConnectivity Session state: %ld", activationState);
+    NSLog(@"[DEBUG] WatchConnectivity Session state: %ld", (long)activationState);
 }
 
 -(void)sessionDidDeactivate:(WCSession *)session {
     
+}
+
+#pragma mark - Force Touch Support
+
+- (BOOL)isForceTouchAvailable {
+    BOOL isForceTouchAvailable = NO;
+    if ([self.traitCollection respondsToSelector:@selector(forceTouchCapability)]) {
+        isForceTouchAvailable = self.traitCollection.forceTouchCapability == UIForceTouchCapabilityAvailable;
+    }
+    return isForceTouchAvailable;
+}
+
+-(UIViewController *)previewingContext:(id<UIViewControllerPreviewing>)previewingContext viewControllerForLocation:(CGPoint)location {
+    CGPoint cellPostion = [self.tableView convertPoint:location fromView:self.view];
+    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:cellPostion];
+    session *sleepSession = nil;
+    
+    if (indexPath) {
+        UITableViewCell *tableCell = [self.tableView cellForRowAtIndexPath:indexPath];
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        SessionDetailTableViewController *previewController = [storyboard instantiateViewControllerWithIdentifier:@"DetailView"];
+        
+        if ([previewController respondsToSelector:@selector(setHealthStore:)]) {
+            [previewController setHealthStore:self.healthStore];
+        }
+        
+        sleepSession = (session *)[self.fetchedResultsController objectAtIndexPath:indexPath];
+        previewController.sleepSession = sleepSession;
+        
+        previewingContext.sourceRect = [self.view convertRect:tableCell.frame fromView:self.tableView];
+        return previewController;
+    }
+    return nil;
+}
+
+- (void)previewingContext:(id )previewingContext commitViewController: (UIViewController *)viewControllerToCommit {
+    
+    // to render it with a navigation controller (more common) you should use this:
+    [self.navigationController showViewController:viewControllerToCommit sender:nil];
 }
 
 #pragma mark - Table view data source
@@ -168,8 +212,6 @@
         self.tableView.backgroundView = noDataLabel;
         self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     }
-    
-    
     
     return [[[self fetchedResultsController] sections] count];
 }
@@ -247,10 +289,6 @@
 }
 
 #pragma mark - Navigation
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-}
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     

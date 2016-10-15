@@ -21,7 +21,6 @@
 @property NSMutableArray *heartRateStatistics;
 @property SleepSession *detailSleepSession;
 
-
 @end
 
 @implementation SessionDetailTableViewController
