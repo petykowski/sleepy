@@ -39,7 +39,6 @@
 
 + (NSString *)timeFormatter:(int)totalSeconds
 {
-    
     int seconds = totalSeconds % 60;
     int minutes = (totalSeconds / 60) % 60;
     int hours = totalSeconds / 3600;
@@ -47,8 +46,8 @@
     if (hours == 0) {
         return [NSString stringWithFormat:@"%02dm %02ds", minutes, seconds];
     }
-    
     return [NSString stringWithFormat:@"%dh %02dm %02ds",hours, minutes, seconds];
+    [self timeFormatter:500];
 }
 
 +(SleepSession*)contentsOfCurrentSleepSession {

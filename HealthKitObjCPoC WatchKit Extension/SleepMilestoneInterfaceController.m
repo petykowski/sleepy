@@ -12,7 +12,7 @@
 #import "Utility.h"
 #import "SleepSession.h"
 
-@interface SleepMilestoneInterfaceController ()
+@interface SleepMilestoneInterfaceController () <WCSessionDelegate>
 
 @property (unsafe_unretained, nonatomic) IBOutlet WKInterfaceTable *milestoneTable;
 @property (nonatomic, readwrite) NSArray *lastNightTimes;
@@ -22,6 +22,13 @@
 
 // LABELS //
 @property (unsafe_unretained, nonatomic) IBOutlet WKInterfaceLabel *userMsgLabel;
+
+// WATCH CONNECTIVITY //
+
+@property (nonatomic, retain) WCSession *connectedSession;
+
+@property (nonatomic, readwrite) SleepSession *lastSleepSession;
+@property (nonatomic, readwrite) NSDictionary *sleepSessionDataToSave;
 
 @end
 
@@ -41,8 +48,16 @@
 }
 
 - (void)willActivate {
-    // This method is called when watch view controller is about to be visible to user
     [super willActivate];
+    
+    [self prepareMenuIconsForUserNotInSleepSession];
+    
+    // Initate WatchConnectivity
+    if ([WCSession isSupported]) {
+        self.connectedSession = [WCSession defaultSession];
+        self.connectedSession.delegate = self;
+        [self.connectedSession activateSession];
+    }
     
     self.sleepDataExsists = [self doesMilestoneDataExsist];
     BOOL isSleepInProgress = [self isSleepinProgress];
@@ -102,6 +117,47 @@
 
 -(void)hideNewUserMessage {
     [self.userMsgLabel setHidden:true];
+}
+
+#pragma mark - Menu Icon Methods
+- (void)prepareMenuIconsForUserNotInSleepSession {
+    [self clearAllMenuItems];
+    [self addMenuItemWithImageNamed:@"sleepMenuIcon" title:@"Resend Sleep Data to iPhone" action:@selector(sendLastSleepSessionDataToiOSApp)];
+}
+
+#pragma mark - Watch Connectivity Methods
+
+- (void)sendLastSleepSessionDataToiOSApp {
+    self.lastSleepSession = [Utility contentsOfPreviousSleepSession];
+    _sleepSessionDataToSave = [self populateDictionaryWithLastSleepSessionData];
+    [[WCSession defaultSession] sendMessage:_sleepSessionDataToSave
+                               replyHandler:^(NSDictionary<NSString *,id> * _Nonnull replyMessage) {
+                                   // Remove
+                                   NSLog(@"[DEBUG] Contents of reply: %@", replyMessage);
+                               }
+                               errorHandler:^(NSError *error) {
+                                   //catch any errors here
+                                   NSLog(@"[DEBUG] ERROR: %@", error);
+                               }
+     ];
+}
+
+- (NSMutableDictionary *)populateDictionaryWithLastSleepSessionData{
+    NSData *inBedData = [NSKeyedArchiver archivedDataWithRootObject:self.lastSleepSession.inBed];
+    NSData *sleepData = [NSKeyedArchiver archivedDataWithRootObject:self.lastSleepSession.sleep];
+    NSData *wakeData = [NSKeyedArchiver archivedDataWithRootObject:self.lastSleepSession.wake];
+    NSData *outBedData = [NSKeyedArchiver archivedDataWithRootObject:self.lastSleepSession.outBed];
+    
+    NSMutableDictionary *sleepSessionDictionary = [[NSMutableDictionary alloc] init];
+    [sleepSessionDictionary setObject:@"sendSleepSessionDataToiOSApp" forKey:@"Request"];
+    [sleepSessionDictionary setObject:@"Sleep Session" forKey:@"name"];
+    [sleepSessionDictionary setObject:[NSDate date] forKey:@"creationDate"];
+    [sleepSessionDictionary setObject:inBedData forKey:@"inBed"];
+    [sleepSessionDictionary setObject:sleepData forKey:@"sleep"];
+    [sleepSessionDictionary setObject:wakeData forKey:@"wake"];
+    [sleepSessionDictionary setObject:outBedData forKey:@"outBed"];
+    
+    return sleepSessionDictionary;
 }
 
 @end

@@ -12,8 +12,13 @@
 
 @interface Utility : NSObject
 
-
 + (NSDateFormatter*)dateFormatterForTimeLabels;
+
+/**
+ * @brief Returns a label ready string to display the time duration of the number of seconds provided
+ * @param Integer total number of seconds
+ * @return 00h 00m 00s
+*/
 + (NSString *)timeFormatter:(int)totalSeconds;
 + (NSString*)pathToSleepSessionDataFile;
 + (SleepSession*)contentsOfCurrentSleepSession;
@@ -25,5 +30,4 @@
 + (NSDictionary*)convertManagedObjectSessionToDictionaryForDetailView: (session *)sleepSession;
 + (SleepSession*)convertManagedObjectSessionToSleepSessionForDetailView: (session *)sleepSession;
 + (NSMutableArray *)convertManagedObjectsToSleepSessions: (NSArray *)sleepArray;
-
 @end
