@@ -123,7 +123,7 @@
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
-    NSString *filePath = [documentsDirectory stringByAppendingPathComponent:sleepSessionFileNameForWatch];
+    NSString *filePath = [documentsDirectory stringByAppendingPathComponent:kSleepSessionFileNameForWatch];
     
     success = [fileManager fileExistsAtPath:filePath];
     
@@ -204,7 +204,7 @@
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
-    NSString *filePath = [documentsDirectory stringByAppendingPathComponent:sleepSessionFileNameForWatch];
+    NSString *filePath = [documentsDirectory stringByAppendingPathComponent:kSleepSessionFileNameForWatch];
     
     success = [fileManager fileExistsAtPath:filePath];
     

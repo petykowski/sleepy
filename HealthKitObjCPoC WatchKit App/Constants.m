@@ -10,6 +10,16 @@
 
 @implementation Constants
 
-NSString *const sleepSessionFileNameForWatch = @"SavedSleepSession.plist";
+NSString *const kSleepSessionFileNameForWatch = @"SavedSleepSession.plist";
+
+#pragma User Onboarding
+NSString *const kUserHasOnboardedKey = @"user_has_onboarded";
+NSString *const kOnboardingFirstPageBody = @"Sleepy is a sleep tracking app that helps users make sense of their sleep patterns.";
+NSString *const kOnboardingSecondPageTitle = @"Integrate with HealthKit";
+NSString *const kOnboardingSecondPageBody = @"Allowing access to HealthKit allows Sleepy to determine when you've fallen asleep and build sleep trends.";
+NSString *const kOnboardingSecondPageButton = @"Enable HealthKit Access";
+NSString *const kOnboardingThirdPageTitle = @"Start Sleeping Smarter";
+NSString *const kOnboardingThirdPageBody = @"When using the Sleepy watch app, 3D Touch to begin a new sleep session, and then again to wake.";
+NSString *const kOnboardingThirdPageButton = @"Get Started";
 
 @end

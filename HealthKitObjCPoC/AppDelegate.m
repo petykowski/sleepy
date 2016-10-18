@@ -11,6 +11,7 @@
 #import "SessionsTableViewController.h"
 #import "OnboardingContentViewController.h"
 #import "OnboardingViewController.h"
+#import "Constants.h"
 @import HealthKit;
 
 @interface AppDelegate ()
@@ -18,8 +19,6 @@
 @property (nonatomic, retain) HKHealthStore *healthStore;
 @property (nonatomic, readwrite) BOOL hasAccessToSleepData;
 @end
-
-static NSString * const kUserHasOnboardedKey = @"user_has_onboarded";
 
 @implementation AppDelegate
 
@@ -59,7 +58,7 @@ static NSString * const kUserHasOnboardedKey = @"user_has_onboarded";
         // normal app launch process without quick action
         // Determine if the user has onboarded yet or not
         BOOL userHasOnboarded = [[NSUserDefaults standardUserDefaults] boolForKey:kUserHasOnboardedKey];
-        
+
         if (userHasOnboarded) {
             [self launchWithoutQuickAction];
         }
@@ -78,7 +77,7 @@ static NSString * const kUserHasOnboardedKey = @"user_has_onboarded";
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     UIViewController *mainViewController = [storyboard instantiateViewControllerWithIdentifier:@"Main Application"];
     self.window.rootViewController = mainViewController;
-    [self setUpHealthStoreForViewControllers];
+    [self setUpHealthStoreForViewControllers:nil];
     [self.window makeKeyAndVisible];
 }
 
@@ -100,17 +99,18 @@ static NSString * const kUserHasOnboardedKey = @"user_has_onboarded";
     
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     UITabBarController *statsViewController = [storyboard instantiateViewControllerWithIdentifier:@"Main Application"];
+    
     if ([shortcutItem.type isEqualToString:shortcutStats]) {
         handled = YES;
         statsViewController.selectedIndex = 1;
         self.window.rootViewController = statsViewController;
-        [self setUpHealthStoreForViewControllers];
+        [self setUpHealthStoreForViewControllers:nil];
         [self.window makeKeyAndVisible];
         
     } else if ([shortcutItem.type isEqualToString:shortcutLastNightSleep]){
         handled = YES;
         self.window.rootViewController = statsViewController;
-        [self setUpHealthStoreForViewControllers];
+        [self setUpHealthStoreForViewControllers:nil];
         UITabBarController *tabBarController = (UITabBarController *)[self.window rootViewController];
         NSArray *navigationControllers = tabBarController.viewControllers;
         // Iterates through UINavigationControllers looking for their child UIViewControllers
@@ -154,8 +154,15 @@ static NSString * const kUserHasOnboardedKey = @"user_has_onboarded";
     }];
 }
 
-- (void)setUpHealthStoreForViewControllers {
-    UITabBarController *tabBarController = (UITabBarController *)[self.window rootViewController];
+- (void)setUpHealthStoreForViewControllers:(UITabBarController *)viewController {
+    UITabBarController *tabBarController;
+    
+    if (viewController){
+        tabBarController = viewController;
+    } else {
+        tabBarController = (UITabBarController *)[self.window rootViewController];
+    }
+    
     NSArray *navigationControllers = tabBarController.viewControllers;
     
     // Iterates through UINavigationControllers looking for their child UIViewControllers
@@ -177,8 +184,8 @@ static NSString * const kUserHasOnboardedKey = @"user_has_onboarded";
 
 - (void)setupNormalRootViewController {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    UIViewController *mainViewController = [storyboard instantiateViewControllerWithIdentifier:@"Main Application"];
-    [self setUpHealthStoreForViewControllers];
+    UITabBarController *mainViewController = [storyboard instantiateViewControllerWithIdentifier:@"Main Application"];
+    [self setUpHealthStoreForViewControllers:mainViewController];
     [self.window.rootViewController presentViewController:mainViewController animated:YES completion:NULL];
 }
 
@@ -197,6 +204,18 @@ static NSString * const kUserHasOnboardedKey = @"user_has_onboarded";
     NSURL *healthKitMovieURL = [NSURL fileURLWithPath:healthKitPath];
     NSURL *appleWatchMovieURL = [NSURL fileURLWithPath:appleWatchPath];
     
+    CGFloat screenHeight;
+    CGFloat screenWidth;
+    
+    if( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone ){
+        
+        screenHeight = [UIScreen mainScreen].bounds.size.height;
+        screenWidth = [UIScreen mainScreen].bounds.size.width;
+        if( screenHeight < screenWidth ){
+            screenHeight = screenWidth;
+        }
+    }
+    
     NSDateComponents *components = [[NSCalendar currentCalendar] components:NSCalendarUnitHour fromDate:[NSDate date]];
     NSInteger currentHour = [components hour];
     NSString *greeting;
@@ -209,101 +228,54 @@ static NSString * const kUserHasOnboardedKey = @"user_has_onboarded";
         greeting = [NSString stringWithFormat:@"Good Evening!"];
     }
     
-    OnboardingContentViewController *firstPage = [OnboardingContentViewController contentWithTitle:greeting body:@"Sleepy is a sleep tracking app that helps users make sense of their sleep patterns." videoURL:sleepyMainMovieURL buttonText:nil action:nil];
+    OnboardingContentViewController *firstPage = [OnboardingContentViewController contentWithTitle:greeting body:kOnboardingFirstPageBody videoURL:sleepyMainMovieURL buttonText:nil action:nil];
     
-    if( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone ){
-        
-        CGFloat screenHeight = [UIScreen mainScreen].bounds.size.height;
-        CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
-        if( screenHeight < screenWidth ){
-            screenHeight = screenWidth;
-        }
-        
-        if( screenHeight > 480 && screenHeight < 667 ){
-            NSLog(@"iPhone 5/5s");
-            firstPage.topPadding = 0;
-            firstPage.underIconPadding = 50;
-            firstPage.underTitlePadding = 225;
-        } else if ( screenHeight > 480 && screenHeight < 736 ){
-            NSLog(@"iPhone 6");
-            firstPage.topPadding = 0;
-            firstPage.underIconPadding = 65;
-            firstPage.underTitlePadding = 361;
-        } else if ( screenHeight > 480 ){
-            firstPage.topPadding = 0;
-            firstPage.underIconPadding = 75;
-            firstPage.underTitlePadding = 375;
-            NSLog(@"iPhone 6 Plus");
-        } else {
-            NSLog(@"iPhone 4/4s");
-        }
-    }
-    
-    
-    OnboardingContentViewController *secondPage = [OnboardingContentViewController contentWithTitle:@"Integrate with HealthKit" body:@"Allowing access to HealthKit allows Sleepy to determine when you've fallen asleep and build sleep trends." videoURL:healthKitMovieURL buttonText:@"Enable HealthKit Access" action:^{
+    OnboardingContentViewController *secondPage = [OnboardingContentViewController contentWithTitle:kOnboardingSecondPageTitle body:kOnboardingSecondPageBody videoURL:healthKitMovieURL buttonText:kOnboardingSecondPageButton action:^{
         if (_hasAccessToSleepData == 0) {
             [self requestAccessToHealthKit];
         }
     }];
     
-    if( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone ){
-        
-        CGFloat screenHeight = [UIScreen mainScreen].bounds.size.height;
-        CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
-        if( screenHeight < screenWidth ){
-            screenHeight = screenWidth;
-        }
-        
-        if( screenHeight > 480 && screenHeight < 667 ){
-            NSLog(@"iPhone 5/5s");
-            secondPage.topPadding = 0;
-            secondPage.underIconPadding = 50;
-            secondPage.underTitlePadding = 225;
-        } else if ( screenHeight > 480 && screenHeight < 736 ){
-            NSLog(@"iPhone 6");
-            secondPage.topPadding = 0;
-            secondPage.underIconPadding = 65;
-            secondPage.underTitlePadding = 316;
-        } else if ( screenHeight > 480 ){
-            secondPage.topPadding = 0;
-            secondPage.underIconPadding = 75;
-            secondPage.underTitlePadding = 375;
-            NSLog(@"iPhone 6 Plus");
-        } else {
-            NSLog(@"iPhone 4/4s");
-        }
-    }
-    
-    OnboardingContentViewController *thirdPage = [OnboardingContentViewController contentWithTitle:@"Start Sleeping Smarter" body:@"When using the Sleepy watch app, 3D Touch to begin a new sleep session, and then again to wake." videoURL:appleWatchMovieURL buttonText:@"Get Started" action:^{
+    OnboardingContentViewController *thirdPage = [OnboardingContentViewController contentWithTitle:kOnboardingThirdPageTitle body:kOnboardingThirdPageBody videoURL:appleWatchMovieURL buttonText:kOnboardingThirdPageButton action:^{
         [self handleOnboardingCompletion];
     }];
     
-    if( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone ){
-        
-        CGFloat screenHeight = [UIScreen mainScreen].bounds.size.height;
-        CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
-        if( screenHeight < screenWidth ){
-            screenHeight = screenWidth;
-        }
-        
-        if( screenHeight > 480 && screenHeight < 667 ){
-            NSLog(@"iPhone 5/5s");
-            thirdPage.topPadding = 0;
-            thirdPage.underIconPadding = 50;
-            thirdPage.underTitlePadding = 225;
-        } else if ( screenHeight > 480 && screenHeight < 736 ){
-            NSLog(@"iPhone 6");
-            thirdPage.topPadding = 0;
-            thirdPage.underIconPadding = 65;
-            thirdPage.underTitlePadding = 316;
-        } else if ( screenHeight > 480 ){
-            thirdPage.topPadding = 0;
-            thirdPage.underIconPadding = 75;
-            thirdPage.underTitlePadding = 375;
-            NSLog(@"iPhone 6 Plus");
-        } else {
-            NSLog(@"iPhone 4/4s");
-        }
+    
+    if( screenHeight > 480 && screenHeight < 667 ){
+        NSLog(@"iPhone 5/5s");
+        firstPage.topPadding = 0;
+        firstPage.underIconPadding = 50;
+        firstPage.underTitlePadding = 225;
+        secondPage.topPadding = 0;
+        secondPage.underIconPadding = 50;
+        secondPage.underTitlePadding = 225;
+        thirdPage.topPadding = 0;
+        thirdPage.underIconPadding = 50;
+        thirdPage.underTitlePadding = 225;
+    } else if ( screenHeight > 480 && screenHeight < 736 ){
+        NSLog(@"iPhone 6");
+        firstPage.topPadding = 0;
+        firstPage.underIconPadding = 65;
+        firstPage.underTitlePadding = 361;
+        secondPage.topPadding = 0;
+        secondPage.underIconPadding = 65;
+        secondPage.underTitlePadding = 316;
+        thirdPage.topPadding = 0;
+        thirdPage.underIconPadding = 65;
+        thirdPage.underTitlePadding = 316;
+    } else if ( screenHeight > 480 ){
+        firstPage.topPadding = 0;
+        firstPage.underIconPadding = 75;
+        firstPage.underTitlePadding = 375;
+        secondPage.topPadding = 0;
+        secondPage.underIconPadding = 75;
+        secondPage.underTitlePadding = 375;
+        thirdPage.topPadding = 0;
+        thirdPage.underIconPadding = 75;
+        thirdPage.underTitlePadding = 375;
+        NSLog(@"iPhone 6 Plus");
+    } else {
+        NSLog(@"iPhone 4/4s");
     }
     
     OnboardingViewController *onboardingVC = [OnboardingViewController onboardWithBackgroundImage:nil contents:@[firstPage, secondPage, thirdPage]];

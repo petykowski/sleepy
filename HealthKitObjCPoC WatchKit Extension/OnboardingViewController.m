@@ -208,6 +208,8 @@ static NSString * const kSkipButtonText = @"Skip";
     // otherwise send the video view to the back if we have one
     else if (self.videoURL) {
         self.player = [[AVPlayer alloc] initWithURL:self.videoURL];
+        [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryAmbient error:nil];
+        [[AVAudioSession sharedInstance] setActive:NO error:nil];
 
         self.moviePlayerController = [AVPlayerViewController new];
         self.moviePlayerController.player = self.player;

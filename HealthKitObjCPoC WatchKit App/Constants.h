@@ -10,6 +10,16 @@
 
 @interface Constants : NSObject
 
-extern NSString *const sleepSessionFileNameForWatch;
+extern NSString *const kSleepSessionFileNameForWatch;
+
+#pragma User Onboarding
+extern NSString *const kUserHasOnboardedKey;
+extern NSString *const kOnboardingFirstPageBody;
+extern NSString *const kOnboardingSecondPageTitle;
+extern NSString *const kOnboardingSecondPageBody;
+extern NSString *const kOnboardingSecondPageButton;
+extern NSString *const kOnboardingThirdPageTitle;
+extern NSString *const kOnboardingThirdPageBody;
+extern NSString *const kOnboardingThirdPageButton;
 
 @end
