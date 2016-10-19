@@ -47,7 +47,6 @@
         return [NSString stringWithFormat:@"%02dm %02ds", minutes, seconds];
     }
     return [NSString stringWithFormat:@"%dh %02dm %02ds",hours, minutes, seconds];
-    [self timeFormatter:500];
 }
 
 +(SleepSession*)contentsOfCurrentSleepSession {

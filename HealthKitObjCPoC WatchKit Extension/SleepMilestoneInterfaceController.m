@@ -24,11 +24,17 @@
 @property (unsafe_unretained, nonatomic) IBOutlet WKInterfaceLabel *userMsgLabel;
 
 // WATCH CONNECTIVITY //
-
 @property (nonatomic, retain) WCSession *connectedSession;
 
+/**
+ * @brief Contains the last saved sleep when using the WatchOS app
+ */
 @property (nonatomic, readwrite) SleepSession *lastSleepSession;
-@property (nonatomic, readwrite) NSDictionary *sleepSessionDataToSave;
+
+/**
+ * @brief Contains the converted data of the last saved sleep session to be sent via WCSession
+ */
+@property (nonatomic, readwrite) NSDictionary *sleepSessionDataDictToSave;
 
 @end
 
@@ -38,6 +44,16 @@
 {
     self = [super init];
     if (self) {
+        _lastSleepSession = [[SleepSession alloc] init];
+        
+        [self prepareMenuIconsForResendingSleepData];
+        
+        // Initate WatchConnectivity
+        if ([WCSession isSupported]) {
+            self.connectedSession = [WCSession defaultSession];
+            self.connectedSession.delegate = self;
+            [self.connectedSession activateSession];
+        }
     }
     return self;
 }
@@ -49,15 +65,6 @@
 
 - (void)willActivate {
     [super willActivate];
-    
-    [self prepareMenuIconsForUserNotInSleepSession];
-    
-    // Initate WatchConnectivity
-    if ([WCSession isSupported]) {
-        self.connectedSession = [WCSession defaultSession];
-        self.connectedSession.delegate = self;
-        [self.connectedSession activateSession];
-    }
     
     self.sleepDataExsists = [self doesMilestoneDataExsist];
     BOOL isSleepInProgress = [self isSleepinProgress];
@@ -72,14 +79,13 @@
 }
 
 - (void)didDeactivate {
-    // This method is called when watch view controller is no longer visible
     [super didDeactivate];
 }
 
 -(BOOL)doesMilestoneDataExsist {
-    SleepSession *previousSession = [Utility contentsOfPreviousSleepSession];
+    _lastSleepSession = [Utility contentsOfPreviousSleepSession];
     
-    if (!previousSession.inBed || !previousSession.inBed.count) {
+    if (!_lastSleepSession.inBed || !_lastSleepSession.inBed.count) {
         return false;
     }
     else {
@@ -88,28 +94,31 @@
 }
 
 - (BOOL)isSleepinProgress {
-    SleepSession *theSession = [Utility contentsOfCurrentSleepSession];
-    BOOL thebool = theSession.isSleepSessionInProgress;
-    NSLog(@"[VERBOSE] Sleep session is %s in progress.", thebool  ? "currently" : "not");
-    return thebool;
+    BOOL sleepInProgress = _lastSleepSession.isSleepSessionInProgress;
+    NSLog(@"[VERBOSE] Sleep session is %s in progress.", sleepInProgress  ? "currently" : "not");
+    return sleepInProgress;
 }
 
+
+#pragma mark - TableView Methods
+
 - (void)getMilestoneTimes {
-    SleepSession *previousSession = [Utility contentsOfPreviousSleepSession];
-    self.lastNightTimes = [Utility convertAndPopulatePreviousSleepSessionDataForMilestone:previousSession];
-    NSLog(@"[DEBUG] from milestone: %@", self.lastNightTimes);
+    _lastNightTimes = [Utility convertAndPopulatePreviousSleepSessionDataForMilestone:_lastSleepSession];
 }
 
 - (void)updateMilestoneTableData {
     NSArray *titleArray = [NSArray arrayWithObjects:@"IN BED", @"ASLEEP", @"AWAKE", @"OUT BED", @"BACK TO BED", @"BACK TO SLEEP", @"AWAKE", @"OUT BED", @"BACK TO BED", @"BACK TO SLEEP", @"AWAKE", @"OUT BED", @"BACK TO BED", @"BACK TO SLEEP", @"AWAKE", @"OUT BED", nil];
     
-    [self.milestoneTable setNumberOfRows:self.lastNightTimes.count withRowType:@"main"];
+    [self.milestoneTable setNumberOfRows:_lastNightTimes.count withRowType:@"main"];
     for (NSInteger i = 0; i < self.milestoneTable.numberOfRows; i++) {
         MilestoneRowController* theRow = [self.milestoneTable rowControllerAtIndex:i];
         [theRow.milestoneLabel setText:[titleArray objectAtIndex:i]];
-        [theRow.milestoneTimeLabel setText:[self.lastNightTimes objectAtIndex:i]];
+        [theRow.milestoneTimeLabel setText:[_lastNightTimes objectAtIndex:i]];
     }
 }
+
+
+#pragma mark - New User Message
 
 -(void)displayNewUserMessage {
     [self.userMsgLabel setHidden:false];
@@ -119,39 +128,38 @@
     [self.userMsgLabel setHidden:true];
 }
 
+
 #pragma mark - Menu Icon Methods
-- (void)prepareMenuIconsForUserNotInSleepSession {
+- (void)prepareMenuIconsForResendingSleepData {
     [self clearAllMenuItems];
-    [self addMenuItemWithImageNamed:@"sleepMenuIcon" title:@"Resend Sleep Data to iPhone" action:@selector(sendLastSleepSessionDataToiOSApp)];
+    [self addMenuItemWithImageNamed:@"sleepMenuIcon" title:@"Resend Sleep Data to iOS" action:@selector(sendLastSleepSessionDataToiOSApp)];
 }
+
 
 #pragma mark - Watch Connectivity Methods
 
 - (void)sendLastSleepSessionDataToiOSApp {
-    self.lastSleepSession = [Utility contentsOfPreviousSleepSession];
-    _sleepSessionDataToSave = [self populateDictionaryWithLastSleepSessionData];
-    [[WCSession defaultSession] sendMessage:_sleepSessionDataToSave
+    _sleepSessionDataDictToSave = [self populateDictionaryWithLastSleepSessionData];
+    [[WCSession defaultSession] sendMessage:_sleepSessionDataDictToSave
                                replyHandler:^(NSDictionary<NSString *,id> * _Nonnull replyMessage) {
-                                   // Remove
                                    NSLog(@"[DEBUG] Contents of reply: %@", replyMessage);
                                }
                                errorHandler:^(NSError *error) {
-                                   //catch any errors here
                                    NSLog(@"[DEBUG] ERROR: %@", error);
                                }
      ];
 }
 
 - (NSMutableDictionary *)populateDictionaryWithLastSleepSessionData{
-    NSData *inBedData = [NSKeyedArchiver archivedDataWithRootObject:self.lastSleepSession.inBed];
-    NSData *sleepData = [NSKeyedArchiver archivedDataWithRootObject:self.lastSleepSession.sleep];
-    NSData *wakeData = [NSKeyedArchiver archivedDataWithRootObject:self.lastSleepSession.wake];
-    NSData *outBedData = [NSKeyedArchiver archivedDataWithRootObject:self.lastSleepSession.outBed];
+    NSData *inBedData = [NSKeyedArchiver archivedDataWithRootObject:_lastSleepSession.inBed];
+    NSData *sleepData = [NSKeyedArchiver archivedDataWithRootObject:_lastSleepSession.sleep];
+    NSData *wakeData = [NSKeyedArchiver archivedDataWithRootObject:_lastSleepSession.wake];
+    NSData *outBedData = [NSKeyedArchiver archivedDataWithRootObject:_lastSleepSession.outBed];
     
     NSMutableDictionary *sleepSessionDictionary = [[NSMutableDictionary alloc] init];
     [sleepSessionDictionary setObject:@"sendSleepSessionDataToiOSApp" forKey:@"Request"];
     [sleepSessionDictionary setObject:@"Sleep Session" forKey:@"name"];
-    [sleepSessionDictionary setObject:[NSDate date] forKey:@"creationDate"];
+    [sleepSessionDictionary setObject:[_lastSleepSession.outBed lastObject] forKey:@"creationDate"];
     [sleepSessionDictionary setObject:inBedData forKey:@"inBed"];
     [sleepSessionDictionary setObject:sleepData forKey:@"sleep"];
     [sleepSessionDictionary setObject:wakeData forKey:@"wake"];
