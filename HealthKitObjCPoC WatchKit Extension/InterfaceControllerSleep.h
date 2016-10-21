@@ -17,6 +17,6 @@
 
 @protocol InterfaceControllerSleepDelegate <NSObject>
 
-- (void)proposedSleepStartDecision:(int)buttonValue;
+- (void)proposedSleepStartDecision:(int)buttonValue SleepStartDate:(NSDate*)date;
 
 @end

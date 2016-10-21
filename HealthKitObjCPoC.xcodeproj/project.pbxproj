@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		C200919F1D75473B003682D9 /* session.m in Sources */ = {isa = PBXBuildFile; fileRef = C245D3DC1D56925E0047D2FD /* session.m */; };
+		C225561C1DB9BE4200E31C62 /* SleepInputInterfaceController.m in Sources */ = {isa = PBXBuildFile; fileRef = C225561B1DB9BE4200E31C62 /* SleepInputInterfaceController.m */; };
 		C22625CD1D864BB70013398C /* OnboardingContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C22625CA1D864BB70013398C /* OnboardingContentViewController.m */; };
 		C22625CF1D864BB70013398C /* OnboardingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C22625CC1D864BB70013398C /* OnboardingViewController.m */; };
 		C22EFCA91D82518500A64D3B /* SleepSession.m in Sources */ = {isa = PBXBuildFile; fileRef = C22EFCA81D82518500A64D3B /* SleepSession.m */; };
@@ -93,6 +94,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		C225561A1DB9BE4200E31C62 /* SleepInputInterfaceController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SleepInputInterfaceController.h; sourceTree = "<group>"; };
+		C225561B1DB9BE4200E31C62 /* SleepInputInterfaceController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SleepInputInterfaceController.m; sourceTree = "<group>"; };
 		C22625C81D864BB60013398C /* OnboardingContentViewController_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OnboardingContentViewController_Private.h; sourceTree = "<group>"; };
 		C22625C91D864BB70013398C /* OnboardingContentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OnboardingContentViewController.h; sourceTree = "<group>"; };
 		C22625CA1D864BB70013398C /* OnboardingContentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OnboardingContentViewController.m; sourceTree = "<group>"; };
@@ -283,6 +286,8 @@
 				C243C17B1C57D32400DB8803 /* InterfaceController.m */,
 				C2BA05DF1D2FEC1800438CC7 /* InterfaceControllerSleep.h */,
 				C2BA05E01D2FEC1800438CC7 /* InterfaceControllerSleep.m */,
+				C225561A1DB9BE4200E31C62 /* SleepInputInterfaceController.h */,
+				C225561B1DB9BE4200E31C62 /* SleepInputInterfaceController.m */,
 				C243C17D1C57D32400DB8803 /* ExtensionDelegate.h */,
 				C243C17E1C57D32400DB8803 /* ExtensionDelegate.m */,
 				C243C1801C57D32400DB8803 /* Assets.xcassets */,
@@ -544,6 +549,7 @@
 				C200919F1D75473B003682D9 /* session.m in Sources */,
 				C2BA05E11D2FEC1800438CC7 /* InterfaceControllerSleep.m in Sources */,
 				C2391DED1D35D92C00808835 /* Utility.m in Sources */,
+				C225561C1DB9BE4200E31C62 /* SleepInputInterfaceController.m in Sources */,
 				C22EFCAA1D82518500A64D3B /* SleepSession.m in Sources */,
 				C2FB86561D31D93800FCC143 /* MilestoneRowController.m in Sources */,
 				C2AA52E01D83AB7600584AF4 /* Constants.m in Sources */,
