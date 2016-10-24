@@ -30,4 +30,9 @@
 + (NSDictionary*)convertManagedObjectSessionToDictionaryForDetailView: (session *)sleepSession;
 + (SleepSession*)convertManagedObjectSessionToSleepSessionForDetailView: (session *)sleepSession;
 + (NSMutableArray *)convertManagedObjectsToSleepSessions: (NSArray *)sleepArray;
+
++(BOOL) compare:(NSDate*)originalDate isLaterThanOrEqualTo:(NSDate*)date;
++(BOOL) compare:(NSDate*)originalDate isEarlierThanOrEqualTo:(NSDate*)date;
++(BOOL) compare:(NSDate*)originalDate isLaterThan:(NSDate*)date;
++(BOOL) compare:(NSDate*)originalDate isEarlierThan:(NSDate*)date;
 @end

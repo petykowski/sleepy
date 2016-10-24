@@ -158,4 +158,19 @@
     return convertedSleepSessions;
 }
 
++(BOOL) compare:(NSDate*)originalDate isLaterThanOrEqualTo:(NSDate*)otherDate {
+    return !([originalDate compare:otherDate] == NSOrderedAscending);
+}
+
++(BOOL) compare:(NSDate*)originalDate isEarlierThanOrEqualTo:(NSDate*)otherDate {
+    return !([originalDate compare:otherDate] == NSOrderedDescending);
+}
++(BOOL) compare:(NSDate*)originalDate isLaterThan:(NSDate*)otherDate {
+    return ([originalDate compare:otherDate] == NSOrderedDescending);
+    
+}
++(BOOL) compare:(NSDate*)originalDate isEarlierThan:(NSDate*)otherDate {
+    return ([originalDate compare:otherDate] == NSOrderedAscending);
+}
+
 @end

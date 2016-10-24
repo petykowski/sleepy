@@ -8,59 +8,105 @@
 
 #import "SleepInputInterfaceController.h"
 #import "Utility.h"
+#import "Constants.h"
 
 @interface SleepInputInterfaceController() <WKCrownDelegate>
-@property (nonatomic, unsafe_unretained) id<SleepInputInterfaceControllerDelegate> delegate;
-@property (unsafe_unretained, nonatomic) IBOutlet WKInterfaceLabel *timeLabel;
 
-@property (nonatomic, readwrite) NSDate *testDate;
-@property (nonatomic, readwrite) NSDate *testStartDate;
-@property (nonatomic, readwrite) NSString *testFormatted;
-@property (nonatomic, readwrite) NSDateFormatter *formatter;
+@property (nonatomic, unsafe_unretained) id<SleepInputInterfaceControllerDelegate> delegate;
+@property (unsafe_unretained, nonatomic) IBOutlet WKInterfaceLabel *timeInputLabel;
+@property (nonatomic, readwrite) NSDate *inputDate;
+@property (nonatomic, readwrite) NSDate *originalSleepStart;
+@property (nonatomic, readwrite) NSDate *maxSleepStart;
+@property (nonatomic, readwrite) NSString *formattedTimeForTimeInputLabel;
+@property (nonatomic, readwrite) NSDateFormatter *timeFormatterForTimeInputLabel;
+
+@property (nonatomic, readwrite) double scaleOfTimeLabel;
+@property (nonatomic, readwrite) double scaleCount;
+
 @end
 
 @implementation SleepInputInterfaceController
 
-
+- (instancetype)init {
+    self = [super init];
+    
+    [[WKInterfaceDevice currentDevice] playHaptic:WKHapticTypeSuccess];
+    self.crownSequencer.delegate = self;
+    
+    _formattedTimeForTimeInputLabel = [[NSString alloc] init];
+    _timeFormatterForTimeInputLabel = [Utility dateFormatterForTimeLabels];
+    _scaleOfTimeLabel = kDefaultFontSizeTimeLabel;
+    _scaleCount = kScaleCountLowerLimit;
+    
+    return self;
+}
 
 - (void)awakeWithContext:(id)context {
     [super awakeWithContext:context];
-    [[WKInterfaceDevice currentDevice] playHaptic:WKHapticTypeSuccess];
     
     if ([context isKindOfClass:[NSDictionary class]]) {
         self.delegate = [context objectForKey:@"delegate"];
-        
+        _inputDate = [context objectForKey:@"time"];
+        _originalSleepStart = [context objectForKey:@"time"];
+        _maxSleepStart = [context objectForKey:@"maxSleepStart"];
     }
-    
-    self.crownSequencer.delegate = self;
-    [self.crownSequencer focus];
-    _testDate = [[NSDate alloc] init];
-    _testStartDate = [NSDate date];
-    _testFormatted = [[NSString alloc] init];
-    _formatter = [Utility dateFormatterForTimeLabels];
-    
-    [_timeLabel setText:[_formatter stringFromDate:[context objectForKey:@"time"]]];
+    [self updateLabel];
 }
 
 - (void)willActivate {
-    // This method is called when watch view controller is about to be visible to user
     [super willActivate];
+    [self.crownSequencer focus];
 }
 
-
 - (void)crownDidRotate:(WKCrownSequencer *)crownSequencer rotationalDelta:(double)rotationalDelta {
-    _testDate = [NSDate dateWithTimeInterval:rotationalDelta*60 sinceDate:_testDate];
-    _testFormatted = [_formatter stringFromDate:_testDate];
+    NSLog(@"[DEBUG] rotational delta %f", rotationalDelta);
+    NSLog(@"[DEBUG] _maxSleepStart %@", _maxSleepStart);
+    NSLog(@"[DEBUG] _inputDate %@", _inputDate);
+    NSLog(@"[DEBUG] _originalSleepStart %@", _originalSleepStart);
+    if (_inputDate == _originalSleepStart && rotationalDelta <= 0.000001 && _scaleCount != kScaleCountUpperLimit) {
+        _inputDate = _originalSleepStart;
+        _scaleOfTimeLabel = _scaleOfTimeLabel - .5;
+        _scaleCount = _scaleCount + 1;
+        if (_scaleCount == kScaleCountUpperLimit) {
+            [[WKInterfaceDevice currentDevice] playHaptic:WKHapticTypeStart];
+        }
+        [self updateLabel];
+    } else if (_inputDate == _maxSleepStart && rotationalDelta >= -0.000001 && _scaleCount != kScaleCountUpperLimit) {
+        _inputDate = _maxSleepStart;
+        _scaleOfTimeLabel = _scaleOfTimeLabel - .5;
+        _scaleCount = _scaleCount + 1;
+        if (_scaleCount == kScaleCountUpperLimit) {
+            [[WKInterfaceDevice currentDevice] playHaptic:WKHapticTypeStart];
+        }
+        [self updateLabel];
+    } else if ([Utility compare:_inputDate isLaterThanOrEqualTo:_originalSleepStart]){
+        _inputDate = [NSDate dateWithTimeInterval:rotationalDelta * kDigitalCrownScrollMultiplier sinceDate:_inputDate];
+        _scaleOfTimeLabel = kDefaultFontSizeTimeLabel;
+        if ([Utility compare:_inputDate isEarlierThan:_originalSleepStart]) {
+            _inputDate = _originalSleepStart;
+        } else if ([Utility compare:_inputDate isLaterThanOrEqualTo:_maxSleepStart]){
+            _inputDate = _maxSleepStart;
+        }
+        [self updateLabel];
+    }
+}
+
+- (void) crownDidBecomeIdle:(WKCrownSequencer *)crownSequencer {
+    _scaleOfTimeLabel = kDefaultFontSizeTimeLabel;
+    _scaleCount = kScaleCountLowerLimit;
     [self updateLabel];
 }
 
 - (void)updateLabel {
-    [_timeLabel setText:_testFormatted];
+    _formattedTimeForTimeInputLabel = [_timeFormatterForTimeInputLabel stringFromDate:_inputDate];
+    NSAttributedString *inputDisplayString = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@", _formattedTimeForTimeInputLabel] attributes:@{NSFontAttributeName : [UIFont boldSystemFontOfSize:_scaleOfTimeLabel]}];
+    [_timeInputLabel setAttributedText:inputDisplayString];
 }
 
 - (IBAction)saveSleepTime {
+    [self.crownSequencer resignFocus];
     [self dismissController];
-    [self.delegate proposedSleepStartDecision:0 SleepStartDate:_testDate];
+    [self.delegate proposedSleepStartDecision:0 SleepStartDate:_inputDate];
 }
 
 @end

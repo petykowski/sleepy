@@ -10,9 +10,10 @@
 
 @implementation Constants
 
+#pragma System Files
 NSString *const kSleepSessionFileNameForWatch = @"SavedSleepSession.plist";
 
-#pragma User Onboarding
+#pragma User Onboarding Strings
 NSString *const kUserHasOnboardedKey = @"user_has_onboarded";
 NSString *const kOnboardingFirstPageBody = @"Sleepy is a sleep tracking app that helps users make sense of their sleep patterns.";
 NSString *const kOnboardingSecondPageTitle = @"Integrate with HealthKit";
@@ -21,5 +22,11 @@ NSString *const kOnboardingSecondPageButton = @"Enable HealthKit Access";
 NSString *const kOnboardingThirdPageTitle = @"Start Sleeping Smarter";
 NSString *const kOnboardingThirdPageBody = @"When using the Sleepy watch app, 3D Touch to begin a new sleep session, and then again to wake.";
 NSString *const kOnboardingThirdPageButton = @"Get Started";
+
+#pragma Numbers
+double const kDigitalCrownScrollMultiplier = 500;
+double const kDefaultFontSizeTimeLabel = 30;
+double const kScaleCountLowerLimit = 0;
+double const kScaleCountUpperLimit = 11;
 
 @end

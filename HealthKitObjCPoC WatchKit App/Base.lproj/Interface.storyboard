@@ -110,17 +110,17 @@
             </objects>
             <point key="canvasLocation" x="375" y="92"/>
         </scene>
-        <!--scroll-->
+        <!--　-->
         <scene sceneID="388-Xu-uoL">
             <objects>
-                <controller identifier="scroll" id="eOU-cE-l47" customClass="SleepInputInterfaceController">
+                <controller identifier="User Input Sleep Start" title="　" hidesWhenLoading="NO" id="eOU-cE-l47" customClass="SleepInputInterfaceController">
                     <items>
                         <group width="1" height="1" alignment="left" layout="vertical" id="8Hl-zw-any">
                             <items>
                                 <label width="1" alignment="left" text="Rotate Digital Crown to set the time you fell asleep" textAlignment="center" numberOfLines="3" id="e0d-Lf-7iJ" userLabel="Sleep Confirmation">
                                     <fontDescription key="font" style="UICTFontTextStyleTitle1"/>
                                 </label>
-                                <label alignment="center" verticalAlignment="center" text="10:45 PM" textAlignment="center" id="fYO-yY-hoT" userLabel="Proposed Sleep">
+                                <label alignment="center" verticalAlignment="center" textAlignment="center" id="fYO-yY-hoT" userLabel="Proposed Sleep">
                                     <fontDescription key="font" type="system" pointSize="30"/>
                                 </label>
                                 <button width="1" alignment="left" verticalAlignment="bottom" title="Save" id="ajG-zB-0YI">
@@ -133,7 +133,7 @@
                         </group>
                     </items>
                     <connections>
-                        <outlet property="timeLabel" destination="fYO-yY-hoT" id="IUw-vK-5TE"/>
+                        <outlet property="timeInputLabel" destination="fYO-yY-hoT" id="uoF-LV-Apw"/>
                     </connections>
                 </controller>
             </objects>

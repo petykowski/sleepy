@@ -445,12 +445,12 @@
 }
 
 
-
-
 #pragma mark - Menu Icon Methods
 - (void)prepareMenuIconsForUserNotInSleepSession {
     [self clearAllMenuItems];
     [self addMenuItemWithImageNamed:@"sleepMenuIcon" title:@"Sleep" action:@selector(sleepDidStartMenuButton)];
+#warning Remove
+    [self addMenuItemWithImageNamed:@"sleepMenuIcon" title:@"HR" action:@selector(populateHRData)];
 }
 
 - (void)prepareMenuIconsForUserAsleepInSleepSession {
@@ -502,11 +502,13 @@
 
 - (void)presentControllerToConfirmProposedSleepTime {
     if (self.proposedSleepStart == nil) {
-        self.proposedSleepStart = [self.currentSleepSession.sleep firstObject];
-        NSLog(@"[DEBUG] Could not determine sleep start from user's heart rate data. Setting last defined sleep start time instead.");
-        [self presentControllerWithName:@"scroll" context:@{@"delegate" : self, @"time" : self.proposedSleepStart}];
+        [self presentControllerWithName:@"User Input Sleep Start" context:@{@"delegate" : self,
+                                                                            @"time" : [_currentSleepSession.sleep firstObject],
+                                                            @"maxSleepStart" : [_currentSleepSession.wake firstObject]}];
     } else {
-        [self presentControllerWithName:@"confirm" context:@{@"delegate" : self, @"time" : self.proposedSleepStart}];
+        self.proposedSleepStart = [self.currentSleepSession.sleep firstObject];
+        [self presentControllerWithName:@"confirm" context:@{@"delegate" : self,
+                                                             @"time" : self.proposedSleepStart}];
     }
 }
 
@@ -541,12 +543,16 @@
     
     if (date) {
         [self.currentSleepSession.sleep replaceObjectAtIndex:0 withObject:date];
+        [self performSleepSessionCloseout];
+    } else if (buttonValue == 0) {
+        [self presentControllerWithName:@"User Input Sleep Start" context:@{@"delegate" : self,
+                                                                            @"time" : [_currentSleepSession.sleep firstObject],
+                                                                            @"maxSleepStart" : [_currentSleepSession.wake firstObject]}];
     } else if (buttonValue == 1) {
         // Proposed Sleep Was Confirmed
         [self.currentSleepSession.sleep replaceObjectAtIndex:0 withObject:self.proposedSleepStart];
+        [self performSleepSessionCloseout];
     }
-    
-    [self performSleepSessionCloseout];
 }
 
 - (void)performSleepSessionCloseout {

@@ -10,6 +10,7 @@
 
 @interface Constants : NSObject
 
+#pragma System Files
 extern NSString *const kSleepSessionFileNameForWatch;
 
 #pragma User Onboarding
@@ -21,5 +22,11 @@ extern NSString *const kOnboardingSecondPageButton;
 extern NSString *const kOnboardingThirdPageTitle;
 extern NSString *const kOnboardingThirdPageBody;
 extern NSString *const kOnboardingThirdPageButton;
+
+#pragma Numbers
+extern double const kDigitalCrownScrollMultiplier;
+extern double const kDefaultFontSizeTimeLabel;
+extern double const kScaleCountLowerLimit;
+extern double const kScaleCountUpperLimit;
 
 @end
