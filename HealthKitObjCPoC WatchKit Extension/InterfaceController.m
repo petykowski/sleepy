@@ -449,8 +449,6 @@
 - (void)prepareMenuIconsForUserNotInSleepSession {
     [self clearAllMenuItems];
     [self addMenuItemWithImageNamed:@"sleepMenuIcon" title:@"Sleep" action:@selector(sleepDidStartMenuButton)];
-#warning Remove
-    [self addMenuItemWithImageNamed:@"sleepMenuIcon" title:@"HR" action:@selector(populateHRData)];
 }
 
 - (void)prepareMenuIconsForUserAsleepInSleepSession {
