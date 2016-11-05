@@ -13,8 +13,10 @@
 #import "SleepSession.h"
 #import "SleepStatistic.h"
 #import "StatisticsTableViewCell.h"
+#import "UIScrollView+EmptyDataSet.h"
+#import "Constants.h"
 
-@interface StatisticsTableViewController () <NSFetchedResultsControllerDelegate, NSFetchedResultsControllerDelegate>
+@interface StatisticsTableViewController () <NSFetchedResultsControllerDelegate, NSFetchedResultsControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate>
 
 // Core Data Properties
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
@@ -44,6 +46,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.tableView.emptyDataSetSource = self;
+    self.tableView.emptyDataSetDelegate = self;
+    
     // Remove extra separators from tableview
     self.tableView.tableFooterView = [UIView new];
 }
@@ -59,10 +64,60 @@
     [self.tableView reloadData];
 }
 
+#pragma mark - Empty Data Set Screen
+
+- (NSAttributedString *)titleForEmptyDataSet:(UIScrollView *)scrollView
+{
+    NSString *text = kNoStatisticsToDisplayTitle;
+    
+    NSDictionary *attributes = @{NSFontAttributeName: [UIFont boldSystemFontOfSize:18.0f],
+                                 NSForegroundColorAttributeName: [UIColor whiteColor]};
+    
+    return [[NSAttributedString alloc] initWithString:text attributes:attributes];
+}
+
+- (NSAttributedString *)descriptionForEmptyDataSet:(UIScrollView *)scrollView
+{
+    NSString *text = kNoStatisticsToDisplayBody;
+    
+    NSMutableParagraphStyle *paragraph = [NSMutableParagraphStyle new];
+    paragraph.lineBreakMode = NSLineBreakByWordWrapping;
+    paragraph.alignment = NSTextAlignmentCenter;
+    
+    NSDictionary *attributes = @{NSFontAttributeName: [UIFont systemFontOfSize:14.0f],
+                                 NSForegroundColorAttributeName: [UIColor lightGrayColor],
+                                 NSParagraphStyleAttributeName: paragraph};
+    
+    return [[NSAttributedString alloc] initWithString:text attributes:attributes];
+}
+
+- (CGFloat)verticalOffsetForEmptyDataSet:(UIScrollView *)scrollView
+{
+    return -60.0f;
+}
+
+- (BOOL)emptyDataSetShouldDisplay:(UIScrollView *)scrollView
+{
+    if ([_convertedSessionsFromLastWeek count] == 7)
+    {
+        return NO;
+    } else {
+        return YES;
+    }
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
+    if ([_convertedSessionsFromLastWeek count] == 7)
+    {
+        self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+        self.tableView.backgroundView = nil;
+        
+        return 1;
+    } else {
+        return 0;
+    }
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {

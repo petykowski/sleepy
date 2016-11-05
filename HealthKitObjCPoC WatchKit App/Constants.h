@@ -23,6 +23,12 @@ extern NSString *const kOnboardingThirdPageTitle;
 extern NSString *const kOnboardingThirdPageBody;
 extern NSString *const kOnboardingThirdPageButton;
 
+#pragma Empty Data Set Screen
+extern NSString *const kNoSessionsToDisplayTitle;
+extern NSString *const kNoSessionsToDisplayBody;
+extern NSString *const kNoStatisticsToDisplayTitle;
+extern NSString *const kNoStatisticsToDisplayBody;
+
 #pragma Numbers
 extern double const kDigitalCrownScrollMultiplier;
 extern double const kDefaultFontSizeTimeLabel;

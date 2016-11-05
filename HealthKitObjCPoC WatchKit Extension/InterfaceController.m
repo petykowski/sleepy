@@ -584,11 +584,9 @@
 
 #pragma mark - iOS Simulator Health Data
 
-// ONLY CALL TO POPULATE DATA ON SIMULATOR //
-
 - (void)populateHRData {
     int x = 0;
-    int min = 50;
+    int min = 58;
     int max = 60;
     
     NSDate *now = [NSDate date];

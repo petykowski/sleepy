@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		082972C96AC8EB1EE084E4C6 /* libPods-HealthKitObjCPoC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F29A0B0C96A13CA796FE7B37 /* libPods-HealthKitObjCPoC.a */; };
+		A8D8787AE597B0F312A4A3B1 /* libPods-HealthKitObjCPoC WatchKit Extension.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DA86632C5F9D1B2EE4704820 /* libPods-HealthKitObjCPoC WatchKit Extension.a */; };
 		C200919F1D75473B003682D9 /* session.m in Sources */ = {isa = PBXBuildFile; fileRef = C245D3DC1D56925E0047D2FD /* session.m */; };
 		C225561C1DB9BE4200E31C62 /* SleepInputInterfaceController.m in Sources */ = {isa = PBXBuildFile; fileRef = C225561B1DB9BE4200E31C62 /* SleepInputInterfaceController.m */; };
 		C22625CD1D864BB70013398C /* OnboardingContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C22625CA1D864BB70013398C /* OnboardingContentViewController.m */; };
@@ -49,6 +51,7 @@
 		C2FB86521D31D0B900FCC143 /* SleepMilestoneInterfaceController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2FB86501D31D0B900FCC143 /* SleepMilestoneInterfaceController.m */; };
 		C2FB86561D31D93800FCC143 /* MilestoneRowController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2FB86541D31D93800FCC143 /* MilestoneRowController.m */; };
 		C2FFFCF11D71313500BF3B6C /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2FFFCF01D71313500BF3B6C /* CoreData.framework */; };
+		CE516537AB6235478FFAF8BD /* libPods-HealthKitObjCPoC WatchKit App.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FAE902DD7A8D2EEFEFB2D46C /* libPods-HealthKitObjCPoC WatchKit App.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -94,6 +97,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		01A3B0131B1BF5F8B68DFF6F /* Pods-HealthKitObjCPoC.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HealthKitObjCPoC.release.xcconfig"; path = "Pods/Target Support Files/Pods-HealthKitObjCPoC/Pods-HealthKitObjCPoC.release.xcconfig"; sourceTree = "<group>"; };
+		1600CA2E8CD6C40D6732715A /* Pods-HealthKitObjCPoC WatchKit App.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HealthKitObjCPoC WatchKit App.release.xcconfig"; path = "Pods/Target Support Files/Pods-HealthKitObjCPoC WatchKit App/Pods-HealthKitObjCPoC WatchKit App.release.xcconfig"; sourceTree = "<group>"; };
+		3E85099F7F0347C1EEC310E3 /* Pods-HealthKitObjCPoC WatchKit App.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HealthKitObjCPoC WatchKit App.debug.xcconfig"; path = "Pods/Target Support Files/Pods-HealthKitObjCPoC WatchKit App/Pods-HealthKitObjCPoC WatchKit App.debug.xcconfig"; sourceTree = "<group>"; };
+		8107589464DD4C3A76098B09 /* Pods-HealthKitObjCPoC WatchKit Extension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HealthKitObjCPoC WatchKit Extension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-HealthKitObjCPoC WatchKit Extension/Pods-HealthKitObjCPoC WatchKit Extension.debug.xcconfig"; sourceTree = "<group>"; };
 		C225561A1DB9BE4200E31C62 /* SleepInputInterfaceController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SleepInputInterfaceController.h; sourceTree = "<group>"; };
 		C225561B1DB9BE4200E31C62 /* SleepInputInterfaceController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SleepInputInterfaceController.m; sourceTree = "<group>"; };
 		C22625C81D864BB60013398C /* OnboardingContentViewController_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OnboardingContentViewController_Private.h; sourceTree = "<group>"; };
@@ -158,15 +165,29 @@
 		C2FB86531D31D93800FCC143 /* MilestoneRowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MilestoneRowController.h; path = "HealthKitObjCPoC WatchKit Extension/MilestoneRowController.h"; sourceTree = SOURCE_ROOT; };
 		C2FB86541D31D93800FCC143 /* MilestoneRowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MilestoneRowController.m; path = "HealthKitObjCPoC WatchKit Extension/MilestoneRowController.m"; sourceTree = SOURCE_ROOT; };
 		C2FFFCF01D71313500BF3B6C /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		DA86632C5F9D1B2EE4704820 /* libPods-HealthKitObjCPoC WatchKit Extension.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-HealthKitObjCPoC WatchKit Extension.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F29A0B0C96A13CA796FE7B37 /* libPods-HealthKitObjCPoC.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-HealthKitObjCPoC.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F7018E6B62613C1B132C0561 /* Pods-HealthKitObjCPoC WatchKit Extension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HealthKitObjCPoC WatchKit Extension.release.xcconfig"; path = "Pods/Target Support Files/Pods-HealthKitObjCPoC WatchKit Extension/Pods-HealthKitObjCPoC WatchKit Extension.release.xcconfig"; sourceTree = "<group>"; };
+		F9491E796E6D460B878B6593 /* Pods-HealthKitObjCPoC.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HealthKitObjCPoC.debug.xcconfig"; path = "Pods/Target Support Files/Pods-HealthKitObjCPoC/Pods-HealthKitObjCPoC.debug.xcconfig"; sourceTree = "<group>"; };
+		FAE902DD7A8D2EEFEFB2D46C /* libPods-HealthKitObjCPoC WatchKit App.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-HealthKitObjCPoC WatchKit App.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		80EA836AF0C0B9B4FCB4375B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CE516537AB6235478FFAF8BD /* libPods-HealthKitObjCPoC WatchKit App.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		C243C14C1C57D32400DB8803 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				C2FFFCF11D71313500BF3B6C /* CoreData.framework in Frameworks */,
 				C243C1911C57D34800DB8803 /* HealthKit.framework in Frameworks */,
+				082972C96AC8EB1EE084E4C6 /* libPods-HealthKitObjCPoC.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -174,12 +195,26 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A8D8787AE597B0F312A4A3B1 /* libPods-HealthKitObjCPoC WatchKit Extension.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3653CF874A4270E5BBBF7FCE /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				F9491E796E6D460B878B6593 /* Pods-HealthKitObjCPoC.debug.xcconfig */,
+				01A3B0131B1BF5F8B68DFF6F /* Pods-HealthKitObjCPoC.release.xcconfig */,
+				3E85099F7F0347C1EEC310E3 /* Pods-HealthKitObjCPoC WatchKit App.debug.xcconfig */,
+				1600CA2E8CD6C40D6732715A /* Pods-HealthKitObjCPoC WatchKit App.release.xcconfig */,
+				8107589464DD4C3A76098B09 /* Pods-HealthKitObjCPoC WatchKit Extension.debug.xcconfig */,
+				F7018E6B62613C1B132C0561 /* Pods-HealthKitObjCPoC WatchKit Extension.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		C22625D11D864BC10013398C /* On Boarding */ = {
 			isa = PBXGroup;
 			children = (
@@ -221,6 +256,7 @@
 				C22625D11D864BC10013398C /* On Boarding */,
 				C2391DE91D35D8E900808835 /* Utilities */,
 				C2FFFCEF1D71313400BF3B6C /* Frameworks */,
+				3653CF874A4270E5BBBF7FCE /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -336,6 +372,9 @@
 			isa = PBXGroup;
 			children = (
 				C2FFFCF01D71313500BF3B6C /* CoreData.framework */,
+				F29A0B0C96A13CA796FE7B37 /* libPods-HealthKitObjCPoC.a */,
+				FAE902DD7A8D2EEFEFB2D46C /* libPods-HealthKitObjCPoC WatchKit App.a */,
+				DA86632C5F9D1B2EE4704820 /* libPods-HealthKitObjCPoC WatchKit Extension.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -347,11 +386,14 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = C243C18D1C57D32400DB8803 /* Build configuration list for PBXNativeTarget "HealthKitObjCPoC" */;
 			buildPhases = (
+				C7F958A38361DE09453FE1DB /* [CP] Check Pods Manifest.lock */,
 				C243C14B1C57D32400DB8803 /* Sources */,
 				C243C14C1C57D32400DB8803 /* Frameworks */,
 				C243C14D1C57D32400DB8803 /* Resources */,
 				C243C18C1C57D32400DB8803 /* Embed Watch Content */,
 				C2ABC9771D371FFA0064917F /* Increment Build */,
+				29AC12159ADC61248DDFB515 /* [CP] Embed Pods Frameworks */,
+				EB33C6B43E5E7C384BAAB61B /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -367,8 +409,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = C243C1891C57D32400DB8803 /* Build configuration list for PBXNativeTarget "HealthKitObjCPoC WatchKit App" */;
 			buildPhases = (
+				E523322D1952622F536B3F33 /* [CP] Check Pods Manifest.lock */,
 				C243C1641C57D32400DB8803 /* Resources */,
 				C243C1881C57D32400DB8803 /* Embed App Extensions */,
+				80EA836AF0C0B9B4FCB4375B /* Frameworks */,
+				ABDCE219E8ABFC116C851F73 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -384,9 +429,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = C243C1851C57D32400DB8803 /* Build configuration list for PBXNativeTarget "HealthKitObjCPoC WatchKit Extension" */;
 			buildPhases = (
+				6F5ECF9C13FB262CBD18D11F /* [CP] Check Pods Manifest.lock */,
 				C243C1711C57D32400DB8803 /* Sources */,
 				C243C1721C57D32400DB8803 /* Frameworks */,
 				C243C1731C57D32400DB8803 /* Resources */,
+				0B8A60A26DB4C62A84BBDDCA /* [CP] Embed Pods Frameworks */,
+				5CCB884F5692F58742BFF518 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -498,6 +546,81 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		0B8A60A26DB4C62A84BBDDCA /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-HealthKitObjCPoC WatchKit Extension/Pods-HealthKitObjCPoC WatchKit Extension-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		29AC12159ADC61248DDFB515 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-HealthKitObjCPoC/Pods-HealthKitObjCPoC-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		5CCB884F5692F58742BFF518 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-HealthKitObjCPoC WatchKit Extension/Pods-HealthKitObjCPoC WatchKit Extension-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		6F5ECF9C13FB262CBD18D11F /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run \'pod install\' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		ABDCE219E8ABFC116C851F73 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-HealthKitObjCPoC WatchKit App/Pods-HealthKitObjCPoC WatchKit App-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		C2ABC9771D371FFA0064917F /* Increment Build */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -511,6 +634,51 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "buildNumber=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\")\nbuildNumber=$(($buildNumber + 1))\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\"\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"$SRCROOT/HealthKitObjCPoC WatchKit Extension/Info.plist\"\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"$SRCROOT/HealthKitObjCPoC WatchKit App/Info.plist\"";
+		};
+		C7F958A38361DE09453FE1DB /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run \'pod install\' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		E523322D1952622F536B3F33 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run \'pod install\' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		EB33C6B43E5E7C384BAAB61B /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-HealthKitObjCPoC/Pods-HealthKitObjCPoC-resources.sh\"\n";
+			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -685,6 +853,7 @@
 		};
 		C243C1861C57D32400DB8803 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8107589464DD4C3A76098B09 /* Pods-HealthKitObjCPoC WatchKit Extension.debug.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = "HealthKitObjCPoC WatchKit Extension/HealthKitObjCPoC WatchKit Extension.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -703,6 +872,7 @@
 		};
 		C243C1871C57D32400DB8803 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F7018E6B62613C1B132C0561 /* Pods-HealthKitObjCPoC WatchKit Extension.release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = "HealthKitObjCPoC WatchKit Extension/HealthKitObjCPoC WatchKit Extension.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -721,6 +891,7 @@
 		};
 		C243C18A1C57D32400DB8803 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3E85099F7F0347C1EEC310E3 /* Pods-HealthKitObjCPoC WatchKit App.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "HealthKitObjCPoC WatchKit App/HealthKitObjCPoC WatchKit App.entitlements";
@@ -737,6 +908,7 @@
 		};
 		C243C18B1C57D32400DB8803 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1600CA2E8CD6C40D6732715A /* Pods-HealthKitObjCPoC WatchKit App.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "HealthKitObjCPoC WatchKit App/HealthKitObjCPoC WatchKit App.entitlements";
@@ -753,6 +925,7 @@
 		};
 		C243C18E1C57D32400DB8803 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F9491E796E6D460B878B6593 /* Pods-HealthKitObjCPoC.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = HealthKitObjCPoC/HealthKitObjCPoC.entitlements;
@@ -768,6 +941,7 @@
 		};
 		C243C18F1C57D32400DB8803 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 01A3B0131B1BF5F8B68DFF6F /* Pods-HealthKitObjCPoC.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = HealthKitObjCPoC/HealthKitObjCPoC.entitlements;

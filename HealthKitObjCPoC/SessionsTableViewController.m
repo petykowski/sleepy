@@ -15,9 +15,11 @@
 #import "SleepSessionTableViewCell.h"
 #import "SleepSession.h"
 #import "SessionDetailTableViewController.h"
+#import "UIScrollView+EmptyDataSet.h"
+#import "Constants.h"
 
 
-@interface SessionsTableViewController () <WCSessionDelegate, NSFetchedResultsControllerDelegate, NSFetchedResultsControllerDelegate, UIViewControllerPreviewingDelegate>
+@interface SessionsTableViewController () <WCSessionDelegate, NSFetchedResultsControllerDelegate, NSFetchedResultsControllerDelegate, UIViewControllerPreviewingDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate>
 
 
 
@@ -72,6 +74,9 @@
         [session activateSession];
     }
     
+    self.tableView.emptyDataSetSource = self;
+    self.tableView.emptyDataSetDelegate = self;
+    
     // Remove extra separators from tableview
     self.tableView.tableFooterView = [UIView new];
     
@@ -83,6 +88,37 @@
     [super didReceiveMemoryWarning];
 }
 
+#pragma mark - Empty Data Set Screen
+
+- (NSAttributedString *)titleForEmptyDataSet:(UIScrollView *)scrollView
+{
+    NSString *text = kNoSessionsToDisplayTitle;
+    
+    NSDictionary *attributes = @{NSFontAttributeName: [UIFont boldSystemFontOfSize:18.0f],
+                                 NSForegroundColorAttributeName: [UIColor whiteColor]};
+    
+    return [[NSAttributedString alloc] initWithString:text attributes:attributes];
+}
+
+- (NSAttributedString *)descriptionForEmptyDataSet:(UIScrollView *)scrollView
+{
+    NSString *text = kNoSessionsToDisplayBody;
+    
+    NSMutableParagraphStyle *paragraph = [NSMutableParagraphStyle new];
+    paragraph.lineBreakMode = NSLineBreakByWordWrapping;
+    paragraph.alignment = NSTextAlignmentCenter;
+    
+    NSDictionary *attributes = @{NSFontAttributeName: [UIFont systemFontOfSize:14.0f],
+                                 NSForegroundColorAttributeName: [UIColor lightGrayColor],
+                                 NSParagraphStyleAttributeName: paragraph};
+    
+    return [[NSAttributedString alloc] initWithString:text attributes:attributes];
+}
+
+- (CGFloat)verticalOffsetForEmptyDataSet:(UIScrollView *)scrollView
+{
+    return -50.0f;
+}
 
 #pragma mark - Watch Connectivity
 
@@ -200,17 +236,6 @@
     {
         self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
         self.tableView.backgroundView = nil;
-    }
-    else
-    {
-        UILabel *noDataLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.tableView.bounds.size.width, self.tableView.bounds.size.height)];
-        noDataLabel.text = @"No sleep data available. Start a sleep session on Apple Watch and check back here in the morning!";
-        noDataLabel.lineBreakMode = NSLineBreakByWordWrapping;
-        noDataLabel.numberOfLines = 0;
-        noDataLabel.textColor = [UIColor whiteColor];
-        noDataLabel.textAlignment = NSTextAlignmentCenter;
-        self.tableView.backgroundView = noDataLabel;
-        self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     }
     
     return [[[self fetchedResultsController] sections] count];
