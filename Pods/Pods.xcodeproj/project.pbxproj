@@ -1,0 +1,870 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		024F6A03F18BA6269FD4184E413042D6 /* Pods-HealthKitObjCPoC WatchKit Extension-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = D35324DC9810BBEAB9D6C70F58753BB3 /* Pods-HealthKitObjCPoC WatchKit Extension-dummy.m */; };
+		1EBD4D341A74EDA536D25A83E81A6ED5 /* Pods-HealthKitObjCPoC WatchKit App-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = A2FBAACFCA4321E6A5D485ED60250AA3 /* Pods-HealthKitObjCPoC WatchKit App-dummy.m */; };
+		2411474262E0B7FADC4D2388628389AF /* Pods-HealthKitObjCPoC-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = D6791D91B5BA6A336AF4F0A8F1EF2C0B /* Pods-HealthKitObjCPoC-dummy.m */; };
+		3052B2DEF20A1DB41791503C9F509041 /* FSLineChart-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E38E2266B6D1C49FC0A94189980F67C /* FSLineChart-dummy.m */; };
+		3329D6F3B9DAF6F1710A0A026FC126CA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CF8DF5AB7960DE7DCE3233F996CCE54 /* Foundation.framework */; };
+		3B1911CCFD48BF2633A7579096A2D6B2 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CF8DF5AB7960DE7DCE3233F996CCE54 /* Foundation.framework */; };
+		7094DD534AA7D8C58846A584EBFDBFFB /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D838EF91E8DF0B2D03DF4ED7D616C4CE /* Foundation.framework */; };
+		70BD4E8B42A9FE168D185D2539CBBBF1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D838EF91E8DF0B2D03DF4ED7D616C4CE /* Foundation.framework */; };
+		7CEFD195FDAAEB6FCF33CC72EA0DA9D0 /* UIColor+FSPalette.h in Headers */ = {isa = PBXBuildFile; fileRef = 1261D60BE3C3D27CAC085853C985E8CF /* UIColor+FSPalette.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		88D9267787AE84394E833FB63E2F6297 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 541A61AF9C1ECF6331A31360330DBEEB /* UIKit.framework */; };
+		8C9CE91BC3C17B920AE1AF53660852DE /* UIScrollView+EmptyDataSet.h in Headers */ = {isa = PBXBuildFile; fileRef = 9B350B6F015CF32EC9F3F0025C30EBA0 /* UIScrollView+EmptyDataSet.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9DFBEAF59F4FF93A5B69D817317506FC /* FSLineChart.h in Headers */ = {isa = PBXBuildFile; fileRef = 9A5348F5B2A239482F3DED5C5E7195B3 /* FSLineChart.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		A5F3B9832C5DAC78D18360F0C2BF4578 /* FSLineChart.m in Sources */ = {isa = PBXBuildFile; fileRef = 880C7FFE27435E7AF468D1E1998633F8 /* FSLineChart.m */; };
+		BD06EFFDBE283A52755AB039D647F2B8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D838EF91E8DF0B2D03DF4ED7D616C4CE /* Foundation.framework */; };
+		E659F4CEB5430BC17E59431CAACBB217 /* UIScrollView+EmptyDataSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 09A45DC1D1061829AF6B860BEC3CA893 /* UIScrollView+EmptyDataSet.m */; };
+		E7B54ACBD8CB51596799063FD7C3CEA9 /* DZNEmptyDataSet-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 299EE3478FBF203775215C6ABDEBFDBA /* DZNEmptyDataSet-dummy.m */; };
+		F7D92B6E15C3EBD380472015DC877881 /* UIColor+FSPalette.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D5606836CE5A19640AB3592F48DA5B7 /* UIColor+FSPalette.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		874DE538515C17AB9CC7FB36EDDDF3EC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5437890023F30CA85DFCA260CA914D48;
+			remoteInfo = DZNEmptyDataSet;
+		};
+		DEB20B4EEE109152283219C2A8FEBB92 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2019D0A11AD1696A311A26E900DB8854;
+			remoteInfo = FSLineChart;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		03E2280665CB27B9B1859D89860D8407 /* DZNEmptyDataSet-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "DZNEmptyDataSet-prefix.pch"; sourceTree = "<group>"; };
+		09A45DC1D1061829AF6B860BEC3CA893 /* UIScrollView+EmptyDataSet.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UIScrollView+EmptyDataSet.m"; path = "Source/UIScrollView+EmptyDataSet.m"; sourceTree = "<group>"; };
+		09DFDAE6291778192F01026846EBF3A2 /* FSLineChart-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "FSLineChart-prefix.pch"; sourceTree = "<group>"; };
+		0E9B1234044885CB548681A9394E2CBF /* libFSLineChart.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = libFSLineChart.a; path = libFSLineChart.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		1261D60BE3C3D27CAC085853C985E8CF /* UIColor+FSPalette.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIColor+FSPalette.h"; path = "FSLineChart/FSLineChart/UIColor+FSPalette.h"; sourceTree = "<group>"; };
+		14811AD6FDB1DE4C7DD710E29C218D5E /* Pods-HealthKitObjCPoC.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-HealthKitObjCPoC.debug.xcconfig"; sourceTree = "<group>"; };
+		171565801EC864633141A5CBB77A0A36 /* Pods-HealthKitObjCPoC WatchKit App.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-HealthKitObjCPoC WatchKit App.release.xcconfig"; sourceTree = "<group>"; };
+		299EE3478FBF203775215C6ABDEBFDBA /* DZNEmptyDataSet-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "DZNEmptyDataSet-dummy.m"; sourceTree = "<group>"; };
+		3E38E2266B6D1C49FC0A94189980F67C /* FSLineChart-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "FSLineChart-dummy.m"; sourceTree = "<group>"; };
+		541A61AF9C1ECF6331A31360330DBEEB /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.0.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
+		5F1B44DE37CBB73E2682AA9BA01F4985 /* Pods-HealthKitObjCPoC WatchKit App-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-HealthKitObjCPoC WatchKit App-frameworks.sh"; sourceTree = "<group>"; };
+		69AC991B3DF3D242CBF1BA0D84D6B7AE /* Pods-HealthKitObjCPoC-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-HealthKitObjCPoC-resources.sh"; sourceTree = "<group>"; };
+		69BE4E0A1EC4591AF1130C16641B0B20 /* libDZNEmptyDataSet.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = libDZNEmptyDataSet.a; path = libDZNEmptyDataSet.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		6F13B674C7C267439EF8C6A788983890 /* Pods-HealthKitObjCPoC WatchKit App-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-HealthKitObjCPoC WatchKit App-resources.sh"; sourceTree = "<group>"; };
+		7317DACA2594594CB97721016968BCCD /* DZNEmptyDataSet.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = DZNEmptyDataSet.xcconfig; sourceTree = "<group>"; };
+		751C88CB7BE42B7FBF157918BDBF155C /* libPods-HealthKitObjCPoC WatchKit Extension.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = "libPods-HealthKitObjCPoC WatchKit Extension.a"; path = "libPods-HealthKitObjCPoC WatchKit Extension.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		880C7FFE27435E7AF468D1E1998633F8 /* FSLineChart.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FSLineChart.m; path = FSLineChart/FSLineChart/FSLineChart.m; sourceTree = "<group>"; };
+		9202EEDCEB154E3302A223C595E14062 /* Pods-HealthKitObjCPoC-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-HealthKitObjCPoC-frameworks.sh"; sourceTree = "<group>"; };
+		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		9A5348F5B2A239482F3DED5C5E7195B3 /* FSLineChart.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FSLineChart.h; path = FSLineChart/FSLineChart/FSLineChart.h; sourceTree = "<group>"; };
+		9B350B6F015CF32EC9F3F0025C30EBA0 /* UIScrollView+EmptyDataSet.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIScrollView+EmptyDataSet.h"; path = "Source/UIScrollView+EmptyDataSet.h"; sourceTree = "<group>"; };
+		9CF8DF5AB7960DE7DCE3233F996CCE54 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS3.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		9D5606836CE5A19640AB3592F48DA5B7 /* UIColor+FSPalette.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UIColor+FSPalette.m"; path = "FSLineChart/FSLineChart/UIColor+FSPalette.m"; sourceTree = "<group>"; };
+		A2FBAACFCA4321E6A5D485ED60250AA3 /* Pods-HealthKitObjCPoC WatchKit App-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-HealthKitObjCPoC WatchKit App-dummy.m"; sourceTree = "<group>"; };
+		A321F2C5851F33EBAFF480DDCF1E04C4 /* Pods-HealthKitObjCPoC WatchKit Extension-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-HealthKitObjCPoC WatchKit Extension-acknowledgements.markdown"; sourceTree = "<group>"; };
+		A357BD7866E2E490C9A35979E51A9B2A /* libPods-HealthKitObjCPoC.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = "libPods-HealthKitObjCPoC.a"; path = "libPods-HealthKitObjCPoC.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A71AA73E4975C660048D121365A51D5E /* Pods-HealthKitObjCPoC-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-HealthKitObjCPoC-acknowledgements.markdown"; sourceTree = "<group>"; };
+		A85EFB8C9AA4E1B58830AE7768FD83A8 /* FSLineChart.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = FSLineChart.xcconfig; sourceTree = "<group>"; };
+		AA3CECD0FE1A432B2C9836CFDE6430C6 /* Pods-HealthKitObjCPoC WatchKit App.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-HealthKitObjCPoC WatchKit App.debug.xcconfig"; sourceTree = "<group>"; };
+		AFC73047B333AD29EB871022AA5CBE84 /* Pods-HealthKitObjCPoC WatchKit Extension-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-HealthKitObjCPoC WatchKit Extension-acknowledgements.plist"; sourceTree = "<group>"; };
+		B2F545468570391687BD1D717426DC65 /* Pods-HealthKitObjCPoC WatchKit Extension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-HealthKitObjCPoC WatchKit Extension.release.xcconfig"; sourceTree = "<group>"; };
+		B2FE6C1981D3AF327B61C577320431B9 /* Pods-HealthKitObjCPoC WatchKit Extension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-HealthKitObjCPoC WatchKit Extension.debug.xcconfig"; sourceTree = "<group>"; };
+		B32242847E633B33836FC4D1EBAE8B5E /* Pods-HealthKitObjCPoC WatchKit App-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-HealthKitObjCPoC WatchKit App-acknowledgements.plist"; sourceTree = "<group>"; };
+		BE3DF940A524511665C6957A2B896764 /* Pods-HealthKitObjCPoC WatchKit Extension-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-HealthKitObjCPoC WatchKit Extension-resources.sh"; sourceTree = "<group>"; };
+		C7C96912394315F6EA8ECB0BC2A26E5F /* Pods-HealthKitObjCPoC.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-HealthKitObjCPoC.release.xcconfig"; sourceTree = "<group>"; };
+		D287B56767B1A2443A13CDB04E6F827F /* Pods-HealthKitObjCPoC WatchKit App-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-HealthKitObjCPoC WatchKit App-acknowledgements.markdown"; sourceTree = "<group>"; };
+		D35324DC9810BBEAB9D6C70F58753BB3 /* Pods-HealthKitObjCPoC WatchKit Extension-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-HealthKitObjCPoC WatchKit Extension-dummy.m"; sourceTree = "<group>"; };
+		D354DC84B27442048F2D24148EAB88A7 /* Pods-HealthKitObjCPoC WatchKit Extension-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-HealthKitObjCPoC WatchKit Extension-frameworks.sh"; sourceTree = "<group>"; };
+		D60C96E6ADC183C7004B1200290029C6 /* Pods-HealthKitObjCPoC-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-HealthKitObjCPoC-acknowledgements.plist"; sourceTree = "<group>"; };
+		D6791D91B5BA6A336AF4F0A8F1EF2C0B /* Pods-HealthKitObjCPoC-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-HealthKitObjCPoC-dummy.m"; sourceTree = "<group>"; };
+		D838EF91E8DF0B2D03DF4ED7D616C4CE /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		E539BBBE6C18EDD38B287F192C324F01 /* libPods-HealthKitObjCPoC WatchKit App.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = "libPods-HealthKitObjCPoC WatchKit App.a"; path = "libPods-HealthKitObjCPoC WatchKit App.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		337A15437F2D8E9608BBC9A7F937EB94 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7094DD534AA7D8C58846A584EBFDBFFB /* Foundation.framework in Frameworks */,
+				88D9267787AE84394E833FB63E2F6297 /* UIKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3AB5CBA91FD7DBF0B6C902F067B83AD4 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				70BD4E8B42A9FE168D185D2539CBBBF1 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4A347EEE727ED496E27793AEF0D66D89 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3B1911CCFD48BF2633A7579096A2D6B2 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		71FB9D7C3F19AA53F903BD69E1FFE11D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BD06EFFDBE283A52755AB039D647F2B8 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F92B558D8C3F58AAE334218D26F6AA1C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3329D6F3B9DAF6F1710A0A026FC126CA /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		0D33F571476F8401434B8E443BCAAEDB /* FSLineChart */ = {
+			isa = PBXGroup;
+			children = (
+				9A5348F5B2A239482F3DED5C5E7195B3 /* FSLineChart.h */,
+				880C7FFE27435E7AF468D1E1998633F8 /* FSLineChart.m */,
+				1261D60BE3C3D27CAC085853C985E8CF /* UIColor+FSPalette.h */,
+				9D5606836CE5A19640AB3592F48DA5B7 /* UIColor+FSPalette.m */,
+				8EDE9CFB10F40DFD8BB364880834F55F /* Support Files */,
+			);
+			name = FSLineChart;
+			path = FSLineChart;
+			sourceTree = "<group>";
+		};
+		1FF372C779246EDF68EB6C1797F42D1B /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				5312EE0F4712CD262E6CDCBB01189434 /* DZNEmptyDataSet */,
+				0D33F571476F8401434B8E443BCAAEDB /* FSLineChart */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		49B6D3362DC7CCD92AB1B1357323CFE6 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				7317DACA2594594CB97721016968BCCD /* DZNEmptyDataSet.xcconfig */,
+				299EE3478FBF203775215C6ABDEBFDBA /* DZNEmptyDataSet-dummy.m */,
+				03E2280665CB27B9B1859D89860D8407 /* DZNEmptyDataSet-prefix.pch */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/DZNEmptyDataSet";
+			sourceTree = "<group>";
+		};
+		4FBEE562FA353847139D19A9AB98021B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				69BE4E0A1EC4591AF1130C16641B0B20 /* libDZNEmptyDataSet.a */,
+				0E9B1234044885CB548681A9394E2CBF /* libFSLineChart.a */,
+				A357BD7866E2E490C9A35979E51A9B2A /* libPods-HealthKitObjCPoC.a */,
+				E539BBBE6C18EDD38B287F192C324F01 /* libPods-HealthKitObjCPoC WatchKit App.a */,
+				751C88CB7BE42B7FBF157918BDBF155C /* libPods-HealthKitObjCPoC WatchKit Extension.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		51BC34679380933D8F6CB9E6A9AF2DB3 /* Pods-HealthKitObjCPoC WatchKit App */ = {
+			isa = PBXGroup;
+			children = (
+				D287B56767B1A2443A13CDB04E6F827F /* Pods-HealthKitObjCPoC WatchKit App-acknowledgements.markdown */,
+				B32242847E633B33836FC4D1EBAE8B5E /* Pods-HealthKitObjCPoC WatchKit App-acknowledgements.plist */,
+				A2FBAACFCA4321E6A5D485ED60250AA3 /* Pods-HealthKitObjCPoC WatchKit App-dummy.m */,
+				5F1B44DE37CBB73E2682AA9BA01F4985 /* Pods-HealthKitObjCPoC WatchKit App-frameworks.sh */,
+				6F13B674C7C267439EF8C6A788983890 /* Pods-HealthKitObjCPoC WatchKit App-resources.sh */,
+				AA3CECD0FE1A432B2C9836CFDE6430C6 /* Pods-HealthKitObjCPoC WatchKit App.debug.xcconfig */,
+				171565801EC864633141A5CBB77A0A36 /* Pods-HealthKitObjCPoC WatchKit App.release.xcconfig */,
+			);
+			name = "Pods-HealthKitObjCPoC WatchKit App";
+			path = "Target Support Files/Pods-HealthKitObjCPoC WatchKit App";
+			sourceTree = "<group>";
+		};
+		5312EE0F4712CD262E6CDCBB01189434 /* DZNEmptyDataSet */ = {
+			isa = PBXGroup;
+			children = (
+				9B350B6F015CF32EC9F3F0025C30EBA0 /* UIScrollView+EmptyDataSet.h */,
+				09A45DC1D1061829AF6B860BEC3CA893 /* UIScrollView+EmptyDataSet.m */,
+				49B6D3362DC7CCD92AB1B1357323CFE6 /* Support Files */,
+			);
+			name = DZNEmptyDataSet;
+			path = DZNEmptyDataSet;
+			sourceTree = "<group>";
+		};
+		6A6EE095B221AA8BC7D572C95336F767 /* Pods-HealthKitObjCPoC */ = {
+			isa = PBXGroup;
+			children = (
+				A71AA73E4975C660048D121365A51D5E /* Pods-HealthKitObjCPoC-acknowledgements.markdown */,
+				D60C96E6ADC183C7004B1200290029C6 /* Pods-HealthKitObjCPoC-acknowledgements.plist */,
+				D6791D91B5BA6A336AF4F0A8F1EF2C0B /* Pods-HealthKitObjCPoC-dummy.m */,
+				9202EEDCEB154E3302A223C595E14062 /* Pods-HealthKitObjCPoC-frameworks.sh */,
+				69AC991B3DF3D242CBF1BA0D84D6B7AE /* Pods-HealthKitObjCPoC-resources.sh */,
+				14811AD6FDB1DE4C7DD710E29C218D5E /* Pods-HealthKitObjCPoC.debug.xcconfig */,
+				C7C96912394315F6EA8ECB0BC2A26E5F /* Pods-HealthKitObjCPoC.release.xcconfig */,
+			);
+			name = "Pods-HealthKitObjCPoC";
+			path = "Target Support Files/Pods-HealthKitObjCPoC";
+			sourceTree = "<group>";
+		};
+		7DB346D0F39D3F0E887471402A8071AB = {
+			isa = PBXGroup;
+			children = (
+				93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */,
+				8B6D968432DA454CBE7BE3761821A977 /* Frameworks */,
+				1FF372C779246EDF68EB6C1797F42D1B /* Pods */,
+				4FBEE562FA353847139D19A9AB98021B /* Products */,
+				98E637D170887F6177A7388C064146DD /* Targets Support Files */,
+			);
+			sourceTree = "<group>";
+		};
+		8B6D968432DA454CBE7BE3761821A977 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				E85B3C8D405E38020BBD61786DF6A540 /* iOS */,
+				F6B40A53422DA946F51BDC9CC563B492 /* watchOS */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		8EDE9CFB10F40DFD8BB364880834F55F /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				A85EFB8C9AA4E1B58830AE7768FD83A8 /* FSLineChart.xcconfig */,
+				3E38E2266B6D1C49FC0A94189980F67C /* FSLineChart-dummy.m */,
+				09DFDAE6291778192F01026846EBF3A2 /* FSLineChart-prefix.pch */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/FSLineChart";
+			sourceTree = "<group>";
+		};
+		98E637D170887F6177A7388C064146DD /* Targets Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				6A6EE095B221AA8BC7D572C95336F767 /* Pods-HealthKitObjCPoC */,
+				51BC34679380933D8F6CB9E6A9AF2DB3 /* Pods-HealthKitObjCPoC WatchKit App */,
+				FA5A2BD3238E61DF1CDE1BB02DC09944 /* Pods-HealthKitObjCPoC WatchKit Extension */,
+			);
+			name = "Targets Support Files";
+			sourceTree = "<group>";
+		};
+		E85B3C8D405E38020BBD61786DF6A540 /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				D838EF91E8DF0B2D03DF4ED7D616C4CE /* Foundation.framework */,
+				541A61AF9C1ECF6331A31360330DBEEB /* UIKit.framework */,
+			);
+			name = iOS;
+			sourceTree = "<group>";
+		};
+		F6B40A53422DA946F51BDC9CC563B492 /* watchOS */ = {
+			isa = PBXGroup;
+			children = (
+				9CF8DF5AB7960DE7DCE3233F996CCE54 /* Foundation.framework */,
+			);
+			name = watchOS;
+			sourceTree = "<group>";
+		};
+		FA5A2BD3238E61DF1CDE1BB02DC09944 /* Pods-HealthKitObjCPoC WatchKit Extension */ = {
+			isa = PBXGroup;
+			children = (
+				A321F2C5851F33EBAFF480DDCF1E04C4 /* Pods-HealthKitObjCPoC WatchKit Extension-acknowledgements.markdown */,
+				AFC73047B333AD29EB871022AA5CBE84 /* Pods-HealthKitObjCPoC WatchKit Extension-acknowledgements.plist */,
+				D35324DC9810BBEAB9D6C70F58753BB3 /* Pods-HealthKitObjCPoC WatchKit Extension-dummy.m */,
+				D354DC84B27442048F2D24148EAB88A7 /* Pods-HealthKitObjCPoC WatchKit Extension-frameworks.sh */,
+				BE3DF940A524511665C6957A2B896764 /* Pods-HealthKitObjCPoC WatchKit Extension-resources.sh */,
+				B2FE6C1981D3AF327B61C577320431B9 /* Pods-HealthKitObjCPoC WatchKit Extension.debug.xcconfig */,
+				B2F545468570391687BD1D717426DC65 /* Pods-HealthKitObjCPoC WatchKit Extension.release.xcconfig */,
+			);
+			name = "Pods-HealthKitObjCPoC WatchKit Extension";
+			path = "Target Support Files/Pods-HealthKitObjCPoC WatchKit Extension";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		19BDACDD1EDCCD6811CF0DBAAB17A46E /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9DFBEAF59F4FF93A5B69D817317506FC /* FSLineChart.h in Headers */,
+				7CEFD195FDAAEB6FCF33CC72EA0DA9D0 /* UIColor+FSPalette.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9077FD721AC492135E5F3B9A67F65E6E /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8C9CE91BC3C17B920AE1AF53660852DE /* UIScrollView+EmptyDataSet.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		2019D0A11AD1696A311A26E900DB8854 /* FSLineChart */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F81CC9FCB8A08EBE1F00E4F32D36C02A /* Build configuration list for PBXNativeTarget "FSLineChart" */;
+			buildPhases = (
+				DCC298155300ED9507F3A82AE9482602 /* Sources */,
+				71FB9D7C3F19AA53F903BD69E1FFE11D /* Frameworks */,
+				19BDACDD1EDCCD6811CF0DBAAB17A46E /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = FSLineChart;
+			productName = FSLineChart;
+			productReference = 0E9B1234044885CB548681A9394E2CBF /* libFSLineChart.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		5437890023F30CA85DFCA260CA914D48 /* DZNEmptyDataSet */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B5D16F1430E3813C6D9A8E7A6E3A4E3F /* Build configuration list for PBXNativeTarget "DZNEmptyDataSet" */;
+			buildPhases = (
+				91D3866059EC142AF59AE52B9A008519 /* Sources */,
+				337A15437F2D8E9608BBC9A7F937EB94 /* Frameworks */,
+				9077FD721AC492135E5F3B9A67F65E6E /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = DZNEmptyDataSet;
+			productName = DZNEmptyDataSet;
+			productReference = 69BE4E0A1EC4591AF1130C16641B0B20 /* libDZNEmptyDataSet.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		57ED93759355D0D54D5D56305CBA7348 /* Pods-HealthKitObjCPoC WatchKit App */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 141516C0E799D7FD5C63BB1F5791AB2A /* Build configuration list for PBXNativeTarget "Pods-HealthKitObjCPoC WatchKit App" */;
+			buildPhases = (
+				EB00BFAA81719CEFD09C9ED1718DFA61 /* Sources */,
+				4A347EEE727ED496E27793AEF0D66D89 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Pods-HealthKitObjCPoC WatchKit App";
+			productName = "Pods-HealthKitObjCPoC WatchKit App";
+			productReference = E539BBBE6C18EDD38B287F192C324F01 /* libPods-HealthKitObjCPoC WatchKit App.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		9E015A8BBC8F94E7EB81FCAC0745EFB3 /* Pods-HealthKitObjCPoC */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 181142D912702E556C247748AAAD0913 /* Build configuration list for PBXNativeTarget "Pods-HealthKitObjCPoC" */;
+			buildPhases = (
+				FB3553AA6405AD49EFB1D7B4286F3839 /* Sources */,
+				3AB5CBA91FD7DBF0B6C902F067B83AD4 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				E04A88E2085FA59F3AB0AD690B6364B8 /* PBXTargetDependency */,
+				5B5019995380A5085C3FDAE49FFD0447 /* PBXTargetDependency */,
+			);
+			name = "Pods-HealthKitObjCPoC";
+			productName = "Pods-HealthKitObjCPoC";
+			productReference = A357BD7866E2E490C9A35979E51A9B2A /* libPods-HealthKitObjCPoC.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		FB742CE500B92464E2C5D7B64B176050 /* Pods-HealthKitObjCPoC WatchKit Extension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3376B75B9909A316BFC263A760492D60 /* Build configuration list for PBXNativeTarget "Pods-HealthKitObjCPoC WatchKit Extension" */;
+			buildPhases = (
+				A9763E42D29A27F852379A40C7F1D555 /* Sources */,
+				F92B558D8C3F58AAE334218D26F6AA1C /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Pods-HealthKitObjCPoC WatchKit Extension";
+			productName = "Pods-HealthKitObjCPoC WatchKit Extension";
+			productReference = 751C88CB7BE42B7FBF157918BDBF155C /* libPods-HealthKitObjCPoC WatchKit Extension.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D41D8CD98F00B204E9800998ECF8427E /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0730;
+				LastUpgradeCheck = 0700;
+			};
+			buildConfigurationList = 2D8E8EC45A3A1A1D94AE762CB5028504 /* Build configuration list for PBXProject "Pods" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 7DB346D0F39D3F0E887471402A8071AB;
+			productRefGroup = 4FBEE562FA353847139D19A9AB98021B /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				5437890023F30CA85DFCA260CA914D48 /* DZNEmptyDataSet */,
+				2019D0A11AD1696A311A26E900DB8854 /* FSLineChart */,
+				9E015A8BBC8F94E7EB81FCAC0745EFB3 /* Pods-HealthKitObjCPoC */,
+				57ED93759355D0D54D5D56305CBA7348 /* Pods-HealthKitObjCPoC WatchKit App */,
+				FB742CE500B92464E2C5D7B64B176050 /* Pods-HealthKitObjCPoC WatchKit Extension */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		91D3866059EC142AF59AE52B9A008519 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E7B54ACBD8CB51596799063FD7C3CEA9 /* DZNEmptyDataSet-dummy.m in Sources */,
+				E659F4CEB5430BC17E59431CAACBB217 /* UIScrollView+EmptyDataSet.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A9763E42D29A27F852379A40C7F1D555 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				024F6A03F18BA6269FD4184E413042D6 /* Pods-HealthKitObjCPoC WatchKit Extension-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DCC298155300ED9507F3A82AE9482602 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3052B2DEF20A1DB41791503C9F509041 /* FSLineChart-dummy.m in Sources */,
+				A5F3B9832C5DAC78D18360F0C2BF4578 /* FSLineChart.m in Sources */,
+				F7D92B6E15C3EBD380472015DC877881 /* UIColor+FSPalette.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EB00BFAA81719CEFD09C9ED1718DFA61 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1EBD4D341A74EDA536D25A83E81A6ED5 /* Pods-HealthKitObjCPoC WatchKit App-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FB3553AA6405AD49EFB1D7B4286F3839 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2411474262E0B7FADC4D2388628389AF /* Pods-HealthKitObjCPoC-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		5B5019995380A5085C3FDAE49FFD0447 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = FSLineChart;
+			target = 2019D0A11AD1696A311A26E900DB8854 /* FSLineChart */;
+			targetProxy = DEB20B4EEE109152283219C2A8FEBB92 /* PBXContainerItemProxy */;
+		};
+		E04A88E2085FA59F3AB0AD690B6364B8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = DZNEmptyDataSet;
+			target = 5437890023F30CA85DFCA260CA914D48 /* DZNEmptyDataSet */;
+			targetProxy = 874DE538515C17AB9CC7FB36EDDDF3EC /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		027549DE8BE6CC77CCDE9A872D429F85 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = B2FE6C1981D3AF327B61C577320431B9 /* Pods-HealthKitObjCPoC WatchKit Extension.debug.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				MACH_O_TYPE = staticlib;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				WATCHOS_DEPLOYMENT_TARGET = 2.1;
+			};
+			name = Debug;
+		};
+		061D5B4CBEE43B711010ACF6ED70E8BA /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = B2F545468570391687BD1D717426DC65 /* Pods-HealthKitObjCPoC WatchKit Extension.release.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				MACH_O_TYPE = staticlib;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				WATCHOS_DEPLOYMENT_TARGET = 2.1;
+			};
+			name = Release;
+		};
+		0F637F57253D4349FE0696B5C4958737 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = AA3CECD0FE1A432B2C9836CFDE6430C6 /* Pods-HealthKitObjCPoC WatchKit App.debug.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				MACH_O_TYPE = staticlib;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				WATCHOS_DEPLOYMENT_TARGET = 2.1;
+			};
+			name = Debug;
+		};
+		1B13DAF8291B4EB3F0019C7B5E5769DC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7317DACA2594594CB97721016968BCCD /* DZNEmptyDataSet.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/DZNEmptyDataSet/DZNEmptyDataSet-prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRIVATE_HEADERS_FOLDER_PATH = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PUBLIC_HEADERS_FOLDER_PATH = "";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		1CF3E8237CA6AEED482E963719404C07 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_REQUIRED = NO;
+				COPY_PHASE_STRIP = NO;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"POD_CONFIGURATION_DEBUG=1",
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				ONLY_ACTIVE_ARCH = YES;
+				PROVISIONING_PROFILE_SPECIFIER = NO_SIGNING/;
+				STRIP_INSTALLED_PRODUCT = NO;
+				SYMROOT = "${SRCROOT}/../build";
+				WATCHOS_DEPLOYMENT_TARGET = 2.1;
+			};
+			name = Debug;
+		};
+		311F7618C963C6B56FB3CF88F644DC7B /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 171565801EC864633141A5CBB77A0A36 /* Pods-HealthKitObjCPoC WatchKit App.release.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				MACH_O_TYPE = staticlib;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				WATCHOS_DEPLOYMENT_TARGET = 2.1;
+			};
+			name = Release;
+		};
+		595391DF1EBC6516F86EA177D6340DE6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = A85EFB8C9AA4E1B58830AE7768FD83A8 /* FSLineChart.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/FSLineChart/FSLineChart-prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRIVATE_HEADERS_FOLDER_PATH = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PUBLIC_HEADERS_FOLDER_PATH = "";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		68210464B1E7A2A88A48D0F80C6D3087 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = C7C96912394315F6EA8ECB0BC2A26E5F /* Pods-HealthKitObjCPoC.release.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				MACH_O_TYPE = staticlib;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		6E493F85290AFC3E7D1E13CF0E366461 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = A85EFB8C9AA4E1B58830AE7768FD83A8 /* FSLineChart.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/FSLineChart/FSLineChart-prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRIVATE_HEADERS_FOLDER_PATH = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PUBLIC_HEADERS_FOLDER_PATH = "";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		91312F2E63C22CD2A84DBF13A217F68E /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7317DACA2594594CB97721016968BCCD /* DZNEmptyDataSet.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/DZNEmptyDataSet/DZNEmptyDataSet-prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRIVATE_HEADERS_FOLDER_PATH = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PUBLIC_HEADERS_FOLDER_PATH = "";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		919DACF185D90E9269EFC7959B894D8A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_REQUIRED = NO;
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"POD_CONFIGURATION_RELEASE=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				PROVISIONING_PROFILE_SPECIFIER = NO_SIGNING/;
+				STRIP_INSTALLED_PRODUCT = NO;
+				SYMROOT = "${SRCROOT}/../build";
+				VALIDATE_PRODUCT = YES;
+				WATCHOS_DEPLOYMENT_TARGET = 2.1;
+			};
+			name = Release;
+		};
+		93792E25131CD46ECE9973EA59B2B1EE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 14811AD6FDB1DE4C7DD710E29C218D5E /* Pods-HealthKitObjCPoC.debug.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				MACH_O_TYPE = staticlib;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		141516C0E799D7FD5C63BB1F5791AB2A /* Build configuration list for PBXNativeTarget "Pods-HealthKitObjCPoC WatchKit App" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0F637F57253D4349FE0696B5C4958737 /* Debug */,
+				311F7618C963C6B56FB3CF88F644DC7B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		181142D912702E556C247748AAAD0913 /* Build configuration list for PBXNativeTarget "Pods-HealthKitObjCPoC" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				93792E25131CD46ECE9973EA59B2B1EE /* Debug */,
+				68210464B1E7A2A88A48D0F80C6D3087 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2D8E8EC45A3A1A1D94AE762CB5028504 /* Build configuration list for PBXProject "Pods" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1CF3E8237CA6AEED482E963719404C07 /* Debug */,
+				919DACF185D90E9269EFC7959B894D8A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		3376B75B9909A316BFC263A760492D60 /* Build configuration list for PBXNativeTarget "Pods-HealthKitObjCPoC WatchKit Extension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				027549DE8BE6CC77CCDE9A872D429F85 /* Debug */,
+				061D5B4CBEE43B711010ACF6ED70E8BA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B5D16F1430E3813C6D9A8E7A6E3A4E3F /* Build configuration list for PBXNativeTarget "DZNEmptyDataSet" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1B13DAF8291B4EB3F0019C7B5E5769DC /* Debug */,
+				91312F2E63C22CD2A84DBF13A217F68E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F81CC9FCB8A08EBE1F00E4F32D36C02A /* Build configuration list for PBXNativeTarget "FSLineChart" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6E493F85290AFC3E7D1E13CF0E366461 /* Debug */,
+				595391DF1EBC6516F86EA177D6340DE6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
+}

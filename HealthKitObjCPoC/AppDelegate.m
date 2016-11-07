@@ -123,7 +123,6 @@
             }
         }
         
-        
         [self.window makeKeyAndVisible];
     }
     return handled;

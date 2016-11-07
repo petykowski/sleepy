@@ -34,6 +34,7 @@
 		C2508E571C582A5B00900AC1 /* Health.plist in Resources */ = {isa = PBXBuildFile; fileRef = C2508E561C582A5B00900AC1 /* Health.plist */; };
 		C2508E581C582A5B00900AC1 /* Health.plist in Resources */ = {isa = PBXBuildFile; fileRef = C2508E561C582A5B00900AC1 /* Health.plist */; };
 		C25FC8F21DA97F5F00B39ACD /* StatisticsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C25FC8F11DA97F5F00B39ACD /* StatisticsTableViewCell.m */; };
+		C28F8EFF1DCFE96F0016BFD4 /* HeartRateChart.m in Sources */ = {isa = PBXBuildFile; fileRef = C28F8EFE1DCFE96F0016BFD4 /* HeartRateChart.m */; };
 		C29A2FB71D8DFC44005B5D29 /* SessionDetailTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C29A2FB61D8DFC44005B5D29 /* SessionDetailTableViewController.m */; };
 		C29A2FBA1D8E0054005B5D29 /* SessionDetailTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C29A2FB91D8E0054005B5D29 /* SessionDetailTableViewCell.m */; };
 		C29E28A41D98AC00009FD716 /* SleepStatistic.m in Sources */ = {isa = PBXBuildFile; fileRef = C29E28A31D98AC00009FD716 /* SleepStatistic.m */; };
@@ -140,6 +141,8 @@
 		C2508E561C582A5B00900AC1 /* Health.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Health.plist; sourceTree = "<group>"; };
 		C25FC8F01DA97F5F00B39ACD /* StatisticsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatisticsTableViewCell.h; sourceTree = "<group>"; };
 		C25FC8F11DA97F5F00B39ACD /* StatisticsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatisticsTableViewCell.m; sourceTree = "<group>"; };
+		C28F8EFD1DCFE96F0016BFD4 /* HeartRateChart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeartRateChart.h; sourceTree = "<group>"; };
+		C28F8EFE1DCFE96F0016BFD4 /* HeartRateChart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeartRateChart.m; sourceTree = "<group>"; };
 		C29A2FB51D8DFC44005B5D29 /* SessionDetailTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SessionDetailTableViewController.h; sourceTree = "<group>"; };
 		C29A2FB61D8DFC44005B5D29 /* SessionDetailTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SessionDetailTableViewController.m; sourceTree = "<group>"; };
 		C29A2FB81D8E0054005B5D29 /* SessionDetailTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SessionDetailTableViewCell.h; sourceTree = "<group>"; };
@@ -273,6 +276,7 @@
 		C243C1511C57D32400DB8803 /* HealthKitObjCPoC */ = {
 			isa = PBXGroup;
 			children = (
+				C28F8EFC1DCFE95C0016BFD4 /* Chart */,
 				C2D692061DA1948900DB3876 /* Stats */,
 				C2D692051DA1945100DB3876 /* Sleep UI */,
 				C243C1921C57D34800DB8803 /* HealthKitObjCPoC.entitlements */,
@@ -330,6 +334,15 @@
 				C243C1821C57D32400DB8803 /* Info.plist */,
 			);
 			path = "HealthKitObjCPoC WatchKit Extension";
+			sourceTree = "<group>";
+		};
+		C28F8EFC1DCFE95C0016BFD4 /* Chart */ = {
+			isa = PBXGroup;
+			children = (
+				C28F8EFD1DCFE96F0016BFD4 /* HeartRateChart.h */,
+				C28F8EFE1DCFE96F0016BFD4 /* HeartRateChart.m */,
+			);
+			name = Chart;
 			sourceTree = "<group>";
 		};
 		C2D692051DA1945100DB3876 /* Sleep UI */ = {
@@ -603,7 +616,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run \'pod install\' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		ABDCE219E8ABFC116C851F73 /* [CP] Copy Pods Resources */ = {
@@ -647,7 +660,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run \'pod install\' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		E523322D1952622F536B3F33 /* [CP] Check Pods Manifest.lock */ = {
@@ -662,7 +675,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run \'pod install\' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		EB33C6B43E5E7C384BAAB61B /* [CP] Copy Pods Resources */ = {
@@ -692,6 +705,7 @@
 				C245D3DD1D56925E0047D2FD /* session.m in Sources */,
 				C25FC8F21DA97F5F00B39ACD /* StatisticsTableViewCell.m in Sources */,
 				C22625CD1D864BB70013398C /* OnboardingContentViewController.m in Sources */,
+				C28F8EFF1DCFE96F0016BFD4 /* HeartRateChart.m in Sources */,
 				C2FB86511D31D0B900FCC143 /* SleepMilestoneInterfaceController.m in Sources */,
 				C22625CF1D864BB70013398C /* OnboardingViewController.m in Sources */,
 				C29A2FB71D8DFC44005B5D29 /* SessionDetailTableViewController.m in Sources */,

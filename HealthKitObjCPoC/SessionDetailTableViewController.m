@@ -13,6 +13,9 @@
 #import "Utility.h"
 #import "SleepStatistic.h"
 #import "SleepSession.h"
+#import "FSLineChart.h"
+#import "UIColor+FSPalette.h"
+
 
 @interface SessionDetailTableViewController ()
 
@@ -20,6 +23,7 @@
 @property NSMutableArray *sleepStatistics;
 @property NSMutableArray *heartRateStatistics;
 @property SleepSession *detailSleepSession;
+@property (nonatomic, strong) IBOutlet FSLineChart *chartWithDates;
 
 @end
 
@@ -29,11 +33,13 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     _heartRateStatistics = [[NSMutableArray alloc] init];
     _sleepStatistics = [[NSMutableArray alloc] init];
     _detailSleepSession = [Utility convertManagedObjectSessionToSleepSessionForDetailView:sleepSession];
     _sleepSessionMilestones = [Utility convertAndPopulatePreviousSleepSessionDataForMilestone:_detailSleepSession];
     
+//    [self loadChartWithDates];
     [self refreshHealthStatistics];
     [self refreshSleepStatistics];
     [self.navigationItem setTitle:_detailSleepSession.name];
@@ -111,6 +117,43 @@
     }
 }
 
+#pragma Chart
+
+//- (void)loadChartWithDates {
+//    // Generating some dummy data
+//    NSMutableArray* chartData = [NSMutableArray arrayWithCapacity:20];
+//    for(int i=0;i<13;i++) {
+//        chartData[i] = [NSNumber numberWithFloat: (float)i / 30.0f + (float)(rand() % 100) / 500.0f];
+//    }
+//    
+//    NSArray* months = @[@"10 PM", @"11 PM", @"12 AM", @"1 AM", @"2 AM", @"3 AM", @"4 AM", @"5 AM", @"6 AM", @"7 AM", @"8 AM", @"9 AM", @"10 AM"];
+//
+//    // Setting up the line chart
+//    _chartWithDates.fillColor = [UIColor colorWithRed:0.3725490196 green:0.3058823529 blue:0.7176470588 alpha:.5];
+//    _chartWithDates.displayDataPoint = YES;
+//    _chartWithDates.dataPointColor = [UIColor colorWithRed:0.3725490196 green:0.3058823529 blue:0.7176470588 alpha:1.0];
+//    _chartWithDates.dataPointBackgroundColor = [UIColor colorWithRed:0.3725490196 green:0.3058823529 blue:0.7176470588 alpha:1.0];
+//    _chartWithDates.dataPointRadius = 2;
+//    _chartWithDates.color = [UIColor colorWithRed:0.3725490196 green:0.3058823529 blue:0.7176470588 alpha:1.0];
+//    _chartWithDates.valueLabelPosition = ValueLabelLeftMirrored;
+//    _chartWithDates.verticalGridStep = 3;
+//    _chartWithDates.horizontalGridStep = 6;
+//    _chartWithDates.drawInnerGrid = NO;
+//    _chartWithDates.axisColor = [UIColor colorWithWhite:0.3 alpha:1.0];
+//    _chartWithDates.axisWidth = _chartWithDates.frame.size.width + 20;
+//    _chartWithDates.axisHeight = _chartWithDates.frame.size.height -25;
+//    
+//    _chartWithDates.labelForIndex = ^(NSUInteger item) {
+//        return months[item];
+//    };
+//    
+//    _chartWithDates.labelForValue = ^(CGFloat value) {
+//        return [NSString stringWithFormat:@"%.01f bpm", value];
+//    };
+//    NSLog(@"[DEBUG] Width of chart %f", _chartWithDates.frame.size.width);
+//    
+//    [_chartWithDates setChartData:chartData];
+//}
 
 #pragma mark - Sleep Statistics
 
