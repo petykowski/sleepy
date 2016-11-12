@@ -10,14 +10,47 @@
 
 @implementation HeartRateChart
 
-- (instancetype)initWithCoder:(NSCoder *)coder
+@synthesize datesArray = _datesArray;
+
+#pragma mark - Initialization
+
+- (id)initWithFrame:(CGRect)frame
 {
-    self = [super initWithCoder:coder];
+    self = [super initWithFrame:frame];
     if (self) {
-        self.backgroundColor = [UIColor colorWithRed:0.1137254902 green:0.1137254902 blue:0.1137254902 alpha:1.0];
-        
+        [self commonInit];
+    }
+    NSLog(@"[DEBUG] 1. Contents of Date Array initWithFrame %@", _datesArray);
+    return self;
+}
+
+- (id)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    if (self) {
+        [self commonInit];
     }
     return self;
+}
+
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+    [self commonInit];
+}
+
+- (void)commonInit
+{
+    self.backgroundColor = [UIColor colorWithRed:0.1137254902 green:0.1137254902 blue:0.1137254902 alpha:1.0];
+    [self setDefaultParameters];
+}
+
+- (void)setDefaultParameters {
+}
+
+- (void)setChartData {
+    NSLog(@"[DEBUG] Set Chart Data Called");
+    [self setNeedsLayout];
 }
 
 - (void)drawRect:(CGRect)rect {
@@ -53,19 +86,19 @@
     int xoffset = (xAxisSection.size.width - 20) / 6;
     int yoffset = 205 / 4;
     
-    NSArray *textArray = @[@"10 PM", @"11 PM", @"12 PM", @"1 AM", @"2 AM", @"3 AM", @"4 AM", @"5 AM", @"6 AM", @"7 AM", @"8 AM"];
+    NSArray *textArray = @[@"10 PM", @"11 PM", @"12 PM", @"1 AM", @"2 AM", @"3 AM", @"4 AM"];
     
     for (int x = 0; x < 6; x++) {
         
-        NSInteger q = (int)textArray.count / 5;
+        NSInteger q = (int)_datesArray.count / 5;
         NSInteger itemIndex = q * x;
         
-        if(itemIndex >= textArray.count)
+        if(itemIndex >= _datesArray.count)
         {
-            itemIndex = textArray.count - 1;
+            itemIndex = _datesArray.count - 1;
         }
         
-        NSString *text = [textArray objectAtIndex:itemIndex];
+        NSString *text = [_datesArray objectAtIndex:itemIndex];
         float width = [text boundingRectWithSize:rect.size
                                          options:NSStringDrawingUsesLineFragmentOrigin
                                       attributes:nil

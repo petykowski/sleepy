@@ -173,7 +173,7 @@
                         </connections>
                     </tableView>
                     <connections>
-                        <outlet property="chartWithDates" destination="s7P-Ww-nGF" id="EgQ-h6-dKL"/>
+                        <outlet property="chartWithDates" destination="s7P-Ww-nGF" id="R9C-1T-TRk"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7Gj-Hl-z0N" userLabel="First Responder" sceneMemberID="firstResponder"/>

@@ -10,4 +10,8 @@
 
 @interface HeartRateChart : UIView
 
+@property (nonatomic) NSArray *datesArray;
+// Set the actual data for the chart, and then render it to the view.
+- (void)setChartData;
+
 @end

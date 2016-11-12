@@ -15,6 +15,8 @@
 #import "SleepSession.h"
 #import "FSLineChart.h"
 #import "UIColor+FSPalette.h"
+#import "HeartRateChart.h"
+#import "Constants.h"
 
 
 @interface SessionDetailTableViewController ()
@@ -23,7 +25,8 @@
 @property NSMutableArray *sleepStatistics;
 @property NSMutableArray *heartRateStatistics;
 @property SleepSession *detailSleepSession;
-@property (nonatomic, strong) IBOutlet FSLineChart *chartWithDates;
+@property (nonatomic, strong) IBOutlet HeartRateChart *chartWithDates;
+@property NSArray *ktimes12Hour;
 
 @end
 
@@ -34,12 +37,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    _ktimes12Hour = @[@"12 AM", @"1 AM", @"2 AM", @"3 AM", @"4 AM", @"5 AM", @"6 AM", @"7 AM", @"8 AM", @"9 AM", @"10 AM", @"11 AM", @"12 PM", @"1 PM", @"2 PM", @"3 PM", @"4 PM", @"5 PM", @"6 PM", @"7 PM", @"8 PM", @"9 PM", @"10 PM", @"11 PM"];
+    
     _heartRateStatistics = [[NSMutableArray alloc] init];
     _sleepStatistics = [[NSMutableArray alloc] init];
     _detailSleepSession = [Utility convertManagedObjectSessionToSleepSessionForDetailView:sleepSession];
     _sleepSessionMilestones = [Utility convertAndPopulatePreviousSleepSessionDataForMilestone:_detailSleepSession];
-    
-//    [self loadChartWithDates];
+    [self loadChartWithData];
     [self refreshHealthStatistics];
     [self refreshSleepStatistics];
     [self.navigationItem setTitle:_detailSleepSession.name];
@@ -117,43 +121,40 @@
     }
 }
 
-#pragma Chart
+#pragma mark -  Chart
 
-//- (void)loadChartWithDates {
-//    // Generating some dummy data
-//    NSMutableArray* chartData = [NSMutableArray arrayWithCapacity:20];
-//    for(int i=0;i<13;i++) {
-//        chartData[i] = [NSNumber numberWithFloat: (float)i / 30.0f + (float)(rand() % 100) / 500.0f];
-//    }
-//    
-//    NSArray* months = @[@"10 PM", @"11 PM", @"12 AM", @"1 AM", @"2 AM", @"3 AM", @"4 AM", @"5 AM", @"6 AM", @"7 AM", @"8 AM", @"9 AM", @"10 AM"];
-//
-//    // Setting up the line chart
-//    _chartWithDates.fillColor = [UIColor colorWithRed:0.3725490196 green:0.3058823529 blue:0.7176470588 alpha:.5];
-//    _chartWithDates.displayDataPoint = YES;
-//    _chartWithDates.dataPointColor = [UIColor colorWithRed:0.3725490196 green:0.3058823529 blue:0.7176470588 alpha:1.0];
-//    _chartWithDates.dataPointBackgroundColor = [UIColor colorWithRed:0.3725490196 green:0.3058823529 blue:0.7176470588 alpha:1.0];
-//    _chartWithDates.dataPointRadius = 2;
-//    _chartWithDates.color = [UIColor colorWithRed:0.3725490196 green:0.3058823529 blue:0.7176470588 alpha:1.0];
-//    _chartWithDates.valueLabelPosition = ValueLabelLeftMirrored;
-//    _chartWithDates.verticalGridStep = 3;
-//    _chartWithDates.horizontalGridStep = 6;
-//    _chartWithDates.drawInnerGrid = NO;
-//    _chartWithDates.axisColor = [UIColor colorWithWhite:0.3 alpha:1.0];
-//    _chartWithDates.axisWidth = _chartWithDates.frame.size.width + 20;
-//    _chartWithDates.axisHeight = _chartWithDates.frame.size.height -25;
-//    
-//    _chartWithDates.labelForIndex = ^(NSUInteger item) {
-//        return months[item];
-//    };
-//    
-//    _chartWithDates.labelForValue = ^(CGFloat value) {
-//        return [NSString stringWithFormat:@"%.01f bpm", value];
-//    };
-//    NSLog(@"[DEBUG] Width of chart %f", _chartWithDates.frame.size.width);
-//    
-//    [_chartWithDates setChartData:chartData];
-//}
+- (void)loadChartWithData {
+    NSDateComponents *durationComponents = [[NSCalendar currentCalendar] components:NSCalendarUnitHour|NSCalendarUnitMinute fromDate:[_detailSleepSession.sleep firstObject] toDate:[_detailSleepSession.wake lastObject] options:0];
+    NSInteger durationHours = [durationComponents hour];
+    NSInteger durationMinutes = [durationComponents minute];
+    
+    NSDateComponents *startComponents = [[NSCalendar currentCalendar] components:NSCalendarUnitHour fromDate:[_detailSleepSession.sleep firstObject]];
+    NSInteger startHour = [startComponents hour];
+    
+    NSMutableArray *timeMilestones = [[NSMutableArray alloc] init];
+    
+    int x = 0;
+    
+    // Allows chart to display label for the last hour of sleep in chart
+    if (durationMinutes > 0) {
+        durationHours = durationHours + 1;
+        NSLog(@"[DEBUG] durationMinutes = %ld", (long)durationMinutes);
+        NSLog(@"[DEBUG] durationHours = %ld", (long)durationHours);
+    }
+    
+    while (x <= durationHours) {
+        if (startHour > _ktimes12Hour.count - 1) {
+            startHour = startHour - [_ktimes12Hour count];
+        }
+        [timeMilestones addObject:_ktimes12Hour[startHour]];
+        startHour++;
+        x++;
+    }
+    NSLog(@"[DEBUG] timeMilestones = %@", timeMilestones);
+    _chartWithDates.datesArray = timeMilestones;
+    [_chartWithDates setChartData];
+    
+}
 
 #pragma mark - Sleep Statistics
 
