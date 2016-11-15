@@ -126,11 +126,13 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.070588235294117646" green="0.070588235294117646" blue="0.070588235294117646" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="separatorColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20784313725490197" alpha="1" colorSpace="calibratedRGB"/>
-                        <view key="tableHeaderView" contentMode="scaleToFill" id="s7P-Ww-nGF" customClass="HeartRateChart">
+                        <containerView key="tableHeaderView" opaque="NO" contentMode="scaleToFill" id="GZ7-zE-EQd">
                             <rect key="frame" x="0.0" y="64" width="375" height="280"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                        </view>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                            <connections>
+                                <segue destination="BCT-yi-cOk" kind="embed" identifier="heartRateChartSegue" id="9wl-74-py8"/>
+                            </connections>
+                        </containerView>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="detailViewCell" id="ctL-QL-sXh" customClass="SessionDetailTableViewCell">
                                 <rect key="frame" x="0.0" y="336" width="375" height="44"/>
@@ -173,7 +175,7 @@
                         </connections>
                     </tableView>
                     <connections>
-                        <outlet property="chartWithDates" destination="s7P-Ww-nGF" id="R9C-1T-TRk"/>
+                        <outlet property="heartRateChart" destination="GZ7-zE-EQd" id="Jo3-dd-8Go"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7Gj-Hl-z0N" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -299,6 +301,73 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="EGO-Be-PYM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2024.8" y="1548.5757121439281"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="5uO-mM-dY0">
+            <objects>
+                <viewController id="cpL-8X-pkm" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="1ib-C5-dkb">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Wb9-Wn-Bi6" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+        </scene>
+        <!--Chart View Controller-->
+        <scene sceneID="AQZ-bD-gql">
+            <objects>
+                <viewController id="BCT-yi-cOk" customClass="ChartViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Scw-Z9-cmr">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="280"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalCentering" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="uwI-Ix-OOq">
+                                <rect key="frame" x="0.0" y="70" width="45" height="135"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="45" id="xQg-aK-co6"/>
+                                </constraints>
+                            </stackView>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="equalCentering" translatesAutoresizingMaskIntoConstraints="NO" id="gh8-df-fyA">
+                                <rect key="frame" x="25" y="240" width="340" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="b5i-c2-fQI"/>
+                                </constraints>
+                            </stackView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZUK-yM-nZs">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="35"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="35" id="Oms-e3-0rg"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="ZUK-yM-nZs" firstAttribute="leading" secondItem="Scw-Z9-cmr" secondAttribute="leading" id="883-mb-zdt"/>
+                            <constraint firstItem="gh8-df-fyA" firstAttribute="leading" secondItem="uwI-Ix-OOq" secondAttribute="trailing" constant="-20" id="Bx6-G1-Y0m"/>
+                            <constraint firstAttribute="bottom" secondItem="uwI-Ix-OOq" secondAttribute="bottom" constant="75" id="OIt-0s-x2u"/>
+                            <constraint firstAttribute="trailing" secondItem="gh8-df-fyA" secondAttribute="trailing" constant="10" id="Oz2-pT-wAY"/>
+                            <constraint firstAttribute="trailing" secondItem="ZUK-yM-nZs" secondAttribute="trailing" id="ZoR-uk-nba"/>
+                            <constraint firstItem="ZUK-yM-nZs" firstAttribute="centerX" secondItem="Scw-Z9-cmr" secondAttribute="centerX" id="aWe-ac-2pe"/>
+                            <constraint firstAttribute="bottom" secondItem="gh8-df-fyA" secondAttribute="bottom" id="bcb-aa-mmt"/>
+                            <constraint firstItem="uwI-Ix-OOq" firstAttribute="top" secondItem="ZUK-yM-nZs" secondAttribute="bottom" constant="35" id="q9L-MO-YId"/>
+                            <constraint firstItem="ZUK-yM-nZs" firstAttribute="top" secondItem="Scw-Z9-cmr" secondAttribute="top" id="umi-C7-Jie"/>
+                            <constraint firstItem="uwI-Ix-OOq" firstAttribute="leading" secondItem="Scw-Z9-cmr" secondAttribute="leading" id="xRj-84-zWN"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="chartLabel" destination="ZUK-yM-nZs" id="bQ9-lI-AbR"/>
+                        <outlet property="xAxisStack" destination="gh8-df-fyA" id="wRD-2K-3z5"/>
+                        <outlet property="yAxisStack" destination="uwI-Ix-OOq" id="9GO-xt-aJ9"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="KdS-8j-348" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3717.5999999999999" y="648.57571214392806"/>
         </scene>
     </scenes>
     <resources>

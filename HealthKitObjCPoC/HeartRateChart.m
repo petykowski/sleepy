@@ -85,25 +85,50 @@
     
     int xoffset = (xAxisSection.size.width - 20) / 6;
     int yoffset = 205 / 4;
+    int maxNumberOfLabels = 6;
     
     NSArray *textArray = @[@"10 PM", @"11 PM", @"12 PM", @"1 AM", @"2 AM", @"3 AM", @"4 AM"];
     
-    for (int x = 0; x < 6; x++) {
+    NSMutableArray *finalArray = [[NSMutableArray alloc] init];
+    
+    if (textArray.count < maxNumberOfLabels) {
         
+        xoffset = (xAxisSection.size.width - 20) / textArray.count;
+        maxNumberOfLabels = (int)textArray.count;
+        [finalArray addObjectsFromArray:textArray];
+        
+    } else if (textArray.count >= maxNumberOfLabels) {
+        
+        for (int x = 0; x < maxNumberOfLabels; x++) {
+            
+            if (x == 0) {
+                [finalArray addObject:[textArray firstObject]];
+            } else if (x == maxNumberOfLabels -1) {
+                [finalArray addObject:[textArray lastObject]];
+            } else {
+                [finalArray addObject:textArray[x]];
+            }
+        }
+    }
+    NSLog(@"[DEBUG] final Array = %@", finalArray);
+    for (int x = 0; x < maxNumberOfLabels; x++) {
+        /*
         NSInteger q = (int)_datesArray.count / 5;
         NSInteger itemIndex = q * x;
         
-        if(itemIndex >= _datesArray.count)
-        {
+        if(itemIndex >= _datesArray.count) {
             itemIndex = _datesArray.count - 1;
         }
+        */
         
-        NSString *text = [_datesArray objectAtIndex:itemIndex];
+        
+        NSString *text = [finalArray objectAtIndex:x];
         float width = [text boundingRectWithSize:rect.size
                                          options:NSStringDrawingUsesLineFragmentOrigin
                                       attributes:nil
                                          context:nil].size.width;
         UILabel *textLabel = [[UILabel alloc] initWithFrame:CGRectMake(35 + (xoffset * x), xAxisSection.origin.y, width, xAxisSection.size.height)];
+        [textLabel setTextAlignment:NSTextAlignmentRight];
         [textLabel setTextColor:[UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:1.0]];
         [textLabel setFont:[UIFont systemFontOfSize:10 weight:UIFontWeightRegular]];
         [textLabel setText:[NSString stringWithFormat:@"%@", text]];

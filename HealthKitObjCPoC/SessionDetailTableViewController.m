@@ -16,6 +16,7 @@
 #import "FSLineChart.h"
 #import "UIColor+FSPalette.h"
 #import "HeartRateChart.h"
+#import "ChartViewController.h"
 #import "Constants.h"
 
 
@@ -27,6 +28,7 @@
 @property SleepSession *detailSleepSession;
 @property (nonatomic, strong) IBOutlet HeartRateChart *chartWithDates;
 @property NSArray *ktimes12Hour;
+@property (strong, nonatomic) IBOutlet UIView *heartRateChart;
 
 @end
 
@@ -124,7 +126,7 @@
 #pragma mark -  Chart
 
 - (void)loadChartWithData {
-    NSDateComponents *durationComponents = [[NSCalendar currentCalendar] components:NSCalendarUnitHour|NSCalendarUnitMinute fromDate:[_detailSleepSession.sleep firstObject] toDate:[_detailSleepSession.wake lastObject] options:0];
+    NSDateComponents *durationComponents = [[NSCalendar currentCalendar] components:NSCalendarUnitHour|NSCalendarUnitMinute fromDate:[_detailSleepSession.inBed firstObject] toDate:[_detailSleepSession.outBed lastObject] options:0];
     NSInteger durationHours = [durationComponents hour];
     NSInteger durationMinutes = [durationComponents minute];
     
@@ -154,6 +156,19 @@
     _chartWithDates.datesArray = timeMilestones;
     [_chartWithDates setChartData];
     
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if ([segue.identifier  isEqual: @"heartRateChartSegue"]) {
+        ChartViewController *chartView = [segue destinationViewController];
+        if ([chartView respondsToSelector:@selector(setHealthStore:)]) {
+            [chartView setHealthStore:self.healthStore];
+            NSLog(@"[DEBUG] Set HealthStore for %@", chartView);
+        }
+        chartView.chartTitle = @"Heart Rate";
+        chartView.sleepSession = sleepSession;
+        NSLog(@"[DEBUG] You made it into the segue");
+    }
 }
 
 #pragma mark - Sleep Statistics
