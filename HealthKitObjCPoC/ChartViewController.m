@@ -21,6 +21,7 @@
 @property SleepStatistic *avgStatistic;
 @property SleepStatistic *sleepDuration;
 @property SleepSession *detailSleepSession;
+@property UIBezierPath *path;
 @property NSNumber *chartMax;
 @property NSNumber *chartMin;
 @property NSArray *ktimes12Hour;
@@ -162,6 +163,7 @@
         [self plotHeartRateOnGraph:^(NSError *error){
             [self updateAxisLabels];
             [self drawAverageHeartRateLine];
+            [self drawLine];
         }];
     }];
 }
@@ -215,8 +217,11 @@
     double chartFrameWidth = self.view.frame.size.width - 45;
     double chartFrameHeight = 205;
     CGPoint chartOrigin = CGPointMake(45, 36);
-    int dataPointRadius = 1;
+    int dataPointRadius = 2;
     double heartRateRange = _chartMax.doubleValue - _chartMin.doubleValue;
+    
+    // Line
+    _path = [UIBezierPath bezierPath];
     
     
     // Calculate Total Time Asleep
@@ -241,7 +246,7 @@
         }
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            
+            int indexCount = 0;
             for (HKQuantitySample *sample in results) {
                 NSDateComponents *durationToReading = [[NSCalendar currentCalendar] components:NSCalendarUnitHour|NSCalendarUnitMinute|NSCalendarUnitSecond fromDate:[_detailSleepSession.inBed firstObject] toDate:sample.startDate options:0];
                 NSInteger sampleHours = [durationToReading hour];
@@ -268,13 +273,19 @@
                 fillLayer.lineJoin = kCALineJoinRound;
                 [self.view.layer addSublayer:fillLayer];
                 
+                if (indexCount > 0) {
+                    [_path addLineToPoint:CGPointMake(xCoordinate, yCoordinate)];
+                } else {
+                    [_path moveToPoint:CGPointMake(xCoordinate, yCoordinate)];
+                    
+                }
+                indexCount = indexCount + 1;
             }
             if (completionHandler) {
                 completionHandler(error);
             }
         });
     }];
-    
     [self.healthStore executeQuery:query];
 }
 
@@ -289,6 +300,19 @@
         [horizontalLine setBackgroundColor:[UIColor colorWithRed:0.3725490196 green:0.3058823529 blue:0.7176470588 alpha:1]];
         [self.view addSubview:horizontalLine];
     }
+}
+
+-(void)drawLine {
+    CGPoint chartOrigin = CGPointMake(45, 36);
+    CAShapeLayer *pathLayer = [CAShapeLayer layer];
+    pathLayer.frame = CGRectMake(chartOrigin.x, chartOrigin.y, self.view.frame.size.width, self.view.frame.size.height);
+    pathLayer.bounds = self.view.frame;
+    pathLayer.path = _path.CGPath;
+    pathLayer.strokeColor = [UIColor whiteColor].CGColor;
+    pathLayer.fillColor = nil;
+    pathLayer.lineWidth = 1;
+    pathLayer.lineJoin = kCALineJoinRound;
+    [self.view.layer addSublayer:pathLayer];
 }
 
 @end
