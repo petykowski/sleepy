@@ -321,7 +321,7 @@
                                 </constraints>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="equalCentering" translatesAutoresizingMaskIntoConstraints="NO" id="gh8-df-fyA">
-                                <rect key="frame" x="25" y="240" width="340" height="40"/>
+                                <rect key="frame" x="39" y="240" width="326" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="b5i-c2-fQI"/>
                                 </constraints>
@@ -335,23 +335,31 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1sH-UE-x3q">
+                                <rect key="frame" x="45" y="35" width="320" height="205"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="ZUK-yM-nZs" firstAttribute="leading" secondItem="Scw-Z9-cmr" secondAttribute="leading" id="883-mb-zdt"/>
-                            <constraint firstItem="gh8-df-fyA" firstAttribute="leading" secondItem="uwI-Ix-OOq" secondAttribute="trailing" constant="-20" id="Bx6-G1-Y0m"/>
+                            <constraint firstItem="gh8-df-fyA" firstAttribute="leading" secondItem="uwI-Ix-OOq" secondAttribute="trailing" constant="-6" id="Bx6-G1-Y0m"/>
                             <constraint firstAttribute="bottom" secondItem="uwI-Ix-OOq" secondAttribute="bottom" constant="45" id="OIt-0s-x2u"/>
                             <constraint firstAttribute="trailing" secondItem="gh8-df-fyA" secondAttribute="trailing" constant="10" id="Oz2-pT-wAY"/>
+                            <constraint firstAttribute="trailing" secondItem="1sH-UE-x3q" secondAttribute="trailing" constant="10" id="T4F-7V-Fc8"/>
                             <constraint firstAttribute="trailing" secondItem="ZUK-yM-nZs" secondAttribute="trailing" id="ZoR-uk-nba"/>
                             <constraint firstItem="ZUK-yM-nZs" firstAttribute="centerX" secondItem="Scw-Z9-cmr" secondAttribute="centerX" id="aWe-ac-2pe"/>
+                            <constraint firstItem="gh8-df-fyA" firstAttribute="top" secondItem="1sH-UE-x3q" secondAttribute="bottom" id="baT-fT-ktb"/>
                             <constraint firstAttribute="bottom" secondItem="gh8-df-fyA" secondAttribute="bottom" id="bcb-aa-mmt"/>
+                            <constraint firstItem="1sH-UE-x3q" firstAttribute="leading" secondItem="uwI-Ix-OOq" secondAttribute="trailing" id="i5V-Ag-XQ7"/>
                             <constraint firstItem="uwI-Ix-OOq" firstAttribute="top" secondItem="ZUK-yM-nZs" secondAttribute="bottom" constant="5" id="q9L-MO-YId"/>
+                            <constraint firstItem="1sH-UE-x3q" firstAttribute="top" secondItem="ZUK-yM-nZs" secondAttribute="bottom" id="qEG-oX-vSs"/>
                             <constraint firstItem="ZUK-yM-nZs" firstAttribute="top" secondItem="Scw-Z9-cmr" secondAttribute="top" id="umi-C7-Jie"/>
                             <constraint firstItem="uwI-Ix-OOq" firstAttribute="leading" secondItem="Scw-Z9-cmr" secondAttribute="leading" id="xRj-84-zWN"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="chartLabel" destination="ZUK-yM-nZs" id="bQ9-lI-AbR"/>
+                        <outlet property="mainChartView" destination="1sH-UE-x3q" id="rNi-M4-KPV"/>
                         <outlet property="xAxisStack" destination="gh8-df-fyA" id="wRD-2K-3z5"/>
                         <outlet property="yAxisStack" destination="uwI-Ix-OOq" id="9GO-xt-aJ9"/>
                     </connections>

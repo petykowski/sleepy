@@ -44,6 +44,7 @@
 		C2AB02131D5652430051CFCF /* coreData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C2AB02111D5652430051CFCF /* coreData.xcdatamodeld */; };
 		C2BA05E11D2FEC1800438CC7 /* InterfaceControllerSleep.m in Sources */ = {isa = PBXBuildFile; fileRef = C2BA05E01D2FEC1800438CC7 /* InterfaceControllerSleep.m */; };
 		C2BBAAA31D6FCCC0000ACD2B /* SessionsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2BBAAA21D6FCCC0000ACD2B /* SessionsTableViewController.m */; };
+		C2C9911E1DE7B3D700E6815D /* ColorConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = C2C9911D1DE7B3D700E6815D /* ColorConstants.m */; };
 		C2CCCF1D1D7E2C84004C82F8 /* SleepSessionTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CCCF1C1D7E2C84004C82F8 /* SleepSessionTableViewCell.m */; };
 		C2D692091DA195CC00DB3876 /* StatisticsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2D692081DA195CC00DB3876 /* StatisticsTableViewController.m */; };
 		C2E4DBE21D8CEAD5000CC492 /* SleepyMain.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = C2E4DBE11D8CEAD5000CC492 /* SleepyMain.mp4 */; };
@@ -158,6 +159,8 @@
 		C2BA05E01D2FEC1800438CC7 /* InterfaceControllerSleep.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InterfaceControllerSleep.m; sourceTree = "<group>"; };
 		C2BBAAA11D6FCCC0000ACD2B /* SessionsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SessionsTableViewController.h; sourceTree = "<group>"; };
 		C2BBAAA21D6FCCC0000ACD2B /* SessionsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SessionsTableViewController.m; sourceTree = "<group>"; };
+		C2C9911C1DE7B3D700E6815D /* ColorConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorConstants.h; sourceTree = "<group>"; };
+		C2C9911D1DE7B3D700E6815D /* ColorConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorConstants.m; sourceTree = "<group>"; };
 		C2CCCF1B1D7E2C84004C82F8 /* SleepSessionTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SleepSessionTableViewCell.h; path = TableViewCellSubviews/SleepSessionTableViewCell.h; sourceTree = "<group>"; };
 		C2CCCF1C1D7E2C84004C82F8 /* SleepSessionTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SleepSessionTableViewCell.m; path = TableViewCellSubviews/SleepSessionTableViewCell.m; sourceTree = "<group>"; };
 		C2D692071DA195CC00DB3876 /* StatisticsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatisticsTableViewController.h; sourceTree = "<group>"; };
@@ -241,6 +244,8 @@
 				C2391DEB1D35D92C00808835 /* Utility.m */,
 				C2AA52DD1D83AB7600584AF4 /* Constants.h */,
 				C2AA52DE1D83AB7600584AF4 /* Constants.m */,
+				C2C9911C1DE7B3D700E6815D /* ColorConstants.h */,
+				C2C9911D1DE7B3D700E6815D /* ColorConstants.m */,
 			);
 			name = Utilities;
 			path = "HealthKitObjCPoC WatchKit App";
@@ -716,6 +721,7 @@
 				C29A2FB71D8DFC44005B5D29 /* SessionDetailTableViewController.m in Sources */,
 				C29A2FBA1D8E0054005B5D29 /* SessionDetailTableViewCell.m in Sources */,
 				C2391DEC1D35D92C00808835 /* Utility.m in Sources */,
+				C2C9911E1DE7B3D700E6815D /* ColorConstants.m in Sources */,
 				C2BBAAA31D6FCCC0000ACD2B /* SessionsTableViewController.m in Sources */,
 				C22EFCA91D82518500A64D3B /* SleepSession.m in Sources */,
 				C29E28A41D98AC00009FD716 /* SleepStatistic.m in Sources */,

@@ -45,7 +45,6 @@
     _sleepStatistics = [[NSMutableArray alloc] init];
     _detailSleepSession = [Utility convertManagedObjectSessionToSleepSessionForDetailView:sleepSession];
     _sleepSessionMilestones = [Utility convertAndPopulatePreviousSleepSessionDataForMilestone:_detailSleepSession];
-    [self loadChartWithData];
     [self refreshHealthStatistics];
     [self refreshSleepStatistics];
     [self.navigationItem setTitle:_detailSleepSession.name];
@@ -125,49 +124,14 @@
 
 #pragma mark -  Chart
 
-- (void)loadChartWithData {
-    NSDateComponents *durationComponents = [[NSCalendar currentCalendar] components:NSCalendarUnitHour|NSCalendarUnitMinute fromDate:[_detailSleepSession.inBed firstObject] toDate:[_detailSleepSession.outBed lastObject] options:0];
-    NSInteger durationHours = [durationComponents hour];
-    NSInteger durationMinutes = [durationComponents minute];
-    
-    NSDateComponents *startComponents = [[NSCalendar currentCalendar] components:NSCalendarUnitHour fromDate:[_detailSleepSession.sleep firstObject]];
-    NSInteger startHour = [startComponents hour];
-    
-    NSMutableArray *timeMilestones = [[NSMutableArray alloc] init];
-    
-    int x = 0;
-    
-    // Allows chart to display label for the last hour of sleep in chart
-    if (durationMinutes > 0) {
-        durationHours = durationHours + 1;
-        NSLog(@"[DEBUG] durationMinutes = %ld", (long)durationMinutes);
-        NSLog(@"[DEBUG] durationHours = %ld", (long)durationHours);
-    }
-    
-    while (x <= durationHours) {
-        if (startHour > _ktimes12Hour.count - 1) {
-            startHour = startHour - [_ktimes12Hour count];
-        }
-        [timeMilestones addObject:_ktimes12Hour[startHour]];
-        startHour++;
-        x++;
-    }
-    NSLog(@"[DEBUG] timeMilestones = %@", timeMilestones);
-    _chartWithDates.datesArray = timeMilestones;
-    [_chartWithDates setChartData];
-    
-}
-
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([segue.identifier  isEqual: @"heartRateChartSegue"]) {
         ChartViewController *chartView = [segue destinationViewController];
         if ([chartView respondsToSelector:@selector(setHealthStore:)]) {
             [chartView setHealthStore:self.healthStore];
-            NSLog(@"[DEBUG] Set HealthStore for %@", chartView);
         }
         chartView.chartTitle = @"Heart Rate";
         chartView.sleepSession = sleepSession;
-        NSLog(@"[DEBUG] You made it into the segue");
     }
 }
 

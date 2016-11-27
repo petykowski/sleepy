@@ -591,14 +591,14 @@
     
     NSDate *now = [NSDate date];
     
-    while (x < 10) {
+    while (x < 480) {
         
         double randomInt = min + arc4random_uniform(max - min + 1);
         
         HKQuantityType *quantityType = [HKObjectType quantityTypeForIdentifier:HKQuantityTypeIdentifierHeartRate];
         HKUnit *bpm = [HKUnit unitFromString:@"count/min"];
         HKQuantity *quantity = [HKQuantity quantityWithUnit:bpm doubleValue:randomInt];
-        HKQuantitySample *quantitySample = [HKQuantitySample quantitySampleWithType:quantityType quantity:quantity startDate:[now dateByAddingTimeInterval:1*x] endDate:[now dateByAddingTimeInterval:2*x]];
+        HKQuantitySample *quantitySample = [HKQuantitySample quantitySampleWithType:quantityType quantity:quantity startDate:[now dateByAddingTimeInterval:1+(600*x)] endDate:[now dateByAddingTimeInterval:3+(600*x)]];
         
         NSArray *array = [NSArray arrayWithObjects:quantitySample, nil];
         
@@ -615,5 +615,33 @@
 
 #pragma mark - Private Debug Methods
 
+- (void)manuallySendTestDataToiOS {
+    NSDate *inBedStart = [[NSDate alloc] initWithTimeIntervalSinceNow:1]; // now
+    NSDate *inBedStop = [[NSDate alloc] initWithTimeIntervalSinceNow:900]; // 15 min from now
+    NSDate *sleepStart = [[NSDate alloc] initWithTimeIntervalSinceNow:901]; // 15.01 min from now
+    NSDate *sleepStop = [[NSDate alloc] initWithTimeIntervalSinceNow:14400]; // hours from now
+    NSDate *wakeStart = [[NSDate alloc] initWithTimeIntervalSinceNow:14401];
+    NSDate *wakeStop = [[NSDate alloc] initWithTimeIntervalSinceNow:14401];
+    
+    NSArray *inBedArray = [[NSArray alloc] initWithObjects:inBedStart, nil];
+ 
+    [_currentSleepSession.inBed addObject:inBedStart];
+    [_currentSleepSession.sleep addObject:sleepStart];
+    [_currentSleepSession.wake addObject:sleepStop];
+    [_currentSleepSession.outBed addObject:wakeStop];
+ 
+    NSDictionary *testDataToSave = [[NSDictionary alloc] init];
+    testDataToSave = [self populateDictionaryWithSleepSessionData];
+    [[WCSession defaultSession] sendMessage:testDataToSave
+                               replyHandler:^(NSDictionary<NSString *,id> * _Nonnull replyMessage) {
+                                   // Remove
+                                   NSLog(@"[DEBUG] Contents of reply: %@", replyMessage);
+                               }
+                               errorHandler:^(NSError *error) {
+                                   //catch any errors here
+                                   NSLog(@"[DEBUG] ERROR: %@", error);
+                               }
+     ];
+}
 
 @end

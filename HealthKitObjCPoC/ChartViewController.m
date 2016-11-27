@@ -11,19 +11,24 @@
 #import "SleepSession.h"
 #import "SleepStatistic.h"
 #import "Utility.h"
+#import "ColorConstants.h"
 
 @interface ChartViewController ()
 @property (strong, nonatomic) IBOutlet UILabel *chartLabel;
 @property (strong, nonatomic) IBOutlet UIStackView *yAxisStack;
 @property (strong, nonatomic) IBOutlet UIStackView *xAxisStack;
+@property (strong, nonatomic) IBOutlet UIView *mainChartView;
 @property SleepStatistic *minStatistic;
 @property SleepStatistic *maxStatistic;
 @property SleepStatistic *avgStatistic;
 @property SleepStatistic *sleepDuration;
 @property SleepSession *detailSleepSession;
-@property UIBezierPath *path;
+@property double yAxisPadding;
+@property UIBezierPath *pathHeartRate;
+@property CGPoint chartOrigin;
 @property NSNumber *chartMax;
 @property NSNumber *chartMin;
+@property NSArray *ktimes12HourWithAMPM;
 @property NSArray *ktimes12Hour;
 @property NSMutableArray *heartRateMilestones;
 @end
@@ -32,35 +37,40 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    _heartRateMilestones = [[NSMutableArray alloc] init];
-    
-    self.view.backgroundColor = [UIColor colorWithRed:0.1137254902 green:0.1137254902 blue:0.1137254902 alpha:1.0];
-    _detailSleepSession = [Utility convertManagedObjectSessionToSleepSessionForDetailView:_sleepSession];
-    _ktimes12Hour = @[@"12 AM", @"1 AM", @"2 AM", @"3 AM", @"4 AM", @"5 AM", @"6 AM", @"7 AM", @"8 AM", @"9 AM", @"10 AM", @"11 AM", @"12 PM", @"1 PM", @"2 PM", @"3 PM", @"4 PM", @"5 PM", @"6 PM", @"7 PM", @"8 PM", @"9 PM", @"10 PM", @"11 PM"];
-    
-    [_chartLabel setText:_chartTitle];
-    [_chartLabel setTextColor:[UIColor whiteColor]];
+    [self setPropertyDefaults];
     [self refreshHealthStatistics];
     [self drawChartSeperatorLines];
+}
+
+- (void)setPropertyDefaults {
+    self.view.backgroundColor = [ColorConstants darkThemeSecondaryBackgroundColor];
+    _yAxisPadding = 10;
     
+    [_chartLabel setText:_chartTitle];
+    [_chartLabel setTextColor:[ColorConstants darkThemePrimaryTextColor]];
+    
+    _chartOrigin = CGPointMake(45, 36);
+    _heartRateMilestones = [[NSMutableArray alloc] init];
+    _detailSleepSession = [Utility convertManagedObjectSessionToSleepSessionForDetailView:_sleepSession];
+    _ktimes12HourWithAMPM = @[@"12 AM", @"1 AM", @"2 AM", @"3 AM", @"4 AM", @"5 AM", @"6 AM", @"7 AM", @"8 AM", @"9 AM", @"10 AM", @"11 AM", @"12 PM", @"1 PM", @"2 PM", @"3 PM", @"4 PM", @"5 PM", @"6 PM", @"7 PM", @"8 PM", @"9 PM", @"10 PM", @"11 PM"];
+    _ktimes12Hour = @[@"12", @"1", @"2", @"3", @"4", @"5", @"6", @"7", @"8", @"9", @"10", @"11", @"12", @"1", @"2", @"3", @"4", @"5", @"6", @"7", @"8", @"9", @"10", @"11"];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 - (void)drawChartSeperatorLines {
     NSArray *seperatorLocations = @[@35, @240];
     
     UIView *verticalLine=[[UIView alloc]initWithFrame:CGRectMake(45, 35, 1, 205)];
-    [verticalLine setBackgroundColor:[UIColor colorWithRed:0.2 green:0.2 blue:0.2078431373 alpha:1.0]];
+    [verticalLine setBackgroundColor:[ColorConstants darkThemeLineSeperator]];
     [self.view addSubview:verticalLine];
     
     for(int i = 0; i < seperatorLocations.count; i++) {
         double yLocation = [[seperatorLocations objectAtIndex:i] floatValue];
         UIView *horizontalLine=[[UIView alloc]initWithFrame:CGRectMake(0, yLocation, self.view.bounds.size.width*2, 1)];
-        [horizontalLine setBackgroundColor:[UIColor colorWithRed:0.2 green:0.2 blue:0.2078431373 alpha:1.0]];
+        [horizontalLine setBackgroundColor:[ColorConstants darkThemeLineSeperator]];
         [self.view addSubview:horizontalLine];
     }
 }
@@ -105,26 +115,39 @@
 //        [xAxisLabel setText:xAxisLabelsToDisplay[x]];
 //        [_xAxisStack addArrangedSubview:xAxisLabel];
 //    }
+//    NSArray *xAxisLabelsFromSleepSession = @[@"11", @"12", @"1", @"2", @"3", @"4", @"5", @"6", @"7", @"8", @"9"];
+    NSArray *xAxisLabelsFromSleepSession = [self generateXAxisLabels];
     
-    for (int x = 0; x < _heartRateMilestones.count; x++) {
+    NSArray *yAxisLabelsFromSleepSession = [self getYAxisScale];
+    
+    for (int x = 0; x < xAxisLabelsFromSleepSession.count; x++) {
+        UILabel *xAxisLabel = [[UILabel alloc] init];
+        [xAxisLabel setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleCaption1]];
+        [xAxisLabel setTextColor:[ColorConstants darkThemePrimaryTextColor]];
+        [xAxisLabel setText:xAxisLabelsFromSleepSession[x]];
+        [_xAxisStack addArrangedSubview:xAxisLabel];
+    }
+    
+    for (int x = 0; x < yAxisLabelsFromSleepSession.count; x++) {
+        NSNumber *number = [yAxisLabelsFromSleepSession objectAtIndex:x];
+        double valueToDisplay = [number doubleValue];
         UILabel *yAxisLabel = [[UILabel alloc] init];
         [yAxisLabel setFont:[UIFont systemFontOfSize:10]];
-        [yAxisLabel setTextColor:[UIColor whiteColor]];
-        SleepStatistic *stat = [_heartRateMilestones objectAtIndex:x];
-        [yAxisLabel setText:stat.stringResult];
+        [yAxisLabel setTextColor:[ColorConstants darkThemePrimaryTextColor]];
+        [yAxisLabel setText:[NSString stringWithFormat:@"%.0f", valueToDisplay]];
         [_yAxisStack addArrangedSubview:yAxisLabel];
     }
     
+    [self drawGridLinesForXAxis:xAxisLabelsFromSleepSession andYAxis:yAxisLabelsFromSleepSession];
 }
 
 - (NSArray*)generateXAxisLabels {
-    NSDateComponents *durationComponents = [[NSCalendar currentCalendar] components:NSCalendarUnitHour|NSCalendarUnitMinute fromDate:[_detailSleepSession.inBed firstObject] toDate:[_detailSleepSession.outBed lastObject] options:0];
-    NSInteger durationHours = [durationComponents hour];
-    NSInteger durationMinutes = [durationComponents minute];
+    NSDateComponents *fullSleepSessionDurationComponents = [[NSCalendar currentCalendar] components:NSCalendarUnitHour|NSCalendarUnitMinute fromDate:[_detailSleepSession.inBed firstObject] toDate:[_detailSleepSession.outBed lastObject] options:0];
+    NSInteger durationHours = [fullSleepSessionDurationComponents hour];
+    NSInteger durationMinutes = [fullSleepSessionDurationComponents minute];
     
-    NSDateComponents *startComponents = [[NSCalendar currentCalendar] components:NSCalendarUnitHour fromDate:[_detailSleepSession.sleep firstObject]];
+    NSDateComponents *startComponents = [[NSCalendar currentCalendar] components:NSCalendarUnitHour fromDate:[_detailSleepSession.inBed firstObject]];
     NSInteger startHour = [startComponents hour];
-    
     NSMutableArray *timeMilestones = [[NSMutableArray alloc] init];
     
     int x = 0;
@@ -132,13 +155,6 @@
     // Allows chart to display label for the last hour of sleep in chart
     if (durationMinutes > 0) {
         durationHours = durationHours + 1;
-    }
-    
-    // Makes the Array count odd to allow for displaying every other item
-    if (durationHours % 2) {
-        // durationHours is odd... do nothing
-    } else if (durationHours > 6) {
-        durationHours++;
     }
     
     while (x <= durationHours) {
@@ -149,7 +165,7 @@
         startHour++;
         x++;
     }
-    
+    NSLog(@"[DEBUG] timeMilestones = %@", timeMilestones);
     return timeMilestones;
 }
 
@@ -174,11 +190,11 @@
     
     NSNumberFormatter *numberFormatterDown = [[NSNumberFormatter alloc] init];
     [numberFormatterDown setRoundingMode:NSNumberFormatterRoundDown];
-    [numberFormatterDown setRoundingIncrement:[NSNumber numberWithInteger:10]];
+    [numberFormatterDown setRoundingIncrement:[NSNumber numberWithInteger:5]];
     
     NSNumberFormatter *numberFormatterUp = [[NSNumberFormatter alloc] init];
     [numberFormatterUp setRoundingMode:NSNumberFormatterRoundUp];
-    [numberFormatterUp setRoundingIncrement:[NSNumber numberWithInteger:10]];
+    [numberFormatterUp setRoundingIncrement:[NSNumber numberWithInteger:5]];
     
         HKStatisticsQuery *maxHeartRateQuery = [[HKStatisticsQuery alloc] initWithQuantityType:heartRateQuantityType quantitySamplePredicate:predicate options:HKStatisticsOptionDiscreteMax | HKStatisticsOptionDiscreteMin | HKStatisticsOptionDiscreteAverage completionHandler:^(HKStatisticsQuery * _Nonnull query, HKStatistics * _Nullable result, NSError * _Nullable error) {
             
@@ -213,16 +229,14 @@
 }
 
 -(void) plotHeartRateOnGraph:(void (^)(NSError *))completionHandler {
-    // Testing
     double chartFrameWidth = self.view.frame.size.width - 45;
-    double chartFrameHeight = 205;
-    CGPoint chartOrigin = CGPointMake(45, 36);
+//    double chartFrameHeight = 205;
+    double chartFrameHeight = _mainChartView.frame.size.height - (2 * _yAxisPadding);
     int dataPointRadius = 2;
     double heartRateRange = _chartMax.doubleValue - _chartMin.doubleValue;
     
     // Line
-    _path = [UIBezierPath bezierPath];
-    
+    _pathHeartRate = [UIBezierPath bezierPath];
     
     // Calculate Total Time Asleep
     NSDateComponents *totalSessionDurationComponents = [[NSCalendar currentCalendar] components:NSCalendarUnitHour|NSCalendarUnitMinute|NSCalendarUnitSecond fromDate:[_detailSleepSession.inBed firstObject] toDate:[_detailSleepSession.outBed lastObject] options:0];
@@ -231,7 +245,6 @@
     NSInteger seconds = [totalSessionDurationComponents second];
     
     double totalSleepDuration = (hours * 3600) + (minutes * 60) + seconds;
-    // End Testing
     
     NSDate *sampleStartDate = [_detailSleepSession.inBed firstObject];
     NSDate *sampleEndDate = [_detailSleepSession.outBed lastObject];
@@ -260,9 +273,9 @@
                 // Calculate Y Coordinate
                 double heartRate = [sample.quantity doubleValueForUnit:[HKUnit unitFromString:@"count/min"]];
                 double adjustedRate = _chartMax.doubleValue - heartRate;
-                double yCoordinate = (adjustedRate * chartFrameHeight) / heartRateRange;
+                double yCoordinate = ((adjustedRate * chartFrameHeight) / heartRateRange) + _yAxisPadding;
                 
-                UIBezierPath *circle = [UIBezierPath bezierPathWithOvalInRect:CGRectMake(xCoordinate + 45 - dataPointRadius, chartOrigin.y + yCoordinate - dataPointRadius, dataPointRadius * 2, dataPointRadius * 2)];
+                UIBezierPath *circle = [UIBezierPath bezierPathWithOvalInRect:CGRectMake(xCoordinate + 45 - dataPointRadius, _chartOrigin.y + yCoordinate - dataPointRadius, dataPointRadius * 2, dataPointRadius * 2)];
                 CAShapeLayer *fillLayer = [CAShapeLayer layer];
                 fillLayer.frame = CGRectMake(xCoordinate + 45, 100, dataPointRadius, dataPointRadius);
                 fillLayer.bounds = CGRectMake(xCoordinate + 45, 100, dataPointRadius, dataPointRadius);
@@ -274,9 +287,9 @@
                 [self.view.layer addSublayer:fillLayer];
                 
                 if (indexCount > 0) {
-                    [_path addLineToPoint:CGPointMake(xCoordinate, yCoordinate)];
+                    [_pathHeartRate addLineToPoint:CGPointMake(xCoordinate, yCoordinate)];
                 } else {
-                    [_path moveToPoint:CGPointMake(xCoordinate, yCoordinate)];
+                    [_pathHeartRate moveToPoint:CGPointMake(xCoordinate, yCoordinate)];
                     
                 }
                 indexCount = indexCount + 1;
@@ -290,29 +303,104 @@
 }
 
 -(void)drawAverageHeartRateLine {
-    CGPoint chartOrigin = CGPointMake(45, 36);
     double chartFrameHeight = 205;
     if (_avgStatistic.result) {
         double heartRateRange = _chartMax.doubleValue - _chartMin.doubleValue;
         double adjustedRate = _chartMax.doubleValue - _avgStatistic.result;
         double yCoordinate = (adjustedRate * chartFrameHeight) / heartRateRange;
-        UIView *horizontalLine = [[UIView alloc]initWithFrame:CGRectMake(45, chartOrigin.y + yCoordinate, self.view.bounds.size.width*2, 1)];
-        [horizontalLine setBackgroundColor:[UIColor colorWithRed:0.3725490196 green:0.3058823529 blue:0.7176470588 alpha:1]];
+        UIView *horizontalLine = [[UIView alloc]initWithFrame:CGRectMake(45, _chartOrigin.y + yCoordinate, self.view.bounds.size.width*2, 1)];
+        [horizontalLine setBackgroundColor:[ColorConstants darkThemePrimaryAccentColor]];
         [self.view addSubview:horizontalLine];
     }
 }
 
 -(void)drawLine {
-    CGPoint chartOrigin = CGPointMake(45, 36);
     CAShapeLayer *pathLayer = [CAShapeLayer layer];
-    pathLayer.frame = CGRectMake(chartOrigin.x, chartOrigin.y, self.view.frame.size.width, self.view.frame.size.height);
+    pathLayer.frame = CGRectMake(_chartOrigin.x, _chartOrigin.y, self.view.frame.size.width, self.view.frame.size.height);
     pathLayer.bounds = self.view.frame;
-    pathLayer.path = _path.CGPath;
+    pathLayer.path = _pathHeartRate.CGPath;
     pathLayer.strokeColor = [UIColor whiteColor].CGColor;
     pathLayer.fillColor = nil;
     pathLayer.lineWidth = 1;
     pathLayer.lineJoin = kCALineJoinRound;
     [self.view.layer addSublayer:pathLayer];
+}
+
+-(void)drawGridLinesForXAxis:(NSArray*)xAxisData andYAxis:(NSArray*)yAxisData {
+    if (xAxisData.count > 1 && yAxisData.count > 1) {
+        double verticalGridLineSpacing = (_mainChartView.frame.size.width - 5) / (xAxisData.count - 1);
+        double horizontalGridLineSpacing = (_mainChartView.frame.size.height - (_yAxisPadding * 2)) / (yAxisData.count - 1);
+        
+        // Draw Vertical Grid Lines
+        for(int i = 1; i < xAxisData.count; i++) {
+            UIBezierPath *gridLine = [UIBezierPath bezierPath];
+            [gridLine moveToPoint:CGPointMake(0 + (i * verticalGridLineSpacing), 0)];
+            [gridLine addLineToPoint:CGPointMake(0 + (i * verticalGridLineSpacing), 0 + _mainChartView.frame.size.height)];
+            
+            CAShapeLayer *gridLineLayer = [CAShapeLayer layer];
+            gridLineLayer.frame = CGRectMake(0, 0, _mainChartView.frame.size.width, _mainChartView.frame.size.height);
+            gridLineLayer.path = gridLine.CGPath;
+            gridLineLayer.strokeColor = [ColorConstants darkThemeChartGridLineColor].CGColor;
+            gridLineLayer.lineDashPattern = @[@2, @8];
+            gridLineLayer.fillColor = nil;
+            gridLineLayer.lineWidth = 1;
+            gridLineLayer.lineJoin = kCALineJoinRound;
+            [_mainChartView.layer addSublayer:gridLineLayer];
+        }
+        
+        // Draw Horizontal Grid Lines
+        for (int i = 0; i < yAxisData.count; i++) {
+            UIBezierPath *gridLine = [UIBezierPath bezierPath];
+            if (i == 0) {
+                [gridLine moveToPoint:CGPointMake(0, _yAxisPadding)];
+                [gridLine addLineToPoint:CGPointMake(_mainChartView.frame.size.width + 5, _yAxisPadding)];
+            } else if (i == yAxisData.count - 1) {
+                [gridLine moveToPoint:CGPointMake(0, _mainChartView.frame.size.height - _yAxisPadding)];
+                [gridLine addLineToPoint:CGPointMake(_mainChartView.frame.size.width + 5, _mainChartView.frame.size.height - _yAxisPadding)];
+            } else {
+                [gridLine moveToPoint:CGPointMake(0, _yAxisPadding + (horizontalGridLineSpacing * i))];
+                [gridLine addLineToPoint:CGPointMake(_mainChartView.frame.size.width + 5, _yAxisPadding + (horizontalGridLineSpacing * i))];
+            }
+            CAShapeLayer *gridLineLayer = [CAShapeLayer layer];
+            gridLineLayer.frame = CGRectMake(0, 0, _mainChartView.frame.size.width + 5, 0 + (horizontalGridLineSpacing * i));
+            gridLineLayer.path = gridLine.CGPath;
+            gridLineLayer.strokeColor = [ColorConstants darkThemeChartGridLineColor].CGColor;
+            gridLineLayer.lineDashPattern = @[@2, @8];
+            gridLineLayer.fillColor = nil;
+            gridLineLayer.lineWidth = 1;
+            gridLineLayer.lineJoin = kCALineJoinRound;
+            [_mainChartView.layer addSublayer:gridLineLayer];
+            
+        }
+    } else {
+        NSLog(@"[DEBUG] No Data To Draw");
+    }
+}
+
+-(NSArray *)getYAxisScale {
+    double yAxisRange = [_chartMax doubleValue] - [_chartMin doubleValue];
+    double scaleBy = 0;
+    double valueToSet = [_chartMin doubleValue];
+    NSMutableArray *yAxisLabelsToDisplay = [[NSMutableArray alloc] init];
+    if (yAxisRange <= 20) {
+        scaleBy = 5;
+    } else if (yAxisRange <= 40) {
+        scaleBy = 10;
+    } else if (yAxisRange <= 60) {
+        scaleBy = 20;
+    } else {
+        scaleBy = 25;
+    }
+    
+    while (valueToSet < [_chartMax doubleValue]) {
+        valueToSet = valueToSet + scaleBy;
+        NSNumber *yAxisDataPoint = [[NSNumber alloc] initWithDouble:valueToSet];
+        [yAxisLabelsToDisplay addObject:yAxisDataPoint];
+    }
+    [yAxisLabelsToDisplay insertObject:_chartMin atIndex:0];
+    NSArray *reversedArray = [[yAxisLabelsToDisplay reverseObjectEnumerator] allObjects];
+    
+    return reversedArray;
 }
 
 @end
