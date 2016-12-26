@@ -13,6 +13,7 @@
 
 #pragma mark - System Files
 NSString *const kSleepSessionFileNameForWatch = @"SavedSleepSession.plist";
+NSString *const kLogOutputFileName = @"logs.txt";
 
 #pragma mark - User Onboarding Strings
 NSString *const kUserHasOnboardedKey = @"user_has_onboarded";

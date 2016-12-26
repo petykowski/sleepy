@@ -47,8 +47,41 @@
     _sleepSessionMilestones = [Utility convertAndPopulatePreviousSleepSessionDataForMilestone:_detailSleepSession];
     [self refreshHealthStatistics];
     [self refreshSleepStatistics];
+    
+    // Configure Navigation Bar for Detail View
+    UIBarButtonItem *shareDebugDataButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(shareDebugData)];
+    [self.navigationItem setRightBarButtonItem:shareDebugDataButton];
     [self.navigationItem setTitle:_detailSleepSession.name];
+}
 
+-(void) shareDebugData {
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString *filePath = [documentsDirectory stringByAppendingPathComponent:kLogOutputFileName];
+    
+    BOOL success = [fileManager fileExistsAtPath:filePath];
+    
+    if (!success) {
+        NSLog(@"[DEBUG] File not found in users documents directory.");
+    } else {
+        NSString *logOutput = [[NSString alloc] initWithContentsOfFile:filePath encoding:NSASCIIStringEncoding error:nil];
+        NSLog(@"[DEBUG] success = %d", success);
+        NSArray *objectsToShare = @[logOutput];
+        
+        UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:objectsToShare applicationActivities:nil];
+        
+        NSArray *excludeActivities = @[UIActivityTypePrint,
+                                       UIActivityTypeAssignToContact,
+                                       UIActivityTypeSaveToCameraRoll,
+                                       UIActivityTypeAddToReadingList,
+                                       UIActivityTypePostToFlickr,
+                                       UIActivityTypePostToVimeo];
+        
+        activityVC.excludedActivityTypes = excludeActivities;
+        
+        [self presentViewController:activityVC animated:YES completion:nil];
+    }
 }
 
 - (void)didReceiveMemoryWarning {

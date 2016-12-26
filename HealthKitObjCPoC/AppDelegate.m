@@ -34,6 +34,10 @@
 #pragma mark - UIApplication
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    #if TARGET_IPHONE_SIMULATOR == 0
+    [self redirectLogToDocuments];
+    #endif
+    
     application.statusBarStyle = UIStatusBarStyleLightContent;
     
     // Configure Health Store
@@ -70,6 +74,14 @@
     }
     
     return shouldPerformAdditionalDelegateHandling;
+}
+
+- (void)redirectLogToDocuments
+{
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString *filePath = [documentsDirectory stringByAppendingPathComponent:kLogOutputFileName];
+    freopen([filePath cStringUsingEncoding:NSASCIIStringEncoding],"a+",stderr);
 }
 
 -(void)launchWithoutQuickAction{

@@ -12,6 +12,7 @@
 
 #pragma mark System Files
 extern NSString *const kSleepSessionFileNameForWatch;
+extern NSString *const kLogOutputFileName;
 
 #pragma mark User Onboarding
 extern NSString *const kUserHasOnboardedKey;

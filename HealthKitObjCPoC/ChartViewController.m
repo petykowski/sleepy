@@ -310,6 +310,7 @@
 }
 
 -(void)drawAverageHeartRateLine {
+    
     // Calculates the space between the top and bottom labels of the Y-Axis
     double chartPlotableSpace = _mainChartView.frame.size.height - (_yAxisPadding * 2);
     NSLog(@"[DEBUG] chartPlotableSpace = %f", chartPlotableSpace);
@@ -319,11 +320,13 @@
         
         // heartRateRange will be used in conversion function
         double heartRateRange = _chartMax.doubleValue - _chartMin.doubleValue;
-        NSLog(@"[DEBUG] heartRateRange = %f", heartRateRange);
+        NSLog(@"[DEBUG] %f(max) - %f(min) = %f(heartRateRange)", _chartMax.doubleValue, _chartMin.doubleValue, heartRateRange);
         
         // adjustedRate stores the value for the difference between the top of the heartRateRange and the average
         double adjustedRate = _chartMax.doubleValue - floorf(_avgStatistic.result);
-        NSLog(@"[DEBUG] adjustedRate = %f", adjustedRate);
+        NSLog(@"[DEBUG] %f(max) - %f(floor) = %f(adjustedRate)", _chartMax.doubleValue, floorf(_avgStatistic.result), adjustedRate);
+        NSLog(@"[DEBUG] _avgStatistic.result = %f", _avgStatistic.result);
+#warning Floor rounds the average down, but how do we get average for displaying statistics list view.
         
         // Converts the average heart rate to points for used in plotting on the chart. The points will represent the bottom of the chart to where the line should be plotted.
         double convertHeartRateToPoints = ((adjustedRate * chartPlotableSpace) / heartRateRange);
