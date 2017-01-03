@@ -65,9 +65,10 @@
     if (!success) {
         NSLog(@"[DEBUG] File not found in users documents directory.");
     } else {
-        NSString *logOutput = [[NSString alloc] initWithContentsOfFile:filePath encoding:NSASCIIStringEncoding error:nil];
+//        NSString *logOutput = [[NSString alloc] initWithContentsOfFile:filePath encoding:NSASCIIStringEncoding error:nil];
+        NSURL *logFile = [[NSURL alloc] initFileURLWithPath:filePath];
         NSLog(@"[DEBUG] success = %d", success);
-        NSArray *objectsToShare = @[logOutput];
+        NSArray *objectsToShare = @[logFile];
         
         UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:objectsToShare applicationActivities:nil];
         
@@ -221,7 +222,7 @@
 
 - (NSPredicate *)predicateForSleepDuration {
     
-    return [HKQuery predicateForSamplesWithStartDate:[_detailSleepSession.sleep firstObject] endDate:[_detailSleepSession.wake lastObject] options:HKQueryOptionNone];
+    return [HKQuery predicateForSamplesWithStartDate:[_detailSleepSession.inBed firstObject] endDate:[_detailSleepSession.outBed lastObject] options:HKQueryOptionNone];
 }
 
 - (void)refreshHealthStatistics {
@@ -245,7 +246,10 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             SleepStatistic *avgHeartRate = [[SleepStatistic alloc] init];
             
-            avgHeartRate.result = [result.averageQuantity doubleValueForUnit:[HKUnit unitFromString:@"count/min"]];
+            double averageHeartRateResult = [result.averageQuantity doubleValueForUnit:[HKUnit unitFromString:@"count/min"]];
+            NSLog(@"[DEBUG] averageHeartRateResult = %f", averageHeartRateResult);
+            avgHeartRate.result = floorf(averageHeartRateResult);
+            NSLog(@"[DEBUG] avgHeartRate.result = %f", avgHeartRate.result);
             avgHeartRate.name = [NSString stringWithFormat:@"Average"];
             
             [_heartRateStatistics addObject:avgHeartRate];

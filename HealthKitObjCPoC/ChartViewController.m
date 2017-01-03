@@ -39,10 +39,7 @@
     [super viewDidLoad];
     [self setPropertyDefaults];
     [self refreshHealthStatistics];
-    [self drawChartSeperatorLines];
-#warning remove this
-//    [self highlightChartArea];
-//    [self drawTicks];
+    [self drawChartFrameLines];
 }
 
 - (void)setPropertyDefaults {
@@ -63,7 +60,7 @@
     [super didReceiveMemoryWarning];
 }
 
-- (void)drawChartSeperatorLines {
+- (void)drawChartFrameLines {
     NSArray *seperatorLocations = @[@35, @240];
     
     UIView *verticalLine=[[UIView alloc]initWithFrame:CGRectMake(45, 35, 1, 205)];
@@ -76,12 +73,6 @@
         [horizontalLine setBackgroundColor:[ColorConstants darkThemeLineSeperator]];
         [self.view addSubview:horizontalLine];
     }
-}
-
-- (void)highlightChartArea {
-    UIView *shadedArea = [[UIView alloc]initWithFrame:CGRectMake(_mainChartView.frame.origin.x, _mainChartView.frame.origin.y + _yAxisPadding, _mainChartView.frame.size.width, _mainChartView.frame.size.height - (_yAxisPadding * 2))];
-    shadedArea.backgroundColor = [UIColor redColor];
-    [self.view addSubview:shadedArea];
 }
 
 - (void)updateAxisLabels {
@@ -186,7 +177,7 @@
     [self generateYAxisLabels:^(NSError *error) {
         [self plotHeartRateOnGraph:^(NSError *error){
             [self updateAxisLabels];
-            [self drawLine];
+            [self strokeHeartRatePathOnChart];
             [self drawAverageHeartRateLine];
         }];
     }];
@@ -239,7 +230,7 @@
 -(void) plotHeartRateOnGraph:(void (^)(NSError *))completionHandler {
     double chartFrameWidth = self.view.frame.size.width - 45;
     double chartFrameHeight = _mainChartView.frame.size.height - (2 * _yAxisPadding);
-    int dataPointRadius = 2;
+    int dataPointRadius = 1.75;
     double heartRateRange = _chartMax.doubleValue - _chartMin.doubleValue;
     
     // Line
@@ -313,49 +304,31 @@
     
     // Calculates the space between the top and bottom labels of the Y-Axis
     double chartPlotableSpace = _mainChartView.frame.size.height - (_yAxisPadding * 2);
-    NSLog(@"[DEBUG] chartPlotableSpace = %f", chartPlotableSpace);
-    int dataPointRadius = 2;
+    NSLog(@"[DEBUG] %@ - chartPlotableSpace = %f", _detailSleepSession.name, chartPlotableSpace);
     
     if (_avgStatistic.result) {
         
         // heartRateRange will be used in conversion function
         double heartRateRange = _chartMax.doubleValue - _chartMin.doubleValue;
-        NSLog(@"[DEBUG] %f(max) - %f(min) = %f(heartRateRange)", _chartMax.doubleValue, _chartMin.doubleValue, heartRateRange);
+        NSLog(@"[DEBUG] %@ - %f(max) - %f(min) = %f(heartRateRange)", _detailSleepSession.name, _chartMax.doubleValue, _chartMin.doubleValue, heartRateRange);
         
         // adjustedRate stores the value for the difference between the top of the heartRateRange and the average
         double adjustedRate = _chartMax.doubleValue - floorf(_avgStatistic.result);
-        NSLog(@"[DEBUG] %f(max) - %f(floor) = %f(adjustedRate)", _chartMax.doubleValue, floorf(_avgStatistic.result), adjustedRate);
-        NSLog(@"[DEBUG] _avgStatistic.result = %f", _avgStatistic.result);
-#warning Floor rounds the average down, but how do we get average for displaying statistics list view.
+        NSLog(@"[DEBUG] %@ - %f(max) - %f(floor) = %f(adjustedRate)", _detailSleepSession.name, _chartMax.doubleValue, floorf(_avgStatistic.result), adjustedRate);
+        NSLog(@"[DEBUG] %@ - _avgStatistic.result = %f", _detailSleepSession.name, _avgStatistic.result);
         
         // Converts the average heart rate to points for used in plotting on the chart. The points will represent the bottom of the chart to where the line should be plotted.
         double convertHeartRateToPoints = ((adjustedRate * chartPlotableSpace) / heartRateRange);
-        NSLog(@"[DEBUG] convertHeartRateToPoints = %f", convertHeartRateToPoints);
+        NSLog(@"[DEBUG] %@ - convertHeartRateToPoints = %f", _detailSleepSession.name, convertHeartRateToPoints);
         
-        // Becuase the chart will draw from the origin, which is at the top, we will reverse the convertHeartRateToPoints to determine where it should be plotted.
-        double yCoordinate = chartPlotableSpace - convertHeartRateToPoints;
-        NSLog(@"[DEBUG] yCoordinate = %f", yCoordinate);
-        UIView *horizontalLine = [[UIView alloc]initWithFrame:CGRectMake(_mainChartView.frame.origin.x, yCoordinate + (dataPointRadius / 2), self.view.bounds.size.width*2, 1)];
+        // Create Average Heart Rate Line
+        UIView *horizontalLine = [[UIView alloc]initWithFrame:CGRectMake(_mainChartView.frame.origin.x, _mainChartView.frame.origin.y + convertHeartRateToPoints + _yAxisPadding, self.view.bounds.size.width*2, 1)];
         [horizontalLine setBackgroundColor:[ColorConstants darkThemePrimaryAccentColor]];
         [self.view addSubview:horizontalLine];
-        NSLog(@"%@", NSStringFromCGPoint(_mainChartView.frame.origin));
-        UIView *testLine = [[UIView alloc]initWithFrame:CGRectMake(0, yCoordinate, self.view.bounds.size.width*2, 1)];
-        [testLine setBackgroundColor:[ColorConstants darkThemePrimaryTextColor]];
-        [_mainChartView addSubview:testLine];
     }
 }
 
--(void)drawTicks {
-    double tick = 0;
-    for (int x; x<12; x++) {
-        UIView *horizontalLine = [[UIView alloc]initWithFrame:CGRectMake(_mainChartView.frame.origin.x, _mainChartView.frame.origin.y + _yAxisPadding + tick, self.view.bounds.size.width, 1)];
-        [horizontalLine setBackgroundColor:[UIColor redColor]];
-        [self.view addSubview:horizontalLine];
-        tick = tick + 18.5;
-    }
-}
-
--(void)drawLine {
+-(void)strokeHeartRatePathOnChart {
     CAShapeLayer *pathLayer = [CAShapeLayer layer];
     pathLayer.frame = CGRectMake(_chartOrigin.x, _chartOrigin.y, self.view.frame.size.width, self.view.frame.size.height);
     pathLayer.bounds = self.view.frame;

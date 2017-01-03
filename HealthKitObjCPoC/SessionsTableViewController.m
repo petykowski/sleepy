@@ -137,7 +137,7 @@
             NSLog(@"[DEBUG] No data to provide.");
         }
     } else if ([request  isEqual: @"sendSleepSessionDataToiOSApp"]) {
-        NSLog(@"[DEBUG] SAVING SLEEP DATA");
+        NSLog(@"[DEBUG] Received sleep session data from Apple Watch app. Saving in progess.");
         NSDictionary *sleepSession = message;
         
         self.objectToSave = [NSEntityDescription insertNewObjectForEntityForName:@"Session" inManagedObjectContext:[self managedObjectContext]];
@@ -156,6 +156,7 @@
                 NSAssert(NO, @"Error saving context: %@\n%@", [error localizedDescription], [error userInfo]);
             } else {
                 replyHandler(@{@"reply":@"Saved Sucessfully!"});
+                NSLog(@"[DEBUG] Sucessfully saved sleep session data.");
             }
         });
         

@@ -58,8 +58,7 @@
     CGRect titleSection = CGRectMake(-2, 0, self.frame.size.width + 4, 35);
     CGRect xAxisSection = CGRectMake(-2, 240, self.frame.size.width + 4, 39.5);
     CGRect yAxisSection = CGRectMake(-2, 0, 52, self.frame.size.height + 4);
-    CGRect chartSection = CGRectMake(0, 40, self.frame.size.width, 200);
-
+    
     CGContextRef greenContext = UIGraphicsGetCurrentContext();
 
     UIColor *separatorColor = [UIColor colorWithRed:0.2 green:0.2 blue:0.2078431373 alpha:1.0];

@@ -466,6 +466,13 @@
     [self addMenuItemWithImageNamed:@"backToSleepMenuIcon" title:@"Back To Sleep" action:@selector(sleepDidStartMenuButton)];
 }
 
+- (void)prepareMenuIconsForDebugging {
+    [self clearAllMenuItems];
+    [self addMenuItemWithImageNamed:@"sleepMenuIcon" title:@"Sleep" action:@selector(sleepDidStartMenuButton)];
+    [self addMenuItemWithImageNamed:@"sleepMenuIcon" title:@"HR Data" action:@selector(populateHRData)];
+    [self addMenuItemWithImageNamed:@"sleepMenuIcon" title:@"Send Test Data" action:@selector(manuallySendTestDataToiOS)];
+}
+
 
 #pragma mark - Label Methods
 
@@ -586,8 +593,8 @@
 
 - (void)populateHRData {
     int x = 0;
-    int min = 58;
-    int max = 60;
+    int min = 50;
+    int max = 62;
     
     NSDate *now = [NSDate date];
     
