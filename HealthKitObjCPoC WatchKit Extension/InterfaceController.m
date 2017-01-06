@@ -507,13 +507,14 @@
 
 - (void)presentControllerToConfirmProposedSleepTime {
     if (self.proposedSleepStart == nil) {
-        [self presentControllerWithName:@"User Input Sleep Start" context:@{@"delegate" : self,
-                                                                            @"time" : [_currentSleepSession.sleep firstObject],
-                                                            @"maxSleepStart" : [_currentSleepSession.wake firstObject]}];
+        [self presentControllerWithName:@"User Input Sleep Start"
+                                context:@{@"delegate" : self,
+                                          @"time" : [_currentSleepSession.sleep firstObject],
+                                          @"maxSleepStart" : [_currentSleepSession.wake firstObject]}];
     } else {
-        self.proposedSleepStart = [self.currentSleepSession.sleep firstObject];
-        [self presentControllerWithName:@"confirm" context:@{@"delegate" : self,
-                                                             @"time" : self.proposedSleepStart}];
+        [self presentControllerWithName:@"confirm"
+                                context:@{@"delegate" : self,
+                                          @"time" : self.proposedSleepStart}];
     }
 }
 
