@@ -33,6 +33,7 @@ extern NSString *const kNoStatisticsToDisplayBody;
 #pragma mark Numbers
 extern double const kDigitalCrownScrollMultiplier;
 extern double const kDefaultFontSizeTimeLabel;
+extern double const kRemoveDeferredOptionTimer;
 extern double const kScaleCountLowerLimit;
 extern double const kScaleCountUpperLimit;
 

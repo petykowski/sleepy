@@ -33,6 +33,10 @@
 
 @property (nonatomic, retain) WCSession *connectedSession;
 
+// TIMER //
+
+@property (nonatomic, retain) NSTimer *deferredSleepOptionTimer;
+
 // INTERFACE ITEMS //
 
 // Images
@@ -241,6 +245,11 @@
     [self writeCurrentSleepSessionToFile];
     
     [self prepareMenuIconsForUserAsleepInSleepSession];
+    
+    if (self.deferredSleepOptionTimer) {
+        [self cancelTimer];
+    }
+    self.deferredSleepOptionTimer = [NSTimer scheduledTimerWithTimeInterval:kRemoveDeferredOptionTimer target:self selector:@selector(prepareMenuIconsForUserAsleepWithoutDeferredOption) userInfo:nil repeats:NO];
 }
 
 - (IBAction)sleepWasDeferredByUserMenuButton {
@@ -256,6 +265,7 @@
     [self displayWakeIndicator];
     [self.currentSleepSession.wake addObject:[NSDate date]];
     [self writeCurrentSleepSessionToFile];
+    [self cancelTimer];
     [self prepareMenuIconsForUserAwakeInSleepSession];
 }
 
@@ -270,6 +280,7 @@
     }
     [self writeCurrentSleepSessionToFile];
     [self readHeartRateData];
+    [self cancelTimer];
     [self prepareMenuIconsForUserNotInSleepSession];
     
     
@@ -281,6 +292,7 @@
     [self hideWakeIndicator];
     [self clearAllSleepValues];
     [self updateLabelsForSleepSessionEnded];
+    [self cancelTimer];
     [self prepareMenuIconsForUserNotInSleepSession];
     [self writeCurrentSleepSessionToFile];
     
@@ -466,6 +478,13 @@
     [self addMenuItemWithImageNamed:@"backToSleepMenuIcon" title:@"Back To Sleep" action:@selector(sleepDidStartMenuButton)];
 }
 
+- (void)prepareMenuIconsForUserAsleepWithoutDeferredOption {
+    [self clearAllMenuItems];
+    [self addMenuItemWithItemIcon:WKMenuItemIconAccept title:@"End" action:@selector(sleepDidStopMenuButton)];
+    [self addMenuItemWithItemIcon:WKMenuItemIconBlock title:@"Cancel" action:@selector(sleepWasCancelledByUserMenuButton)];
+    [self addMenuItemWithImageNamed:@"wakeMenuIcon" title:@"Wake" action:@selector(userAwokeByUserMenuButton)];
+}
+
 - (void)prepareMenuIconsForDebugging {
     [self clearAllMenuItems];
     [self addMenuItemWithImageNamed:@"sleepMenuIcon" title:@"Sleep" action:@selector(sleepDidStartMenuButton)];
@@ -588,6 +607,10 @@
     [self.currentSleepSession.wake removeAllObjects];
     [self.currentSleepSession.outBed removeAllObjects];
     self.proposedSleepStart = nil;
+}
+
+- (void)cancelTimer {
+    [self.deferredSleepOptionTimer invalidate];
 }
 
 #pragma mark - iOS Simulator Health Data

@@ -34,6 +34,7 @@ NSString *const kNoStatisticsToDisplayBody = @"Statistics are available after 7 
 #pragma mark - Numbers
 double const kDigitalCrownScrollMultiplier = 500;
 double const kDefaultFontSizeTimeLabel = 30;
+double const kRemoveDeferredOptionTimer = 7200;
 double const kScaleCountLowerLimit = 0;
 double const kScaleCountUpperLimit = 11;
 
