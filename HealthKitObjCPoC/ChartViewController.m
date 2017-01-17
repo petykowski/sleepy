@@ -271,9 +271,10 @@
                 // Calculate Y Coordinate
                 double heartRate = [sample.quantity doubleValueForUnit:[HKUnit unitFromString:@"count/min"]];
                 double adjustedRate = _chartMax.doubleValue - heartRate;
+#warning this incorrectly calculates the yCorrdinate value because it assumes the min is at the bottom of chart and max is at the top of the chart. This does not take into account a chart that shows 40 to 100; that 91(max) is not 100. We need to take into account the scale which is being displayed along the y-axis.
                 double yCoordinate = ((adjustedRate * chartFrameHeight) / heartRateRange) + _yAxisPadding;
                 
-                UIBezierPath *circle = [UIBezierPath bezierPathWithOvalInRect:CGRectMake(xCoordinate + 45 - dataPointRadius, _chartOrigin.y + yCoordinate - dataPointRadius, dataPointRadius * 2, dataPointRadius * 2)];
+                UIBezierPath *circle = [UIBezierPath bezierPathWithOvalInRect:CGRectMake(xCoordinate + 45 - dataPointRadius, _chartOrigin.y + yCoordinate - (dataPointRadius * 2), dataPointRadius * 2, dataPointRadius * 2)];
                 CAShapeLayer *fillLayer = [CAShapeLayer layer];
                 fillLayer.frame = CGRectMake(xCoordinate + 45, 100, dataPointRadius, dataPointRadius);
                 fillLayer.bounds = CGRectMake(xCoordinate + 45, 100, dataPointRadius, dataPointRadius);
