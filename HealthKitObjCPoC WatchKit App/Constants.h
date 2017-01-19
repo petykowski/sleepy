@@ -23,12 +23,21 @@ extern NSString *const kOnboardingSecondPageButton;
 extern NSString *const kOnboardingThirdPageTitle;
 extern NSString *const kOnboardingThirdPageBody;
 extern NSString *const kOnboardingThirdPageButton;
+extern NSString *const kOnboardingFourthPageTitle;
+extern NSString *const kOnboardingFourthPageBody;
+extern NSString *const kOnboardingFourthPageButton;
 
 #pragma mark Empty Data Set Screen
 extern NSString *const kNoSessionsToDisplayTitle;
 extern NSString *const kNoSessionsToDisplayBody;
 extern NSString *const kNoStatisticsToDisplayTitle;
 extern NSString *const kNoStatisticsToDisplayBody;
+
+#pragma mark - Local User Notifications
+extern NSString *const kRemindUserToEndSleepSessionNotificationTitle;
+extern NSString *const kRemindUserToEndSleepSessionNotificationSubtitle;
+extern NSString *const kRemindUserToEndSleepSessionNotificationBody;
+extern double const kRemindUserToEndSleepSessionTimeIntervalInSeconds;
 
 #pragma mark Numbers
 extern double const kDigitalCrownScrollMultiplier;

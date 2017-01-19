@@ -15,13 +15,17 @@
 #import "SleepSession.h"
 
 @import HealthKit;
+@import UserNotifications;
 
-@interface InterfaceController() <InterfaceControllerSleepDelegate, WCSessionDelegate>
-
+@interface InterfaceController() <InterfaceControllerSleepDelegate, WCSessionDelegate, UNUserNotificationCenterDelegate>
 
 // HEALTHKIT PROPERTIES //
 
 @property (nonatomic, retain) HKHealthStore *healthStore;
+
+// NOTIFICATION CENTER PROPERTIES //
+
+@property (nonatomic, retain) UNUserNotificationCenter *notificationCenter;
 
 // SLEEP SESSION //
 
@@ -61,6 +65,9 @@
 
 - (instancetype)init {
     self = [super init];
+    
+    _notificationCenter = [UNUserNotificationCenter currentNotificationCenter];
+    [self configureUserNotificationCenter];
     
     self.healthStore = [[HKHealthStore alloc] init];
     
@@ -265,10 +272,10 @@
     [self displayWakeIndicator];
     [self.currentSleepSession.wake addObject:[NSDate date]];
     [self writeCurrentSleepSessionToFile];
+    [self scheduleUserNotificationToEndSleepSession];
     [self cancelTimer];
     [self prepareMenuIconsForUserAwakeInSleepSession];
 }
-
 
 - (IBAction)sleepDidStopMenuButton {
     
@@ -298,7 +305,6 @@
     
     
 }
-
 
 
 #pragma mark - HealthKit Methods
@@ -562,6 +568,73 @@
     [self.wakeIndicator setHidden:true];
 }
 
+
+#pragma mark - User Notifications
+
+-(void)configureUserNotificationCenter {
+    _notificationCenter.delegate = self;
+    
+    UNNotificationAction *endSleepSessionAction = [UNNotificationAction
+                                                   actionWithIdentifier:@"END_ACTION"
+                                                   title:@"End Session"
+                                                   options:UNNotificationActionOptionForeground];
+    
+    UNNotificationAction *snoozeAction = [UNNotificationAction
+                                          actionWithIdentifier:@"SNOOZE_ACTION"
+                                          title:@"Snooze"
+                                          options:UNNotificationActionOptionNone];
+    
+    UNNotificationCategory *endSleepSessionCategory = [UNNotificationCategory
+                                                       categoryWithIdentifier:@"END_SLEEP_SESSION"
+                                                       actions:@[endSleepSessionAction, snoozeAction]
+                                                       intentIdentifiers:@[]
+                                                       options:UNNotificationCategoryOptionNone];
+    
+    
+    [_notificationCenter setNotificationCategories:[NSSet setWithObjects:endSleepSessionCategory, nil]];
+}
+
+-(void)scheduleUserNotificationToEndSleepSession {
+    // Configure the notification content
+    UNMutableNotificationContent *content = [[UNMutableNotificationContent alloc] init];
+    content.title = kRemindUserToEndSleepSessionNotificationTitle;
+    content.subtitle = kRemindUserToEndSleepSessionNotificationSubtitle;
+    content.body = kRemindUserToEndSleepSessionNotificationBody;
+    content.categoryIdentifier = @"END_SLEEP_SESSION";
+    
+    // Configure the trigger
+    NSTimeInterval timeInterval = kRemindUserToEndSleepSessionTimeIntervalInSeconds;
+    UNTimeIntervalNotificationTrigger *trigger = [UNTimeIntervalNotificationTrigger triggerWithTimeInterval:timeInterval repeats:NO];
+    
+    // Assign UUID
+    NSString *identifer = [Utility stringWithUUID];
+    
+    // Create the request object.
+    UNNotificationRequest *request = [UNNotificationRequest requestWithIdentifier:identifer
+                                                                          content:content
+                                                                          trigger:trigger];
+    
+    [_notificationCenter addNotificationRequest:request withCompletionHandler:^(NSError * _Nullable error) {
+        if (error != nil) {
+            NSLog(@"%@", error.localizedDescription);
+        }
+    }];
+}
+
+-(void) userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)())completionHandler {
+    NSLog(@"User responded to notification with %@", response.actionIdentifier);
+    if ([response.actionIdentifier isEqualToString:UNNotificationDismissActionIdentifier]) {
+        NSLog(@"User dismissed the notification");
+    }
+    else if ([response.actionIdentifier isEqualToString:@"SNOOZE_ACTION"]) {
+        [self scheduleUserNotificationToEndSleepSession];
+    }
+    else if ([response.actionIdentifier isEqualToString:@"END_ACTION"]) {
+        [self sleepDidStopMenuButton];
+    }
+}
+
+
 #pragma mark - Sleep Delegate Functions
 
 - (void)proposedSleepStartDecision:(int)buttonValue SleepStartDate:(NSDate*)date {
@@ -612,6 +685,7 @@
 - (void)cancelTimer {
     [self.deferredSleepOptionTimer invalidate];
 }
+
 
 #pragma mark - iOS Simulator Health Data
 

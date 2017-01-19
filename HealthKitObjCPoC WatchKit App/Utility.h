@@ -35,4 +35,11 @@
 +(BOOL) compare:(NSDate*)originalDate isEarlierThanOrEqualTo:(NSDate*)date;
 +(BOOL) compare:(NSDate*)originalDate isLaterThan:(NSDate*)date;
 +(BOOL) compare:(NSDate*)originalDate isEarlierThan:(NSDate*)date;
+
+/**
+ * @brief Returns a UUID string to be used as an identifer for UNNotificationRequest
+ * @return UUID with format: 11D8BB52-AB11-4F45-9051-5BB162E0661F
+ */
++(NSString*)stringWithUUID;
+
 @end

@@ -173,4 +173,10 @@
     return ([originalDate compare:otherDate] == NSOrderedAscending);
 }
 
++(NSString *)stringWithUUID {
+    CFUUIDRef uuidObject = CFUUIDCreate(nil);
+    NSString *uuidString = CFBridgingRelease(CFUUIDCreateString(nil, uuidObject));
+    return uuidString;
+}
+
 @end
