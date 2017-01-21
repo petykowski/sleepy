@@ -16,7 +16,9 @@ NSString *const kSleepSessionFileNameForWatch = @"SavedSleepSession.plist";
 NSString *const kLogOutputFileName = @"logs.txt";
 
 #pragma mark - User Onboarding Strings
-NSString *const kUserHasOnboardedKey = @"user_has_onboarded";
+// user_has_onboarded: inital deployment of user onboarding.
+// user_has_onboarded_v1: added push notifications support to user onboarding.
+NSString *const kUserHasOnboardedKey = @"user_has_onboarded_v1";
 NSString *const kOnboardingFirstPageBody = @"Sleepy is a sleep tracking app that helps users make sense of their sleep patterns.";
 NSString *const kOnboardingSecondPageTitle = @"Integrate with HealthKit";
 NSString *const kOnboardingSecondPageBody = @"Allowing access to HealthKit allows Sleepy to determine when you've fallen asleep and build sleep trends.";
@@ -35,11 +37,13 @@ NSString *const kNoStatisticsToDisplayTitle = @"No Statistics Available";
 NSString *const kNoStatisticsToDisplayBody = @"Statistics are available after 7 sleep sessions.";
 
 #pragma mark - Local User Notifications
+NSString *const kEndSleepSessionCategoryIdentifier = @"END_SLEEP_SESSION_CATEGORY";
+NSString *const kSnoozeActionIdentifier = @"SNOOZE_ACTION";
+NSString *const kEndSleepSessionActionIdentifier = @"END_SLEEP_SESSION_ACTION";
 NSString *const kRemindUserToEndSleepSessionNotificationTitle = @"Still Sleepy?";
 NSString *const kRemindUserToEndSleepSessionNotificationSubtitle = @"Active Sleep Session";
-NSString *const kRemindUserToEndSleepSessionNotificationBody = @"You've woken up but haven't ended the sleep session. Are you still in Bed?";
-#warning Set this to 300 before commiting!
-double const kRemindUserToEndSleepSessionTimeIntervalInSeconds = 10;
+NSString *const kRemindUserToEndSleepSessionNotificationBody = @"You've woken up but haven't ended the sleep session. Would you like to end your sleep session?";
+double const kRemindUserToEndSleepSessionTimeIntervalInSeconds = 300;
 
 
 #pragma mark - Numbers

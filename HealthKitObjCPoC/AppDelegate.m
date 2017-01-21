@@ -213,9 +213,11 @@
     NSBundle *bundle = [NSBundle mainBundle];
     NSString *sleepyMainPath = [bundle pathForResource:@"SleepyMain" ofType:@"mp4"];
     NSString *healthKitPath = [bundle pathForResource:@"HealthKit" ofType:@"mp4"];
+    NSString *notificationPath = [bundle pathForResource:@"SleepNotification" ofType:@"mp4"];
     NSString *appleWatchPath = [bundle pathForResource:@"SleepyWatch" ofType:@"mp4"];
     NSURL *sleepyMainMovieURL = [NSURL fileURLWithPath:sleepyMainPath];
     NSURL *healthKitMovieURL = [NSURL fileURLWithPath:healthKitPath];
+    NSURL *notificationMovieURL = [NSURL fileURLWithPath:notificationPath];
     NSURL *appleWatchMovieURL = [NSURL fileURLWithPath:appleWatchPath];
     
     CGFloat screenHeight;
@@ -250,7 +252,7 @@
         }
     }];
     
-    OnboardingContentViewController *thirdPage = [OnboardingContentViewController contentWithTitle:kOnboardingThirdPageTitle body:kOnboardingThirdPageBody videoURL:appleWatchMovieURL buttonText:kOnboardingThirdPageButton action:^{
+    OnboardingContentViewController *thirdPage = [OnboardingContentViewController contentWithTitle:kOnboardingThirdPageTitle body:kOnboardingThirdPageBody videoURL:notificationMovieURL buttonText:kOnboardingThirdPageButton action:^{
         
         [_notificationCenter requestAuthorizationWithOptions:(UNAuthorizationOptionAlert + UNAuthorizationOptionSound)
                                            completionHandler:^(BOOL granted, NSError * _Nullable error) {
@@ -293,13 +295,13 @@
         fourthPage.underTitlePadding = 316;
     } else if ( screenHeight > 480 ){
         firstPage.topPadding = 0;
-        firstPage.underIconPadding = 75;
+        firstPage.underIconPadding = 121;
         firstPage.underTitlePadding = 375;
         secondPage.topPadding = 0;
         secondPage.underIconPadding = 75;
         secondPage.underTitlePadding = 375;
         thirdPage.topPadding = 0;
-        thirdPage.underIconPadding = 75;
+        thirdPage.underIconPadding = 121;
         thirdPage.underTitlePadding = 375;
         fourthPage.topPadding = 0;
         fourthPage.underIconPadding = 75;

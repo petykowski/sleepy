@@ -288,8 +288,9 @@
     [self writeCurrentSleepSessionToFile];
     [self readHeartRateData];
     [self cancelTimer];
+    [self cancelPendingNotifications];
+    [self removeDeliveredNotifications];
     [self prepareMenuIconsForUserNotInSleepSession];
-    
     
 }
 
@@ -300,9 +301,10 @@
     [self clearAllSleepValues];
     [self updateLabelsForSleepSessionEnded];
     [self cancelTimer];
+    [self cancelPendingNotifications];
+    [self removeDeliveredNotifications];
     [self prepareMenuIconsForUserNotInSleepSession];
     [self writeCurrentSleepSessionToFile];
-    
     
 }
 
@@ -571,21 +573,21 @@
 
 #pragma mark - User Notifications
 
--(void)configureUserNotificationCenter {
+- (void)configureUserNotificationCenter {
     _notificationCenter.delegate = self;
     
     UNNotificationAction *endSleepSessionAction = [UNNotificationAction
-                                                   actionWithIdentifier:@"END_ACTION"
+                                                   actionWithIdentifier:kEndSleepSessionActionIdentifier
                                                    title:@"End Session"
                                                    options:UNNotificationActionOptionForeground];
     
     UNNotificationAction *snoozeAction = [UNNotificationAction
-                                          actionWithIdentifier:@"SNOOZE_ACTION"
+                                          actionWithIdentifier:kSnoozeActionIdentifier
                                           title:@"Snooze"
                                           options:UNNotificationActionOptionNone];
     
     UNNotificationCategory *endSleepSessionCategory = [UNNotificationCategory
-                                                       categoryWithIdentifier:@"END_SLEEP_SESSION"
+                                                       categoryWithIdentifier:kEndSleepSessionCategoryIdentifier
                                                        actions:@[endSleepSessionAction, snoozeAction]
                                                        intentIdentifiers:@[]
                                                        options:UNNotificationCategoryOptionNone];
@@ -594,13 +596,13 @@
     [_notificationCenter setNotificationCategories:[NSSet setWithObjects:endSleepSessionCategory, nil]];
 }
 
--(void)scheduleUserNotificationToEndSleepSession {
+- (void)scheduleUserNotificationToEndSleepSession {
     // Configure the notification content
     UNMutableNotificationContent *content = [[UNMutableNotificationContent alloc] init];
     content.title = kRemindUserToEndSleepSessionNotificationTitle;
     content.subtitle = kRemindUserToEndSleepSessionNotificationSubtitle;
     content.body = kRemindUserToEndSleepSessionNotificationBody;
-    content.categoryIdentifier = @"END_SLEEP_SESSION";
+    content.categoryIdentifier = kEndSleepSessionCategoryIdentifier;
     
     // Configure the trigger
     NSTimeInterval timeInterval = kRemindUserToEndSleepSessionTimeIntervalInSeconds;
@@ -621,17 +623,33 @@
     }];
 }
 
--(void) userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)())completionHandler {
-    NSLog(@"User responded to notification with %@", response.actionIdentifier);
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)())completionHandler {
+    NSLog(@"User responded to notification with %@ for notification %@", response.actionIdentifier, response.notification);
     if ([response.actionIdentifier isEqualToString:UNNotificationDismissActionIdentifier]) {
-        NSLog(@"User dismissed the notification");
+        NSLog(@"[VERBOSE] User dismissed the notification");
     }
-    else if ([response.actionIdentifier isEqualToString:@"SNOOZE_ACTION"]) {
-        [self scheduleUserNotificationToEndSleepSession];
+    else if ([response.actionIdentifier isEqualToString:kSnoozeActionIdentifier]) {
+        if (_currentSleepSession.isSleepSessionInProgress) {
+            [self scheduleUserNotificationToEndSleepSession];
+        } else {
+            NSLog(@"[VERBOSE] %@ will not perform action, %@, because user is no longer sleeping.", response.notification, response.actionIdentifier);
+        }
     }
-    else if ([response.actionIdentifier isEqualToString:@"END_ACTION"]) {
-        [self sleepDidStopMenuButton];
+    else if ([response.actionIdentifier isEqualToString:kEndSleepSessionActionIdentifier]) {
+        if (_currentSleepSession.isSleepSessionInProgress) {
+            [self sleepDidStopMenuButton];
+        } else {
+            NSLog(@"[VERBOSE] %@ will not perform action, %@, because user is no longer sleeping.", response.notification, response.actionIdentifier);
+        }
     }
+}
+
+- (void)cancelPendingNotifications {
+    [_notificationCenter removeAllPendingNotificationRequests];
+}
+
+- (void)removeDeliveredNotifications {
+    [_notificationCenter removeAllDeliveredNotifications];
 }
 
 
@@ -722,13 +740,9 @@
 
 - (void)manuallySendTestDataToiOS {
     NSDate *inBedStart = [[NSDate alloc] initWithTimeIntervalSinceNow:1]; // now
-    NSDate *inBedStop = [[NSDate alloc] initWithTimeIntervalSinceNow:900]; // 15 min from now
     NSDate *sleepStart = [[NSDate alloc] initWithTimeIntervalSinceNow:901]; // 15.01 min from now
     NSDate *sleepStop = [[NSDate alloc] initWithTimeIntervalSinceNow:14400]; // hours from now
-    NSDate *wakeStart = [[NSDate alloc] initWithTimeIntervalSinceNow:14401];
     NSDate *wakeStop = [[NSDate alloc] initWithTimeIntervalSinceNow:14401];
-    
-    NSArray *inBedArray = [[NSArray alloc] initWithObjects:inBedStart, nil];
  
     [_currentSleepSession.inBed addObject:inBedStart];
     [_currentSleepSession.sleep addObject:sleepStart];

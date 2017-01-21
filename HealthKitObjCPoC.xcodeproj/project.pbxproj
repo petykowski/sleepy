@@ -38,6 +38,7 @@
 		C29A2FB71D8DFC44005B5D29 /* SessionDetailTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C29A2FB61D8DFC44005B5D29 /* SessionDetailTableViewController.m */; };
 		C29A2FBA1D8E0054005B5D29 /* SessionDetailTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C29A2FB91D8E0054005B5D29 /* SessionDetailTableViewCell.m */; };
 		C29E28A41D98AC00009FD716 /* SleepStatistic.m in Sources */ = {isa = PBXBuildFile; fileRef = C29E28A31D98AC00009FD716 /* SleepStatistic.m */; };
+		C2A45D381E3310EA00BBAC30 /* SleepNotification.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = C2A45D371E3310EA00BBAC30 /* SleepNotification.mp4 */; };
 		C2A7C7801D8A4DE2000B7A7F /* HealthKit.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = C2A7C77F1D8A4DE2000B7A7F /* HealthKit.mp4 */; };
 		C2AA52DF1D83AB7600584AF4 /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = C2AA52DE1D83AB7600584AF4 /* Constants.m */; };
 		C2AA52E01D83AB7600584AF4 /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = C2AA52DE1D83AB7600584AF4 /* Constants.m */; };
@@ -71,6 +72,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = C243C1741C57D32400DB8803;
 			remoteInfo = "HealthKitObjCPoC WatchKit Extension";
+		};
+		C2FC97DB1E32DCE500E7D17E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C243C1471C57D32400DB8803 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C243C14E1C57D32400DB8803;
+			remoteInfo = HealthKitObjCPoC;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -151,6 +159,7 @@
 		C29A2FB91D8E0054005B5D29 /* SessionDetailTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SessionDetailTableViewCell.m; sourceTree = "<group>"; };
 		C29E28A21D98AC00009FD716 /* SleepStatistic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SleepStatistic.h; sourceTree = "<group>"; };
 		C29E28A31D98AC00009FD716 /* SleepStatistic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SleepStatistic.m; sourceTree = "<group>"; };
+		C2A45D371E3310EA00BBAC30 /* SleepNotification.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = SleepNotification.mp4; sourceTree = "<group>"; };
 		C2A7C77F1D8A4DE2000B7A7F /* HealthKit.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = HealthKit.mp4; sourceTree = "<group>"; };
 		C2AA52DD1D83AB7600584AF4 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		C2AA52DE1D83AB7600584AF4 /* Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
@@ -173,6 +182,7 @@
 		C2FB86501D31D0B900FCC143 /* SleepMilestoneInterfaceController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SleepMilestoneInterfaceController.m; sourceTree = "<group>"; };
 		C2FB86531D31D93800FCC143 /* MilestoneRowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MilestoneRowController.h; path = "HealthKitObjCPoC WatchKit Extension/MilestoneRowController.h"; sourceTree = SOURCE_ROOT; };
 		C2FB86541D31D93800FCC143 /* MilestoneRowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MilestoneRowController.m; path = "HealthKitObjCPoC WatchKit Extension/MilestoneRowController.m"; sourceTree = SOURCE_ROOT; };
+		C2FC97D61E32DCE500E7D17E /* HealthKitObjCPoCTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HealthKitObjCPoCTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C2FFFCF01D71313500BF3B6C /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		DA86632C5F9D1B2EE4704820 /* libPods-HealthKitObjCPoC WatchKit Extension.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-HealthKitObjCPoC WatchKit Extension.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F29A0B0C96A13CA796FE7B37 /* libPods-HealthKitObjCPoC.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-HealthKitObjCPoC.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -205,6 +215,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				A8D8787AE597B0F312A4A3B1 /* libPods-HealthKitObjCPoC WatchKit Extension.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C2FC97D31E32DCE500E7D17E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -277,6 +294,7 @@
 				C243C14F1C57D32400DB8803 /* HealthKitObjCPoC.app */,
 				C243C1661C57D32400DB8803 /* HealthKitObjCPoC WatchKit App.app */,
 				C243C1751C57D32400DB8803 /* HealthKitObjCPoC WatchKit Extension.appex */,
+				C2FC97D61E32DCE500E7D17E /* HealthKitObjCPoCTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -384,6 +402,7 @@
 		C2D808CA1D8658CF007FEB19 /* Media */ = {
 			isa = PBXGroup;
 			children = (
+				C2A45D371E3310EA00BBAC30 /* SleepNotification.mp4 */,
 				C2E4DBE31D8CEC80000CC492 /* SleepyWatch.mp4 */,
 				C2E4DBE11D8CEAD5000CC492 /* SleepyMain.mp4 */,
 				C2A7C77F1D8A4DE2000B7A7F /* HealthKit.mp4 */,
@@ -468,6 +487,24 @@
 			productReference = C243C1751C57D32400DB8803 /* HealthKitObjCPoC WatchKit Extension.appex */;
 			productType = "com.apple.product-type.watchkit2-extension";
 		};
+		C2FC97D51E32DCE500E7D17E /* HealthKitObjCPoCTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C2FC97DF1E32DCE500E7D17E /* Build configuration list for PBXNativeTarget "HealthKitObjCPoCTests" */;
+			buildPhases = (
+				C2FC97D21E32DCE500E7D17E /* Sources */,
+				C2FC97D31E32DCE500E7D17E /* Frameworks */,
+				C2FC97D41E32DCE500E7D17E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C2FC97DC1E32DCE500E7D17E /* PBXTargetDependency */,
+			);
+			name = HealthKitObjCPoCTests;
+			productName = HealthKitObjCPoCTests;
+			productReference = C2FC97D61E32DCE500E7D17E /* HealthKitObjCPoCTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -514,6 +551,12 @@
 							};
 						};
 					};
+					C2FC97D51E32DCE500E7D17E = {
+						CreatedOnToolsVersion = 8.2.1;
+						DevelopmentTeam = FQHZ7Y2XXC;
+						ProvisioningStyle = Automatic;
+						TestTargetID = C243C14E1C57D32400DB8803;
+					};
 				};
 			};
 			buildConfigurationList = C243C14A1C57D32400DB8803 /* Build configuration list for PBXProject "HealthKitObjCPoC" */;
@@ -532,6 +575,7 @@
 				C243C14E1C57D32400DB8803 /* HealthKitObjCPoC */,
 				C243C1651C57D32400DB8803 /* HealthKitObjCPoC WatchKit App */,
 				C243C1741C57D32400DB8803 /* HealthKitObjCPoC WatchKit Extension */,
+				C2FC97D51E32DCE500E7D17E /* HealthKitObjCPoCTests */,
 			);
 		};
 /* End PBXProject section */
@@ -543,6 +587,7 @@
 			files = (
 				C243C1621C57D32400DB8803 /* LaunchScreen.storyboard in Resources */,
 				C243C15F1C57D32400DB8803 /* Assets.xcassets in Resources */,
+				C2A45D381E3310EA00BBAC30 /* SleepNotification.mp4 in Resources */,
 				C2A7C7801D8A4DE2000B7A7F /* HealthKit.mp4 in Resources */,
 				C2E4DBE41D8CEC80000CC492 /* SleepyWatch.mp4 in Resources */,
 				C2E4DBE21D8CEAD5000CC492 /* SleepyMain.mp4 in Resources */,
@@ -566,6 +611,13 @@
 			files = (
 				C2508E581C582A5B00900AC1 /* Health.plist in Resources */,
 				C243C1811C57D32400DB8803 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C2FC97D41E32DCE500E7D17E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -753,6 +805,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		C2FC97D21E32DCE500E7D17E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -765,6 +824,11 @@
 			isa = PBXTargetDependency;
 			target = C243C1741C57D32400DB8803 /* HealthKitObjCPoC WatchKit Extension */;
 			targetProxy = C243C1771C57D32400DB8803 /* PBXContainerItemProxy */;
+		};
+		C2FC97DC1E32DCE500E7D17E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C243C14E1C57D32400DB8803 /* HealthKitObjCPoC */;
+			targetProxy = C2FC97DB1E32DCE500E7D17E /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -984,6 +1048,38 @@
 			};
 			name = Release;
 		};
+		C2FC97DD1E32DCE500E7D17E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				DEVELOPMENT_TEAM = FQHZ7Y2XXC;
+				INFOPLIST_FILE = HealthKitObjCPoCTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.seanpetykowski.HealthKitObjCPoCTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/HealthKitObjCPoC.app/HealthKitObjCPoC";
+			};
+			name = Debug;
+		};
+		C2FC97DE1E32DCE500E7D17E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				DEVELOPMENT_TEAM = FQHZ7Y2XXC;
+				INFOPLIST_FILE = HealthKitObjCPoCTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.seanpetykowski.HealthKitObjCPoCTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/HealthKitObjCPoC.app/HealthKitObjCPoC";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1019,6 +1115,15 @@
 			buildConfigurations = (
 				C243C18E1C57D32400DB8803 /* Debug */,
 				C243C18F1C57D32400DB8803 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C2FC97DF1E32DCE500E7D17E /* Build configuration list for PBXNativeTarget "HealthKitObjCPoCTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C2FC97DD1E32DCE500E7D17E /* Debug */,
+				C2FC97DE1E32DCE500E7D17E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

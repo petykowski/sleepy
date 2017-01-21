@@ -34,6 +34,9 @@ extern NSString *const kNoStatisticsToDisplayTitle;
 extern NSString *const kNoStatisticsToDisplayBody;
 
 #pragma mark - Local User Notifications
+extern NSString *const kEndSleepSessionCategoryIdentifier;
+extern NSString *const kSnoozeActionIdentifier;
+extern NSString *const kEndSleepSessionActionIdentifier;
 extern NSString *const kRemindUserToEndSleepSessionNotificationTitle;
 extern NSString *const kRemindUserToEndSleepSessionNotificationSubtitle;
 extern NSString *const kRemindUserToEndSleepSessionNotificationBody;
