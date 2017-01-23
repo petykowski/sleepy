@@ -602,6 +602,7 @@
     content.title = kRemindUserToEndSleepSessionNotificationTitle;
     content.subtitle = kRemindUserToEndSleepSessionNotificationSubtitle;
     content.body = kRemindUserToEndSleepSessionNotificationBody;
+    content.sound = [UNNotificationSound defaultSound];
     content.categoryIdentifier = kEndSleepSessionCategoryIdentifier;
     
     // Configure the trigger
