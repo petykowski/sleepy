@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="11201" systemVersion="16B2548a" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="AgC-eL-Hgc">
+<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="11762" systemVersion="16D30a" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="AgC-eL-Hgc">
+    <device id="watch38" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
         <deployment identifier="watchOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="11077"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="11508"/>
     </dependencies>
     <scenes>
         <!--mainInterface-->
@@ -75,10 +78,10 @@
             </objects>
             <point key="canvasLocation" x="58.410256410256416" y="91.974358974358978"/>
         </scene>
-        <!--Last Night-->
+        <!--Previous Sleep-->
         <scene sceneID="GOh-kK-oWw">
             <objects>
-                <controller identifier="lastNightInterface" title="Last Night" id="DDy-KD-bGw" customClass="SleepMilestoneInterfaceController">
+                <controller identifier="lastNightInterface" title="Previous Sleep" id="DDy-KD-bGw" customClass="SleepMilestoneInterfaceController">
                     <items>
                         <table alignment="left" id="mgo-3o-CLP">
                             <items>
