@@ -37,10 +37,6 @@
 
 @property (nonatomic, retain) WCSession *connectedSession;
 
-// TIMER //
-
-@property (nonatomic, retain) NSTimer *deferredSleepOptionTimer;
-
 // INTERFACE ITEMS //
 
 // Images
@@ -81,9 +77,8 @@
     if (self.currentSleepSession.isSleepSessionInProgress) {
         [self populateSleepSessionWithCurrentSessionData];
         [self updateLabelsForSleepSessionStart];
-        [self prepareMenuIconsForUserAsleepInSleepSession];
+        [self determineMenuIconsToDisplay];
         NSLog(@"[VERBOSE] User is currently asleep. Resuming sleep state.");
-        
     } else {
         [self updateLabelsForSleepSessionEnded];
         [self prepareMenuIconsForUserNotInSleepSession];
@@ -114,6 +109,8 @@
         [self requestAccessToHealthKit];
     }
     
+    [self determineMenuIconsToDisplay];
+    
 }
 
 - (void)didDeactivate {
@@ -141,7 +138,7 @@
     if (!success) {
         BOOL didWrite;
         NSLog(@"[DEBUG] File not found in users documents directory.");
-        NSString *path = [[NSBundle mainBundle] pathForResource:@"Health" ofType:@"plist"];
+        NSString *path = [[NSBundle mainBundle] pathForResource:@"SavedSleepSession" ofType:@"plist"];
         didWrite = [fileManager copyItemAtPath:path toPath:filePath error:&error];
         
         if (didWrite) {
@@ -159,8 +156,33 @@
     return thebool;
 }
 
+- (BOOL)isUserAwake {
+    int inBedCount = [self.currentSleepSession.inBed count];
+    int awakeCount = [self.currentSleepSession.wake count];
+    
+    NSLog(@"[DEBUG] inBedCount = %d", inBedCount);
+    NSLog(@"[DEBUG] awakeCount = %d", awakeCount);
+    
+    return awakeCount == inBedCount && awakeCount > 0;
+}
+
 - (void)populateSleepSessionWithCurrentSessionData {
     self.currentSleepSession = [Utility contentsOfCurrentSleepSession];
+}
+
+- (void)writeRemoveDeferredSleepOptionDate {
+    NSString *filePath = [Utility pathToSleepSessionDataFile];
+    NSMutableDictionary *sleepSessionFile = [NSMutableDictionary dictionaryWithContentsOfFile:filePath];
+    NSDate *removeDeferredSleepOptionDate = [NSDate dateWithTimeIntervalSinceNow:kRemoveDeferredOptionTimer];
+    
+    [sleepSessionFile setObject:removeDeferredSleepOptionDate forKey:@"removeDeferredSleepOptionDate"];
+    
+    BOOL didWrite = [sleepSessionFile writeToFile:filePath atomically:YES];
+    if (didWrite) {
+        NSLog(@"[VERBOSE] Date to remove sleep deferred option sucessfully written to file.");
+    } else {
+        NSLog(@"[DEBUG] Failed to write data to file.");
+    }
 }
 
 - (void)writeCurrentSleepSessionToFile {
@@ -253,10 +275,8 @@
     
     [self prepareMenuIconsForUserAsleepInSleepSession];
     
-    if (self.deferredSleepOptionTimer) {
-        [self cancelTimer];
-    }
-    self.deferredSleepOptionTimer = [NSTimer scheduledTimerWithTimeInterval:kRemoveDeferredOptionTimer target:self selector:@selector(prepareMenuIconsForUserAsleepWithoutDeferredOption) userInfo:nil repeats:NO];
+    [self writeRemoveDeferredSleepOptionDate];
+    
 }
 
 - (IBAction)sleepWasDeferredByUserMenuButton {
@@ -264,6 +284,8 @@
     [self.currentSleepSession.sleep replaceObjectAtIndex:self.currentSleepSession.sleep.count - 1 withObject:[NSDate date]];
     [self updateLabelsForSleepStartDeferred];
     [self writeCurrentSleepSessionToFile];
+    
+    [self writeRemoveDeferredSleepOptionDate];
     
 }
 
@@ -273,7 +295,6 @@
     [self.currentSleepSession.wake addObject:[NSDate date]];
     [self writeCurrentSleepSessionToFile];
     [self scheduleUserNotificationToEndSleepSession];
-    [self cancelTimer];
     [self prepareMenuIconsForUserAwakeInSleepSession];
 }
 
@@ -287,7 +308,6 @@
     }
     [self writeCurrentSleepSessionToFile];
     [self readHeartRateData];
-    [self cancelTimer];
     [self cancelPendingNotifications];
     [self removeDeliveredNotifications];
     [self prepareMenuIconsForUserNotInSleepSession];
@@ -300,7 +320,6 @@
     [self hideWakeIndicator];
     [self clearAllSleepValues];
     [self updateLabelsForSleepSessionEnded];
-    [self cancelTimer];
     [self cancelPendingNotifications];
     [self removeDeliveredNotifications];
     [self prepareMenuIconsForUserNotInSleepSession];
@@ -466,6 +485,27 @@
 
 
 #pragma mark - Menu Icon Methods
+
+- (void)determineMenuIconsToDisplay {
+    NSString *filePath = [Utility pathToSleepSessionDataFile];
+    NSMutableDictionary *sleepSessionFile = [NSMutableDictionary dictionaryWithContentsOfFile:filePath];
+    NSDate *removeDeferredSleepOptionDate = [sleepSessionFile objectForKey:@"removeDeferredSleepOptionDate"];
+    
+    BOOL isActiveSleepSession = [self isSleepSessionInProgress];
+    BOOL isUserAwake = [self isUserAwake];
+    
+    NSLog(@"[DEBUG] isUserAwake = %d", isUserAwake);
+    
+    if ([Utility compare:[NSDate date] isLaterThan:removeDeferredSleepOptionDate] && isActiveSleepSession && !isUserAwake) {
+        [self prepareMenuIconsForUserAsleepWithoutDeferredOption];
+    } else if (isActiveSleepSession && isUserAwake) {
+        [self prepareMenuIconsForUserAwakeInSleepSession];
+    } else if (isActiveSleepSession) {
+        [self prepareMenuIconsForUserAsleepInSleepSession];
+    }
+    
+}
+
 - (void)prepareMenuIconsForUserNotInSleepSession {
     [self clearAllMenuItems];
     [self addMenuItemWithImageNamed:@"sleepMenuIcon" title:@"Sleep" action:@selector(sleepDidStartMenuButton)];
@@ -699,10 +739,6 @@
     [self.currentSleepSession.wake removeAllObjects];
     [self.currentSleepSession.outBed removeAllObjects];
     self.proposedSleepStart = nil;
-}
-
-- (void)cancelTimer {
-    [self.deferredSleepOptionTimer invalidate];
 }
 
 
