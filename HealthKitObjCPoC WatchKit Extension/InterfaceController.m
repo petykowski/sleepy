@@ -261,9 +261,12 @@
 
 - (IBAction)sleepDidStartMenuButton {
     
+    // Validates to true if user is returning back to sleep
     if (self.currentSleepSession.wake.count > 0) {
         [self.currentSleepSession.outBed addObject:[self.currentSleepSession.wake objectAtIndex:self.currentSleepSession.wake.count - 1]];
         [self fadeWakeIndicator];
+        [self cancelPendingNotifications];
+        [self removeDeliveredNotifications];
     }
     
     [self.currentSleepSession.inBed addObject:[NSDate date]];
@@ -284,7 +287,6 @@
     [self.currentSleepSession.sleep replaceObjectAtIndex:self.currentSleepSession.sleep.count - 1 withObject:[NSDate date]];
     [self updateLabelsForSleepStartDeferred];
     [self writeCurrentSleepSessionToFile];
-    
     [self writeRemoveDeferredSleepOptionDate];
     
 }
