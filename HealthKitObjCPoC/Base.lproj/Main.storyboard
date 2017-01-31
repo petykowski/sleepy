@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16C48b" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Eqk-r2-0CO">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16E144f" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Eqk-r2-0CO">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -25,7 +25,7 @@
                                 <rect key="frame" x="0.0" y="28" width="375" height="60"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="BgN-ZG-VgA" id="Lbi-er-HYw">
-                                    <rect key="frame" x="0.0" y="0.0" width="342" height="59"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="342" height="59.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sleep Session Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cEW-pe-Qoe" userLabel="Sleep Session Label">
@@ -135,10 +135,10 @@
                         </containerView>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="detailViewCell" id="ctL-QL-sXh" customClass="SessionDetailTableViewCell">
-                                <rect key="frame" x="0.0" y="336" width="375" height="44"/>
+                                <rect key="frame" x="0.0" y="335.5" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ctL-QL-sXh" id="DMa-jK-DhW">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xdq-nm-BlO" userLabel="eventTitle">
@@ -255,10 +255,10 @@
                         <color key="separatorColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20784313730000001" alpha="1" colorSpace="calibratedRGB"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="statViewCell" id="9rQ-Zo-lke" customClass="StatisticsTableViewCell">
-                                <rect key="frame" x="0.0" y="56" width="375" height="44"/>
+                                <rect key="frame" x="0.0" y="55.5" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="9rQ-Zo-lke" id="l2y-q8-KWv">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MdC-b0-UDt">
@@ -323,7 +323,7 @@
                                 </constraints>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="equalCentering" translatesAutoresizingMaskIntoConstraints="NO" id="gh8-df-fyA">
-                                <rect key="frame" x="39" y="240" width="326" height="40"/>
+                                <rect key="frame" x="45" y="240" width="330" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="b5i-c2-fQI"/>
                                 </constraints>
@@ -344,15 +344,15 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="ZUK-yM-nZs" firstAttribute="leading" secondItem="Scw-Z9-cmr" secondAttribute="leading" id="883-mb-zdt"/>
-                            <constraint firstItem="gh8-df-fyA" firstAttribute="leading" secondItem="uwI-Ix-OOq" secondAttribute="trailing" constant="-6" id="Bx6-G1-Y0m"/>
                             <constraint firstAttribute="bottom" secondItem="uwI-Ix-OOq" secondAttribute="bottom" constant="45" id="OIt-0s-x2u"/>
-                            <constraint firstAttribute="trailing" secondItem="gh8-df-fyA" secondAttribute="trailing" constant="10" id="Oz2-pT-wAY"/>
+                            <constraint firstAttribute="trailing" secondItem="gh8-df-fyA" secondAttribute="trailing" id="Oz2-pT-wAY"/>
                             <constraint firstAttribute="trailing" secondItem="1sH-UE-x3q" secondAttribute="trailing" constant="10" id="T4F-7V-Fc8"/>
                             <constraint firstAttribute="trailing" secondItem="ZUK-yM-nZs" secondAttribute="trailing" id="ZoR-uk-nba"/>
                             <constraint firstItem="ZUK-yM-nZs" firstAttribute="centerX" secondItem="Scw-Z9-cmr" secondAttribute="centerX" id="aWe-ac-2pe"/>
                             <constraint firstItem="gh8-df-fyA" firstAttribute="top" secondItem="1sH-UE-x3q" secondAttribute="bottom" id="baT-fT-ktb"/>
                             <constraint firstAttribute="bottom" secondItem="gh8-df-fyA" secondAttribute="bottom" id="bcb-aa-mmt"/>
                             <constraint firstItem="1sH-UE-x3q" firstAttribute="leading" secondItem="uwI-Ix-OOq" secondAttribute="trailing" id="i5V-Ag-XQ7"/>
+                            <constraint firstItem="gh8-df-fyA" firstAttribute="leading" secondItem="Scw-Z9-cmr" secondAttribute="leading" constant="45" id="mIs-OE-GfN"/>
                             <constraint firstItem="uwI-Ix-OOq" firstAttribute="top" secondItem="ZUK-yM-nZs" secondAttribute="bottom" constant="5" id="q9L-MO-YId"/>
                             <constraint firstItem="1sH-UE-x3q" firstAttribute="top" secondItem="ZUK-yM-nZs" secondAttribute="bottom" id="qEG-oX-vSs"/>
                             <constraint firstItem="ZUK-yM-nZs" firstAttribute="top" secondItem="Scw-Z9-cmr" secondAttribute="top" id="umi-C7-Jie"/>
@@ -362,7 +362,9 @@
                     <connections>
                         <outlet property="chartLabel" destination="ZUK-yM-nZs" id="bQ9-lI-AbR"/>
                         <outlet property="mainChartView" destination="1sH-UE-x3q" id="rNi-M4-KPV"/>
+                        <outlet property="xAxisLeadingConstraint" destination="mIs-OE-GfN" id="unq-zn-fhe"/>
                         <outlet property="xAxisStack" destination="gh8-df-fyA" id="wRD-2K-3z5"/>
+                        <outlet property="xAxisTrailingConstraint" destination="Oz2-pT-wAY" id="lkI-yC-OPd"/>
                         <outlet property="yAxisStack" destination="uwI-Ix-OOq" id="9GO-xt-aJ9"/>
                     </connections>
                 </viewController>

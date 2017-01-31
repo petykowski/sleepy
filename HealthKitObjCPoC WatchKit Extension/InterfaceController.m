@@ -138,7 +138,7 @@
     if (!success) {
         BOOL didWrite;
         NSLog(@"[DEBUG] File not found in users documents directory.");
-        NSString *path = [[NSBundle mainBundle] pathForResource:@"SavedSleepSession" ofType:@"plist"];
+        NSString *path = [[NSBundle mainBundle] pathForResource:@"Health" ofType:@"plist"];
         didWrite = [fileManager copyItemAtPath:path toPath:filePath error:&error];
         
         if (didWrite) {
@@ -538,8 +538,7 @@
 - (void)prepareMenuIconsForDebugging {
     [self clearAllMenuItems];
     [self addMenuItemWithImageNamed:@"sleepMenuIcon" title:@"Sleep" action:@selector(sleepDidStartMenuButton)];
-    [self addMenuItemWithImageNamed:@"sleepMenuIcon" title:@"HR Data" action:@selector(populateHRData)];
-    [self addMenuItemWithImageNamed:@"sleepMenuIcon" title:@"Send Test Data" action:@selector(manuallySendTestDataToiOS)];
+    [self addMenuItemWithImageNamed:@"sleepMenuIcon" title:@"Populate Test Data" action:@selector(manuallySendTestDataToiOS)];
 }
 
 
@@ -744,50 +743,23 @@
 }
 
 
-#pragma mark - iOS Simulator Health Data
-
-- (void)populateHRData {
-    int x = 0;
-    int min = 50;
-    int max = 62;
-    
-    NSDate *now = [NSDate date];
-    
-    while (x < 480) {
-        
-        double randomInt = min + arc4random_uniform(max - min + 1);
-        
-        HKQuantityType *quantityType = [HKObjectType quantityTypeForIdentifier:HKQuantityTypeIdentifierHeartRate];
-        HKUnit *bpm = [HKUnit unitFromString:@"count/min"];
-        HKQuantity *quantity = [HKQuantity quantityWithUnit:bpm doubleValue:randomInt];
-        HKQuantitySample *quantitySample = [HKQuantitySample quantitySampleWithType:quantityType quantity:quantity startDate:[now dateByAddingTimeInterval:1+(600*x)] endDate:[now dateByAddingTimeInterval:3+(600*x)]];
-        
-        NSArray *array = [NSArray arrayWithObjects:quantitySample, nil];
-        
-        [self.healthStore saveObjects:array withCompletion:^(BOOL success, NSError *error){
-            if (!success) {
-                NSLog(@"[DEBUG] Failed to write data to Health.app with error: %@", error);
-            }
-        }];
-        
-        x++;
-    }
-}
-
-
-#pragma mark - Private Debug Methods
+#pragma mark - iOS Simulator Test Data Methods
 
 - (void)manuallySendTestDataToiOS {
-    NSDate *inBedStart = [[NSDate alloc] initWithTimeIntervalSinceNow:1]; // now
-    NSDate *sleepStart = [[NSDate alloc] initWithTimeIntervalSinceNow:901]; // 15.01 min from now
-    NSDate *sleepStop = [[NSDate alloc] initWithTimeIntervalSinceNow:14400]; // hours from now
-    NSDate *wakeStop = [[NSDate alloc] initWithTimeIntervalSinceNow:14401];
- 
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    formatter.dateFormat = @"yyyy.MM.dd G 'at' HH:mm:ss zzz";
+    formatter.timeZone = [NSTimeZone localTimeZone];
+    
+    NSDate *inBedStart = [formatter dateFromString:@"2017.01.25 AD at 00:05:00 EST"];
+    NSDate *sleepStart = [formatter dateFromString:@"2017.01.25 AD at 00:25:00 EST"];
+    NSDate *sleepStop = [formatter dateFromString:@"2017.01.25 AD at 6:56:00 EST"];
+    NSDate *wakeStop = [formatter dateFromString:@"2017.01.25 AD at 7:10:00 EST"];
+    
     [_currentSleepSession.inBed addObject:inBedStart];
     [_currentSleepSession.sleep addObject:sleepStart];
     [_currentSleepSession.wake addObject:sleepStop];
     [_currentSleepSession.outBed addObject:wakeStop];
- 
+    
     NSDictionary *testDataToSave = [[NSDictionary alloc] init];
     testDataToSave = [self populateDictionaryWithSleepSessionData];
     [[WCSession defaultSession] sendMessage:testDataToSave
@@ -800,6 +772,36 @@
                                    NSLog(@"[DEBUG] ERROR: %@", error);
                                }
      ];
+    
+    [self populateHRDataFrom:inBedStart to:wakeStop rangingFrom:51 to:98];
+}
+
+- (void)populateHRDataFrom:(NSDate *)startDate to:(NSDate *)endDate rangingFrom:(int)minHeartRate to:(int)maxHeartRate {
+    int x = 0;
+    int min = minHeartRate;
+    int max = maxHeartRate;
+    
+    NSMutableArray *arrayToSave = [[NSMutableArray alloc] init];
+    
+    while ([Utility compare:startDate isEarlierThanOrEqualTo:endDate]) {
+        double randomInt = min + arc4random_uniform(max - min + 1);
+        
+        HKQuantityType *quantityType = [HKObjectType quantityTypeForIdentifier:HKQuantityTypeIdentifierHeartRate];
+        HKUnit *bpm = [HKUnit unitFromString:@"count/min"];
+        HKQuantity *quantity = [HKQuantity quantityWithUnit:bpm doubleValue:randomInt];
+        HKQuantitySample *quantitySample = [HKQuantitySample quantitySampleWithType:quantityType quantity:quantity startDate:[startDate dateByAddingTimeInterval:1+(300*x)] endDate:[startDate dateByAddingTimeInterval:3+(300*x)]];
+        
+        [arrayToSave addObject:quantitySample];
+        
+        x++;
+        startDate = [NSDate dateWithTimeInterval:300 sinceDate:startDate];
+    }
+    
+    [self.healthStore saveObjects:arrayToSave withCompletion:^(BOOL success, NSError *error){
+        if (!success) {
+            NSLog(@"[DEBUG] Failed to write data to Health.app with error: %@", error);
+        }
+    }];
 }
 
 @end

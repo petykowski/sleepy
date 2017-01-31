@@ -18,19 +18,29 @@
 @property (strong, nonatomic) IBOutlet UIStackView *yAxisStack;
 @property (strong, nonatomic) IBOutlet UIStackView *xAxisStack;
 @property (strong, nonatomic) IBOutlet UIView *mainChartView;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *xAxisLeadingConstraint;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *xAxisTrailingConstraint;
 @property SleepStatistic *minStatistic;
 @property SleepStatistic *maxStatistic;
 @property SleepStatistic *avgStatistic;
 @property SleepStatistic *sleepDuration;
 @property SleepSession *detailSleepSession;
+@property double xAxisPadding;
 @property double yAxisPadding;
+@property double verticalGridLinePadding;
 @property UIBezierPath *pathHeartRate;
 @property CGPoint chartOrigin;
 @property NSNumber *chartMax;
 @property NSNumber *chartMin;
+@property NSNumber *heartRateMax;
+@property NSNumber *heartRateMin;
 @property NSArray *ktimes12HourWithAMPM;
 @property NSArray *ktimes12Hour;
 @property NSMutableArray *heartRateMilestones;
+@property NSMutableArray *xAxisValues;
+@property NSMutableArray *yAxisValues;
+@property double xAxisLeadingShift;
+@property double xAxisTrailingShift;
 @end
 
 @implementation ChartViewController
@@ -38,13 +48,24 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setPropertyDefaults];
-    [self refreshHealthStatistics];
-    [self drawChartFrameLines];
+    [self getHeartRateDataFromHealthKit:^(NSError *error) {
+        if (error) {
+            // No data avilable or disallowed from HealthKit or error
+            NSLog(@"An error has occured. The error was: %@", error);
+        } else {
+            [self getChartProperties];
+            [self drawChart];
+        }
+    }];
 }
+
+#pragma mark - Chart Defaults
 
 - (void)setPropertyDefaults {
     self.view.backgroundColor = [ColorConstants darkThemeSecondaryBackgroundColor];
+    _xAxisPadding = 10;
     _yAxisPadding = 10;
+    _verticalGridLinePadding = 6;
     
     [_chartLabel setText:_chartTitle];
     [_chartLabel setTextColor:[ColorConstants darkThemePrimaryTextColor]];
@@ -56,8 +77,183 @@
     _ktimes12Hour = @[@"12", @"1", @"2", @"3", @"4", @"5", @"6", @"7", @"8", @"9", @"10", @"11", @"12", @"1", @"2", @"3", @"4", @"5", @"6", @"7", @"8", @"9", @"10", @"11"];
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
+
+#pragma mark - HealthKit Methods
+
+- (NSPredicate *)predicateForSleepDuration {
+    
+    return [HKQuery predicateForSamplesWithStartDate:[_detailSleepSession.inBed firstObject] endDate:[_detailSleepSession.outBed lastObject] options:HKQueryOptionNone];
+}
+
+/**
+ * @brief Determine the minimum (minStatistic), maximum (maxStatistic), and average (avgStatistic) statistics for the given sleep session by querying the HealthStore against the total sleep session duration.
+ */
+- (void)getHeartRateDataFromHealthKit:(void (^)(NSError *))completionHandler {
+    NSPredicate *predicate = [self predicateForSleepDuration];
+    HKQuantityType *heartRateQuantityType = [HKQuantityType quantityTypeForIdentifier:HKQuantityTypeIdentifierHeartRate];
+    
+    HKStatisticsQuery *maxHeartRateQuery = [[HKStatisticsQuery alloc] initWithQuantityType:heartRateQuantityType quantitySamplePredicate:predicate options:HKStatisticsOptionDiscreteMax | HKStatisticsOptionDiscreteMin | HKStatisticsOptionDiscreteAverage completionHandler:^(HKStatisticsQuery * _Nonnull query, HKStatistics * _Nullable result, NSError * _Nullable error) {
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+            if (result) {
+                
+                _minStatistic = [[SleepStatistic alloc] initWithDouble:[result.minimumQuantity doubleValueForUnit:[HKUnit unitFromString:@"count/min"]]];
+                _maxStatistic = [[SleepStatistic alloc] initWithDouble:[result.maximumQuantity doubleValueForUnit:[HKUnit unitFromString:@"count/min"]]];
+                _avgStatistic = [[SleepStatistic alloc] initWithDouble:[result.averageQuantity doubleValueForUnit:[HKUnit unitFromString:@"count/min"]]];
+                
+                _minStatistic.stringResult = [NSString stringWithFormat:@"%.0f bpm", _minStatistic.result];
+                _maxStatistic.stringResult = [NSString stringWithFormat:@"%.0f bpm", _maxStatistic.result];
+                _avgStatistic.stringResult = [NSString stringWithFormat:@"%.0f bpm", _avgStatistic.result];
+                
+                [_heartRateMilestones addObject:_maxStatistic];
+                [_heartRateMilestones addObject:_minStatistic];
+            }
+            if (completionHandler) {
+                completionHandler(error);
+            }
+        });
+    }];
+    [self.healthStore executeQuery:maxHeartRateQuery];
+}
+
+
+#pragma mark - Chart Property Methods
+
+/**
+ * @brief Wrapper method to call on calculations for the x and y axis.
+ */
+- (void)getChartProperties {
+    [self calculateXAxisValues];
+    [self calculateYAxisValues];
+}
+
+- (void)calculateXAxisValues {
+    NSDateComponents *sleepSessionStartComponents = [[NSCalendar currentCalendar]
+                                                     components:NSCalendarUnitHour|NSCalendarUnitMinute
+                                                     fromDate:[_detailSleepSession.inBed firstObject]];
+    NSDateComponents *sleepSessionEndComponents = [[NSCalendar currentCalendar]
+                                                   components:NSCalendarUnitHour|NSCalendarUnitMinute
+                                                   fromDate:[_detailSleepSession.outBed lastObject]];
+    NSInteger startHour = [sleepSessionStartComponents hour];
+    NSInteger startMinute = [sleepSessionStartComponents minute];
+    NSInteger endHour = [sleepSessionEndComponents hour];
+    NSInteger endMinute = [sleepSessionEndComponents minute];
+    
+    NSDateComponents *fullSleepSessionDurationComponents = [[NSCalendar currentCalendar]
+                                                            components:NSCalendarUnitHour|NSCalendarUnitMinute
+                                                            fromDate:[_detailSleepSession.inBed firstObject]
+                                                            toDate:[_detailSleepSession.outBed lastObject]
+                                                            options:0];
+    NSInteger durationHours = [fullSleepSessionDurationComponents hour];
+    NSInteger durationMinutes = [fullSleepSessionDurationComponents minute];
+    NSMutableArray *timeMilestones = [[NSMutableArray alloc] init];
+    
+    NSLog(@"[DEBUG] startHour = %ld", (long)startHour);
+    NSLog(@"[DEBUG] endHour = %ld", (long)endHour);
+    NSLog(@"[DEBUG] durationHours = %ld", (long)durationHours);
+    NSLog(@"[DEBUG] durationMinutes = %ld", (long)durationMinutes);
+    
+    int x = 0;
+    
+    if (startMinute + durationMinutes > 60) {
+        durationHours = durationHours + 1;
+    }
+    
+    while (x <= durationHours) {
+        if (startHour == _ktimes12Hour.count) {
+            startHour = startHour - 24;
+        }
+        
+        [timeMilestones addObject:_ktimes12Hour[startHour]];
+        startHour++;
+        x++;
+    }
+    
+    _xAxisValues = timeMilestones;
+    NSLog(@"[DEBUG] _xAxisValues = %@", _xAxisValues);
+}
+
+- (void)calculateYAxisValues {
+    if (!_yAxisValues) {
+        _yAxisValues = [[NSMutableArray alloc] init];
+    }
+    
+    NSNumberFormatter *numberFormatterDown = [[NSNumberFormatter alloc] init];
+    [numberFormatterDown setRoundingMode:NSNumberFormatterRoundDown];
+    [numberFormatterDown setRoundingIncrement:[NSNumber numberWithInteger:5]];
+    NSString *min = [NSString stringWithFormat:@"%@", [numberFormatterDown stringFromNumber:[NSNumber numberWithFloat:_minStatistic.result]]];
+    
+    double yAxisRange = _maxStatistic.result - _minStatistic.result;
+    double scaleByIncrement = 0;
+    double chartBase = [[numberFormatterDown numberFromString:min] doubleValue];
+    double yAxisValue = chartBase;
+    
+    NSMutableArray *yAxisLabelsToDisplay = [[NSMutableArray alloc] init];
+    [yAxisLabelsToDisplay insertObject:[NSNumber numberWithFloat:chartBase] atIndex:0];
+    
+    if (yAxisRange <= 20) {
+        scaleByIncrement = 5;
+    } else if (yAxisRange <= 40) {
+        scaleByIncrement = 10;
+    } else if (yAxisRange <= 60) {
+        scaleByIncrement = 20;
+    } else {
+        scaleByIncrement = 25;
+    }
+    
+    while (yAxisValue < _maxStatistic.result) {
+        yAxisValue = yAxisValue + scaleByIncrement;
+        NSNumber *yAxisDataPoint = [[NSNumber alloc] initWithDouble:yAxisValue];
+        [yAxisLabelsToDisplay addObject:yAxisDataPoint];
+    }
+    
+    NSArray *reversedArray = [[yAxisLabelsToDisplay reverseObjectEnumerator] allObjects];
+    
+    _yAxisValues = [[NSMutableArray alloc] initWithArray:reversedArray];
+    _chartMin = [reversedArray lastObject];
+    _chartMax = [reversedArray firstObject];
+}
+
+
+#pragma mark - Chart Drawing Methods
+
+- (void)drawChart {
+    [self plotHeartRateOnGraph:^(NSError *error){
+        [self strokeHeartRatePathOnChart];
+        [self drawAverageHeartRateLine];
+        [self shiftLabels];
+        [self drawXAndYAxisLabels];
+        [self drawXAndYAxisLabelsGridLines];
+        [self drawChartFrameLines];
+    }];
+}
+
+- (void)shiftLabels {
+    [self calculateXAxisLabelShift];
+    _xAxisLeadingConstraint.constant = _xAxisLeadingConstraint.constant - _xAxisLeadingShift;
+    _xAxisTrailingConstraint.constant = _xAxisTrailingConstraint.constant + _xAxisTrailingShift;
+}
+
+- (void)calculateXAxisLabelShift {
+    double chartFrameWidth = self.view.frame.size.width - 45;
+    
+    NSDateComponents *sleepSessionStartComponents = [[NSCalendar currentCalendar]
+                                                     components:NSCalendarUnitMinute fromDate:[_detailSleepSession.inBed firstObject]];
+    NSDateComponents *sleepSessionEndComponents = [[NSCalendar currentCalendar]
+                                                   components:NSCalendarUnitMinute fromDate:[_detailSleepSession.outBed lastObject]];
+    NSDateComponents *totalSessionDurationComponents = [[NSCalendar currentCalendar] components:NSCalendarUnitHour|NSCalendarUnitMinute|NSCalendarUnitSecond fromDate:[_detailSleepSession.inBed firstObject] toDate:[_detailSleepSession.outBed lastObject] options:0];
+    
+    NSInteger startMinute = [sleepSessionStartComponents minute];
+    NSInteger endMinute = [sleepSessionEndComponents minute];
+    NSInteger durationHours = [totalSessionDurationComponents hour];
+    NSInteger durationMinutes = [totalSessionDurationComponents minute];
+    NSInteger durationSeconds = [totalSessionDurationComponents second];
+    
+    double totalSleepDurationInSeconds = (durationHours * 3600) + (durationMinutes * 60) + durationSeconds;
+    
+    _xAxisLeadingShift = (((startMinute * 60) * chartFrameWidth) / totalSleepDurationInSeconds) + 5;
+    _xAxisTrailingShift = (((endMinute * 60) * chartFrameWidth) / totalSleepDurationInSeconds) - 5;
 }
 
 - (void)drawChartFrameLines {
@@ -75,50 +271,9 @@
     }
 }
 
-- (void)updateAxisLabels {
-//    int indexCount = 0;
-//    int maxNumberOfLabels = 6;
-//    NSArray *xAxisLabelsFromSleepSession = [self generateXAxisLabels];
-//    NSMutableArray *xAxisLabelsToDisplay = [[NSMutableArray alloc] init];
-    
-//    xAxisLabelsFromSleepSession = @[@"12 AM", @"1 AM", @"2 AM", @"3 AM", @"4 AM", @"5 AM", @"6 AM", @"7 AM", @"8 AM"];
-    
-//    if (xAxisLabelsFromSleepSession.count < maxNumberOfLabels) {
-//        
-//        maxNumberOfLabels = (int)xAxisLabelsFromSleepSession.count;
-//        [xAxisLabelsToDisplay addObjectsFromArray:xAxisLabelsFromSleepSession];
-//        
-//    } else if (xAxisLabelsFromSleepSession.count <= 11) {
-//        
-//        while (xAxisLabelsToDisplay.count <= 6 && indexCount <= xAxisLabelsFromSleepSession.count) {
-//            [xAxisLabelsToDisplay addObject:xAxisLabelsFromSleepSession[indexCount]];
-//            indexCount += 2;
-//        };
-//    } else if (xAxisLabelsFromSleepSession.count > 11) {
-//        
-//        for (int x = 0; x < maxNumberOfLabels; x++) {
-//            if (x == 0) {
-//                [xAxisLabelsToDisplay addObject:[xAxisLabelsFromSleepSession firstObject]];
-//            } else if (x == maxNumberOfLabels -1) {
-//                [xAxisLabelsToDisplay addObject:[xAxisLabelsFromSleepSession lastObject]];
-//            } else {
-//                indexCount += 2;
-//                [xAxisLabelsToDisplay addObject:xAxisLabelsFromSleepSession[indexCount]];
-//            }
-//        }
-//    }
-//    
-//    for (int x = 0; x < xAxisLabelsToDisplay.count; x++) {
-//        UILabel *xAxisLabel = [[UILabel alloc] init];
-//        [xAxisLabel setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleCaption1]];
-//        [xAxisLabel setTextColor:[UIColor whiteColor]];
-//        [xAxisLabel setText:xAxisLabelsToDisplay[x]];
-//        [_xAxisStack addArrangedSubview:xAxisLabel];
-//    }
-//    NSArray *xAxisLabelsFromSleepSession = @[@"11", @"12", @"1", @"2", @"3", @"4", @"5", @"6", @"7", @"8", @"9"];
-    NSArray *xAxisLabelsFromSleepSession = [self generateXAxisLabels];
-    
-    NSArray *yAxisLabelsFromSleepSession = [self getYAxisScale];
+- (void)drawXAndYAxisLabels {
+    NSArray *xAxisLabelsFromSleepSession = _xAxisValues;
+    NSArray *yAxisLabelsFromSleepSession = _yAxisValues;
     
     for (int x = 0; x < xAxisLabelsFromSleepSession.count; x++) {
         UILabel *xAxisLabel = [[UILabel alloc] init];
@@ -137,101 +292,72 @@
         [yAxisLabel setText:[NSString stringWithFormat:@"%.0f", valueToDisplay]];
         [_yAxisStack addArrangedSubview:yAxisLabel];
     }
-    
-    [self drawGridLinesForXAxis:xAxisLabelsFromSleepSession andYAxis:yAxisLabelsFromSleepSession];
 }
 
-- (NSArray*)generateXAxisLabels {
-    NSDateComponents *fullSleepSessionDurationComponents = [[NSCalendar currentCalendar] components:NSCalendarUnitHour|NSCalendarUnitMinute fromDate:[_detailSleepSession.inBed firstObject] toDate:[_detailSleepSession.outBed lastObject] options:0];
-    NSInteger durationHours = [fullSleepSessionDurationComponents hour];
-    NSInteger durationMinutes = [fullSleepSessionDurationComponents minute];
+- (void)drawXAndYAxisLabelsGridLines {
+    NSMutableArray *xAxisData = _xAxisValues;
+    NSMutableArray *yAxisData = _yAxisValues;
     
-    NSDateComponents *startComponents = [[NSCalendar currentCalendar] components:NSCalendarUnitHour fromDate:[_detailSleepSession.inBed firstObject]];
-    NSInteger startHour = [startComponents hour];
-    NSMutableArray *timeMilestones = [[NSMutableArray alloc] init];
-    
-    int x = 0;
-    
-    // Allows chart to display label for the last hour of sleep in chart
-    if (durationMinutes > 0) {
-        durationHours = durationHours + 1;
-    }
-    
-    while (x <= durationHours) {
-        if (startHour > _ktimes12Hour.count - 1) {
-            startHour = startHour - [_ktimes12Hour count];
-        }
-        [timeMilestones addObject:_ktimes12Hour[startHour]];
-        startHour++;
-        x++;
-    }
-    return timeMilestones;
-}
-
-- (NSPredicate *)predicateForSleepDuration {
-    
-    return [HKQuery predicateForSamplesWithStartDate:[_detailSleepSession.inBed firstObject] endDate:[_detailSleepSession.outBed lastObject] options:HKQueryOptionNone];
-}
-
-- (void)refreshHealthStatistics {
-    [self generateYAxisLabels:^(NSError *error) {
-        [self plotHeartRateOnGraph:^(NSError *error){
-            [self updateAxisLabels];
-            [self strokeHeartRatePathOnChart];
-            [self drawAverageHeartRateLine];
-        }];
-    }];
-}
-
--(void)generateYAxisLabels:(void (^)(NSError *))completionHandler {
-    NSPredicate *predicate = [self predicateForSleepDuration];
-    HKQuantityType *heartRateQuantityType = [HKQuantityType quantityTypeForIdentifier:HKQuantityTypeIdentifierHeartRate];
-    
-    NSNumberFormatter *numberFormatterDown = [[NSNumberFormatter alloc] init];
-    [numberFormatterDown setRoundingMode:NSNumberFormatterRoundDown];
-    [numberFormatterDown setRoundingIncrement:[NSNumber numberWithInteger:5]];
-    
-    NSNumberFormatter *numberFormatterUp = [[NSNumberFormatter alloc] init];
-    [numberFormatterUp setRoundingMode:NSNumberFormatterRoundUp];
-    [numberFormatterUp setRoundingIncrement:[NSNumber numberWithInteger:5]];
-    
-        HKStatisticsQuery *maxHeartRateQuery = [[HKStatisticsQuery alloc] initWithQuantityType:heartRateQuantityType quantitySamplePredicate:predicate options:HKStatisticsOptionDiscreteMax | HKStatisticsOptionDiscreteMin | HKStatisticsOptionDiscreteAverage completionHandler:^(HKStatisticsQuery * _Nonnull query, HKStatistics * _Nullable result, NSError * _Nullable error) {
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                
-                if (result) {
-                    
-                    _minStatistic = [[SleepStatistic alloc] initWithDouble:[result.minimumQuantity doubleValueForUnit:[HKUnit unitFromString:@"count/min"]]];
-                    _maxStatistic = [[SleepStatistic alloc] initWithDouble:[result.maximumQuantity doubleValueForUnit:[HKUnit unitFromString:@"count/min"]]];
-                    _avgStatistic = [[SleepStatistic alloc] initWithDouble:[result.averageQuantity doubleValueForUnit:[HKUnit unitFromString:@"count/min"]]];
-            
-                    _minStatistic.stringResult = [NSString stringWithFormat:@"%@ bpm", [numberFormatterDown stringFromNumber:[NSNumber numberWithFloat:_minStatistic.result]]];
-                    _maxStatistic.stringResult = [NSString stringWithFormat:@"%@ bpm", [numberFormatterUp stringFromNumber:[NSNumber numberWithFloat:_maxStatistic.result]]];
-                    _avgStatistic.stringResult = [NSString stringWithFormat:@"%@ bpm", [numberFormatterUp stringFromNumber:[NSNumber numberWithFloat:_avgStatistic.result]]];
-                    
-                    NSString *min = [NSString stringWithFormat:@"%@", [numberFormatterDown stringFromNumber:[NSNumber numberWithFloat:_minStatistic.result]]];
-                    NSString *max = [NSString stringWithFormat:@"%@", [numberFormatterUp stringFromNumber:[NSNumber numberWithFloat:_maxStatistic.result]]];
-                    
-                    _chartMin = [numberFormatterDown numberFromString:min];
-                    _chartMax = [numberFormatterUp numberFromString:max];
-                    
-                    [_heartRateMilestones addObject:_maxStatistic];
-                    [_heartRateMilestones addObject:_minStatistic];
-                }
-                if (completionHandler) {
-                    completionHandler(error);
-                }
-            });
-        }];
+    if (xAxisData.count > 1 && yAxisData.count > 1) {
+        double verticalGridLineSpacing = (_xAxisStack.frame.size.width + _xAxisLeadingShift - _xAxisTrailingShift - _xAxisPadding) / (_xAxisValues.count - 1);
+        double horizontalGridLineSpacing = (_mainChartView.frame.size.height - (_yAxisPadding * 2)) / (yAxisData.count - 1);
         
-    [self.healthStore executeQuery:maxHeartRateQuery];
+        UIView *verticalGridLineView = [[UIView alloc] initWithFrame:CGRectMake(_mainChartView.frame.origin.x -_xAxisLeadingShift + _verticalGridLinePadding, _mainChartView.frame.origin.y, _xAxisStack.frame.size.width + _xAxisLeadingShift - _xAxisTrailingShift - _xAxisPadding, _mainChartView.frame.size.height)];
+        
+        // Draw Vertical Grid Lines
+        for (int i = 0; i < _xAxisValues.count; i++) {
+            UIBezierPath *gridLine = [UIBezierPath bezierPath];
+            [gridLine moveToPoint:CGPointMake((i * verticalGridLineSpacing), 0)];
+            [gridLine addLineToPoint:CGPointMake((i * verticalGridLineSpacing), 0 + _mainChartView.frame.size.height)];
+            
+            CAShapeLayer *gridLineLayer = [CAShapeLayer layer];
+            gridLineLayer.frame = CGRectMake(0, 0, _mainChartView.frame.size.width, _mainChartView.frame.size.height);
+            gridLineLayer.path = gridLine.CGPath;
+            gridLineLayer.strokeColor = [ColorConstants darkThemeChartGridLineColor].CGColor;
+            gridLineLayer.lineDashPattern = @[@2, @8];
+            gridLineLayer.fillColor = nil;
+            gridLineLayer.lineWidth = 1;
+            gridLineLayer.lineJoin = kCALineJoinRound;
+            [verticalGridLineView.layer addSublayer:gridLineLayer];
+        }
+        [self.view addSubview:verticalGridLineView];
+        
+        // Draw Horizontal Grid Lines
+        for (int i = 0; i < yAxisData.count; i++) {
+            UIBezierPath *gridLine = [UIBezierPath bezierPath];
+            if (i == 0) {
+                [gridLine moveToPoint:CGPointMake(0, _yAxisPadding)];
+                [gridLine addLineToPoint:CGPointMake(_mainChartView.frame.size.width + 5, _yAxisPadding)];
+            } else if (i == yAxisData.count - 1) {
+                [gridLine moveToPoint:CGPointMake(0, _mainChartView.frame.size.height - _yAxisPadding)];
+                [gridLine addLineToPoint:CGPointMake(_mainChartView.frame.size.width + 5, _mainChartView.frame.size.height - _yAxisPadding)];
+            } else {
+                [gridLine moveToPoint:CGPointMake(0, _yAxisPadding + (horizontalGridLineSpacing * i))];
+                [gridLine addLineToPoint:CGPointMake(_mainChartView.frame.size.width + 5, _yAxisPadding + (horizontalGridLineSpacing * i))];
+            }
+            CAShapeLayer *gridLineLayer = [CAShapeLayer layer];
+            gridLineLayer.frame = CGRectMake(0, 0, _mainChartView.frame.size.width + 5, 0 + (horizontalGridLineSpacing * i));
+            gridLineLayer.path = gridLine.CGPath;
+            gridLineLayer.strokeColor = [ColorConstants darkThemeChartGridLineColor].CGColor;
+            gridLineLayer.lineDashPattern = @[@2, @8];
+            gridLineLayer.fillColor = nil;
+            gridLineLayer.lineWidth = 1;
+            gridLineLayer.lineJoin = kCALineJoinRound;
+            [_mainChartView.layer addSublayer:gridLineLayer];
+            
+        }
+    } else {
+        NSLog(@"[DEBUG] No Data To Draw");
+    }
+
 }
 
--(void) plotHeartRateOnGraph:(void (^)(NSError *))completionHandler {
+- (void)plotHeartRateOnGraph:(void (^)(NSError *))completionHandler {
     double chartFrameWidth = self.view.frame.size.width - 45;
     double chartFrameHeight = _mainChartView.frame.size.height - (2 * _yAxisPadding);
     int dataPointRadius = 1.75;
     double heartRateRange = _chartMax.doubleValue - _chartMin.doubleValue;
+    NSLog(@"[DEBUG] heartRateRange%f = _chartMax.doubleValue%f - _chartMin.doubleValue%f", heartRateRange, _chartMax.doubleValue, _chartMin.doubleValue);
     
     // Line
     _pathHeartRate = [UIBezierPath bezierPath];
@@ -243,7 +369,6 @@
     NSInteger seconds = [totalSessionDurationComponents second];
     
     double totalSleepDuration = (hours * 3600) + (minutes * 60) + seconds;
-    
     NSDate *sampleStartDate = [_detailSleepSession.inBed firstObject];
     NSDate *sampleEndDate = [_detailSleepSession.outBed lastObject];
     
@@ -266,14 +391,12 @@
                 
                 // Calculate X Coordinate
                 double sampleDuration = (sampleHours * 3600) + (sampleminutes * 60) + sampleseconds;
-                double xCoordinate = (sampleDuration * chartFrameWidth) / totalSleepDuration;
+                double xCoordinate = ((sampleDuration * chartFrameWidth) / totalSleepDuration);
                 
                 // Calculate Y Coordinate
                 double heartRate = [sample.quantity doubleValueForUnit:[HKUnit unitFromString:@"count/min"]];
                 double adjustedRate = _chartMax.doubleValue - heartRate;
-#warning this incorrectly calculates the yCorrdinate value because it assumes the min is at the bottom of chart and max is at the top of the chart. This does not take into account a chart that shows 40 to 100; that 91(max) is not 100. We need to take into account the scale which is being displayed along the y-axis.
                 double yCoordinate = ((adjustedRate * chartFrameHeight) / heartRateRange) + _yAxisPadding;
-                
                 UIBezierPath *circle = [UIBezierPath bezierPathWithOvalInRect:CGRectMake(xCoordinate + 45 - dataPointRadius, _chartOrigin.y + yCoordinate - (dataPointRadius * 2), dataPointRadius * 2, dataPointRadius * 2)];
                 CAShapeLayer *fillLayer = [CAShapeLayer layer];
                 fillLayer.frame = CGRectMake(xCoordinate + 45, 100, dataPointRadius, dataPointRadius);
@@ -286,9 +409,9 @@
                 [self.view.layer addSublayer:fillLayer];
                 
                 if (indexCount > 0) {
-                    [_pathHeartRate addLineToPoint:CGPointMake(xCoordinate, yCoordinate)];
+                    [_pathHeartRate addLineToPoint:CGPointMake(xCoordinate, yCoordinate - dataPointRadius)];
                 } else {
-                    [_pathHeartRate moveToPoint:CGPointMake(xCoordinate, yCoordinate)];
+                    [_pathHeartRate moveToPoint:CGPointMake(xCoordinate, yCoordinate - dataPointRadius)];
                     
                 }
                 indexCount = indexCount + 1;
@@ -339,84 +462,6 @@
     pathLayer.lineWidth = 1;
     pathLayer.lineJoin = kCALineJoinRound;
     [self.view.layer addSublayer:pathLayer];
-}
-
--(void)drawGridLinesForXAxis:(NSArray*)xAxisData andYAxis:(NSArray*)yAxisData {
-    if (xAxisData.count > 1 && yAxisData.count > 1) {
-        double verticalGridLineSpacing = (_mainChartView.frame.size.width - 5) / (xAxisData.count - 1);
-        double horizontalGridLineSpacing = (_mainChartView.frame.size.height - (_yAxisPadding * 2)) / (yAxisData.count - 1);
-        
-        // Draw Vertical Grid Lines
-        for(int i = 1; i < xAxisData.count; i++) {
-            UIBezierPath *gridLine = [UIBezierPath bezierPath];
-            [gridLine moveToPoint:CGPointMake(0 + (i * verticalGridLineSpacing), 0)];
-            [gridLine addLineToPoint:CGPointMake(0 + (i * verticalGridLineSpacing), 0 + _mainChartView.frame.size.height)];
-            
-            CAShapeLayer *gridLineLayer = [CAShapeLayer layer];
-            gridLineLayer.frame = CGRectMake(0, 0, _mainChartView.frame.size.width, _mainChartView.frame.size.height);
-            gridLineLayer.path = gridLine.CGPath;
-            gridLineLayer.strokeColor = [ColorConstants darkThemeChartGridLineColor].CGColor;
-            gridLineLayer.lineDashPattern = @[@2, @8];
-            gridLineLayer.fillColor = nil;
-            gridLineLayer.lineWidth = 1;
-            gridLineLayer.lineJoin = kCALineJoinRound;
-            [_mainChartView.layer addSublayer:gridLineLayer];
-        }
-        
-        // Draw Horizontal Grid Lines
-        for (int i = 0; i < yAxisData.count; i++) {
-            UIBezierPath *gridLine = [UIBezierPath bezierPath];
-            if (i == 0) {
-                [gridLine moveToPoint:CGPointMake(0, _yAxisPadding)];
-                [gridLine addLineToPoint:CGPointMake(_mainChartView.frame.size.width + 5, _yAxisPadding)];
-            } else if (i == yAxisData.count - 1) {
-                [gridLine moveToPoint:CGPointMake(0, _mainChartView.frame.size.height - _yAxisPadding)];
-                [gridLine addLineToPoint:CGPointMake(_mainChartView.frame.size.width + 5, _mainChartView.frame.size.height - _yAxisPadding)];
-            } else {
-                [gridLine moveToPoint:CGPointMake(0, _yAxisPadding + (horizontalGridLineSpacing * i))];
-                [gridLine addLineToPoint:CGPointMake(_mainChartView.frame.size.width + 5, _yAxisPadding + (horizontalGridLineSpacing * i))];
-            }
-            CAShapeLayer *gridLineLayer = [CAShapeLayer layer];
-            gridLineLayer.frame = CGRectMake(0, 0, _mainChartView.frame.size.width + 5, 0 + (horizontalGridLineSpacing * i));
-            gridLineLayer.path = gridLine.CGPath;
-            gridLineLayer.strokeColor = [ColorConstants darkThemeChartGridLineColor].CGColor;
-            gridLineLayer.lineDashPattern = @[@2, @8];
-            gridLineLayer.fillColor = nil;
-            gridLineLayer.lineWidth = 1;
-            gridLineLayer.lineJoin = kCALineJoinRound;
-            [_mainChartView.layer addSublayer:gridLineLayer];
-            
-        }
-    } else {
-        NSLog(@"[DEBUG] No Data To Draw");
-    }
-}
-
--(NSArray *)getYAxisScale {
-    double yAxisRange = [_chartMax doubleValue] - [_chartMin doubleValue];
-    double scaleBy = 0;
-    double valueToSet = [_chartMin doubleValue];
-    NSMutableArray *yAxisLabelsToDisplay = [[NSMutableArray alloc] init];
-    if (yAxisRange <= 20) {
-        scaleBy = 5;
-    } else if (yAxisRange <= 40) {
-        scaleBy = 10;
-    } else if (yAxisRange <= 60) {
-        scaleBy = 20;
-    } else {
-        scaleBy = 25;
-    }
-    
-    while (valueToSet < [_chartMax doubleValue]) {
-        valueToSet = valueToSet + scaleBy;
-        NSNumber *yAxisDataPoint = [[NSNumber alloc] initWithDouble:valueToSet];
-        [yAxisLabelsToDisplay addObject:yAxisDataPoint];
-    }
-    [yAxisLabelsToDisplay insertObject:_chartMin atIndex:0];
-    NSArray *reversedArray = [[yAxisLabelsToDisplay reverseObjectEnumerator] allObjects];
-    _chartMax = [reversedArray firstObject];
-    
-    return reversedArray;
 }
 
 @end
