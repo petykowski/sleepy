@@ -20,6 +20,7 @@
 @property (strong, nonatomic) IBOutlet UIView *mainChartView;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *xAxisLeadingConstraint;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *xAxisTrailingConstraint;
+@property UIView *plottedPoints;
 @property SleepStatistic *minStatistic;
 @property SleepStatistic *maxStatistic;
 @property SleepStatistic *avgStatistic;
@@ -138,7 +139,6 @@
     NSInteger startHour = [sleepSessionStartComponents hour];
     NSInteger startMinute = [sleepSessionStartComponents minute];
     NSInteger endHour = [sleepSessionEndComponents hour];
-    NSInteger endMinute = [sleepSessionEndComponents minute];
     
     NSDateComponents *fullSleepSessionDurationComponents = [[NSCalendar currentCalendar]
                                                             components:NSCalendarUnitHour|NSCalendarUnitMinute
@@ -219,13 +219,14 @@
 #pragma mark - Chart Drawing Methods
 
 - (void)drawChart {
+    [self drawChartFrameLines];
     [self plotHeartRateOnGraph:^(NSError *error){
         [self strokeHeartRatePathOnChart];
         [self drawAverageHeartRateLine];
         [self shiftLabels];
-        [self drawXAndYAxisLabels];
         [self drawXAndYAxisLabelsGridLines];
-        [self drawChartFrameLines];
+        [self drawXAndYAxisLabels];
+        [self organizeStack];
     }];
 }
 
@@ -233,6 +234,11 @@
     [self calculateXAxisLabelShift];
     _xAxisLeadingConstraint.constant = _xAxisLeadingConstraint.constant - _xAxisLeadingShift;
     _xAxisTrailingConstraint.constant = _xAxisTrailingConstraint.constant + _xAxisTrailingShift;
+}
+
+-(void) organizeStack {
+    [self.view bringSubviewToFront:_yAxisStack];
+    [self.view bringSubviewToFront:_plottedPoints];
 }
 
 - (void)calculateXAxisLabelShift {
@@ -322,6 +328,10 @@
         }
         [self.view addSubview:verticalGridLineView];
         
+        UIView *cover = [[UIView alloc] initWithFrame:CGRectMake(0, _mainChartView.frame.origin.y + 1, 45,_mainChartView.frame.size.height - 1)];
+        [cover setBackgroundColor:[ColorConstants darkThemeSecondaryBackgroundColor]];
+        [self.view insertSubview:cover aboveSubview:verticalGridLineView];
+
         // Draw Horizontal Grid Lines
         for (int i = 0; i < yAxisData.count; i++) {
             UIBezierPath *gridLine = [UIBezierPath bezierPath];
@@ -344,7 +354,6 @@
             gridLineLayer.lineWidth = 1;
             gridLineLayer.lineJoin = kCALineJoinRound;
             [_mainChartView.layer addSublayer:gridLineLayer];
-            
         }
     } else {
         NSLog(@"[DEBUG] No Data To Draw");
@@ -353,6 +362,8 @@
 }
 
 - (void)plotHeartRateOnGraph:(void (^)(NSError *))completionHandler {
+    _plottedPoints = [[UIView alloc] initWithFrame:CGRectMake(0, 0, _mainChartView.frame.size.width, _mainChartView.frame.size.height)];
+    
     double chartFrameWidth = self.view.frame.size.width - 45;
     double chartFrameHeight = _mainChartView.frame.size.height - (2 * _yAxisPadding);
     int dataPointRadius = 1.75;
@@ -406,7 +417,8 @@
                 fillLayer.fillColor = [UIColor whiteColor].CGColor;
                 fillLayer.lineWidth = 1;
                 fillLayer.lineJoin = kCALineJoinRound;
-                [self.view.layer addSublayer:fillLayer];
+                [_plottedPoints.layer addSublayer:fillLayer];
+                [self.view addSubview:_plottedPoints];
                 
                 if (indexCount > 0) {
                     [_pathHeartRate addLineToPoint:CGPointMake(xCoordinate, yCoordinate - dataPointRadius)];
@@ -461,7 +473,7 @@
     pathLayer.fillColor = nil;
     pathLayer.lineWidth = 1;
     pathLayer.lineJoin = kCALineJoinRound;
-    [self.view.layer addSublayer:pathLayer];
+    [_plottedPoints.layer addSublayer:pathLayer];
 }
 
 @end
