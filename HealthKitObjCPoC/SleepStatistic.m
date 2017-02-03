@@ -19,5 +19,15 @@
     return self;
 }
 
+- (id)initWithDouble:(double)result {
+    self = [super init];
+    if (self) {
+        _name = [[NSString alloc] init];
+        _stringResult = [[NSString alloc] init];
+        _result = result;
+    }
+    return self;
+}
+
 
 @end

@@ -46,8 +46,6 @@
     if (self) {
         _lastSleepSession = [[SleepSession alloc] init];
         
-        [self prepareMenuIconsForResendingSleepData];
-        
         // Initate WatchConnectivity
         if ([WCSession isSupported]) {
             self.connectedSession = [WCSession defaultSession];
@@ -73,6 +71,7 @@
         [self hideNewUserMessage];
         [self getMilestoneTimes];
         [self updateMilestoneTableData];
+        [self prepareMenuIconsForResendingSleepData];
     } else if (!self.sleepDataExsists){
         [self displayNewUserMessage];
     }

@@ -15,13 +15,17 @@
 #import "SleepSession.h"
 
 @import HealthKit;
+@import UserNotifications;
 
-@interface InterfaceController() <InterfaceControllerSleepDelegate, WCSessionDelegate>
-
+@interface InterfaceController() <InterfaceControllerSleepDelegate, WCSessionDelegate, UNUserNotificationCenterDelegate>
 
 // HEALTHKIT PROPERTIES //
 
 @property (nonatomic, retain) HKHealthStore *healthStore;
+
+// NOTIFICATION CENTER PROPERTIES //
+
+@property (nonatomic, retain) UNUserNotificationCenter *notificationCenter;
 
 // SLEEP SESSION //
 
@@ -58,6 +62,9 @@
 - (instancetype)init {
     self = [super init];
     
+    _notificationCenter = [UNUserNotificationCenter currentNotificationCenter];
+    [self configureUserNotificationCenter];
+    
     self.healthStore = [[HKHealthStore alloc] init];
     
     [self checkForPlist];
@@ -70,9 +77,8 @@
     if (self.currentSleepSession.isSleepSessionInProgress) {
         [self populateSleepSessionWithCurrentSessionData];
         [self updateLabelsForSleepSessionStart];
-        [self prepareMenuIconsForUserAsleepInSleepSession];
+        [self determineMenuIconsToDisplay];
         NSLog(@"[VERBOSE] User is currently asleep. Resuming sleep state.");
-        
     } else {
         [self updateLabelsForSleepSessionEnded];
         [self prepareMenuIconsForUserNotInSleepSession];
@@ -102,6 +108,8 @@
         NSLog(@"[VERBOSE] Sleeper does not have access to Health.app, prompting user for access.");
         [self requestAccessToHealthKit];
     }
+    
+    [self determineMenuIconsToDisplay];
     
 }
 
@@ -148,8 +156,33 @@
     return thebool;
 }
 
+- (BOOL)isUserAwake {
+    int inBedCount = [self.currentSleepSession.inBed count];
+    int awakeCount = [self.currentSleepSession.wake count];
+    
+    NSLog(@"[DEBUG] inBedCount = %d", inBedCount);
+    NSLog(@"[DEBUG] awakeCount = %d", awakeCount);
+    
+    return awakeCount == inBedCount && awakeCount > 0;
+}
+
 - (void)populateSleepSessionWithCurrentSessionData {
     self.currentSleepSession = [Utility contentsOfCurrentSleepSession];
+}
+
+- (void)writeRemoveDeferredSleepOptionDate {
+    NSString *filePath = [Utility pathToSleepSessionDataFile];
+    NSMutableDictionary *sleepSessionFile = [NSMutableDictionary dictionaryWithContentsOfFile:filePath];
+    NSDate *removeDeferredSleepOptionDate = [NSDate dateWithTimeIntervalSinceNow:kRemoveDeferredOptionTimer];
+    
+    [sleepSessionFile setObject:removeDeferredSleepOptionDate forKey:@"removeDeferredSleepOptionDate"];
+    
+    BOOL didWrite = [sleepSessionFile writeToFile:filePath atomically:YES];
+    if (didWrite) {
+        NSLog(@"[VERBOSE] Date to remove sleep deferred option sucessfully written to file.");
+    } else {
+        NSLog(@"[DEBUG] Failed to write data to file.");
+    }
 }
 
 - (void)writeCurrentSleepSessionToFile {
@@ -228,9 +261,12 @@
 
 - (IBAction)sleepDidStartMenuButton {
     
+    // Validates to true if user is returning back to sleep
     if (self.currentSleepSession.wake.count > 0) {
         [self.currentSleepSession.outBed addObject:[self.currentSleepSession.wake objectAtIndex:self.currentSleepSession.wake.count - 1]];
         [self fadeWakeIndicator];
+        [self cancelPendingNotifications];
+        [self removeDeliveredNotifications];
     }
     
     [self.currentSleepSession.inBed addObject:[NSDate date]];
@@ -241,6 +277,9 @@
     [self writeCurrentSleepSessionToFile];
     
     [self prepareMenuIconsForUserAsleepInSleepSession];
+    
+    [self writeRemoveDeferredSleepOptionDate];
+    
 }
 
 - (IBAction)sleepWasDeferredByUserMenuButton {
@@ -248,6 +287,7 @@
     [self.currentSleepSession.sleep replaceObjectAtIndex:self.currentSleepSession.sleep.count - 1 withObject:[NSDate date]];
     [self updateLabelsForSleepStartDeferred];
     [self writeCurrentSleepSessionToFile];
+    [self writeRemoveDeferredSleepOptionDate];
     
 }
 
@@ -256,9 +296,9 @@
     [self displayWakeIndicator];
     [self.currentSleepSession.wake addObject:[NSDate date]];
     [self writeCurrentSleepSessionToFile];
+    [self scheduleUserNotificationToEndSleepSession];
     [self prepareMenuIconsForUserAwakeInSleepSession];
 }
-
 
 - (IBAction)sleepDidStopMenuButton {
     
@@ -270,8 +310,9 @@
     }
     [self writeCurrentSleepSessionToFile];
     [self readHeartRateData];
+    [self cancelPendingNotifications];
+    [self removeDeliveredNotifications];
     [self prepareMenuIconsForUserNotInSleepSession];
-    
     
 }
 
@@ -281,12 +322,12 @@
     [self hideWakeIndicator];
     [self clearAllSleepValues];
     [self updateLabelsForSleepSessionEnded];
+    [self cancelPendingNotifications];
+    [self removeDeliveredNotifications];
     [self prepareMenuIconsForUserNotInSleepSession];
     [self writeCurrentSleepSessionToFile];
     
-    
 }
-
 
 
 #pragma mark - HealthKit Methods
@@ -446,6 +487,27 @@
 
 
 #pragma mark - Menu Icon Methods
+
+- (void)determineMenuIconsToDisplay {
+    NSString *filePath = [Utility pathToSleepSessionDataFile];
+    NSMutableDictionary *sleepSessionFile = [NSMutableDictionary dictionaryWithContentsOfFile:filePath];
+    NSDate *removeDeferredSleepOptionDate = [sleepSessionFile objectForKey:@"removeDeferredSleepOptionDate"];
+    
+    BOOL isActiveSleepSession = [self isSleepSessionInProgress];
+    BOOL isUserAwake = [self isUserAwake];
+    
+    NSLog(@"[DEBUG] isUserAwake = %d", isUserAwake);
+    
+    if ([Utility compare:[NSDate date] isLaterThan:removeDeferredSleepOptionDate] && isActiveSleepSession && !isUserAwake) {
+        [self prepareMenuIconsForUserAsleepWithoutDeferredOption];
+    } else if (isActiveSleepSession && isUserAwake) {
+        [self prepareMenuIconsForUserAwakeInSleepSession];
+    } else if (isActiveSleepSession) {
+        [self prepareMenuIconsForUserAsleepInSleepSession];
+    }
+    
+}
+
 - (void)prepareMenuIconsForUserNotInSleepSession {
     [self clearAllMenuItems];
     [self addMenuItemWithImageNamed:@"sleepMenuIcon" title:@"Sleep" action:@selector(sleepDidStartMenuButton)];
@@ -464,6 +526,19 @@
     [self addMenuItemWithItemIcon:WKMenuItemIconAccept title:@"End" action:@selector(sleepDidStopMenuButton)];
     [self addMenuItemWithItemIcon:WKMenuItemIconBlock title:@"Cancel" action:@selector(sleepWasCancelledByUserMenuButton)];
     [self addMenuItemWithImageNamed:@"backToSleepMenuIcon" title:@"Back To Sleep" action:@selector(sleepDidStartMenuButton)];
+}
+
+- (void)prepareMenuIconsForUserAsleepWithoutDeferredOption {
+    [self clearAllMenuItems];
+    [self addMenuItemWithItemIcon:WKMenuItemIconAccept title:@"End" action:@selector(sleepDidStopMenuButton)];
+    [self addMenuItemWithItemIcon:WKMenuItemIconBlock title:@"Cancel" action:@selector(sleepWasCancelledByUserMenuButton)];
+    [self addMenuItemWithImageNamed:@"wakeMenuIcon" title:@"Wake" action:@selector(userAwokeByUserMenuButton)];
+}
+
+- (void)prepareMenuIconsForDebugging {
+    [self clearAllMenuItems];
+    [self addMenuItemWithImageNamed:@"sleepMenuIcon" title:@"Sleep" action:@selector(sleepDidStartMenuButton)];
+    [self addMenuItemWithImageNamed:@"sleepMenuIcon" title:@"Populate Test Data" action:@selector(manuallySendTestDataToiOS)];
 }
 
 
@@ -500,13 +575,14 @@
 
 - (void)presentControllerToConfirmProposedSleepTime {
     if (self.proposedSleepStart == nil) {
-        [self presentControllerWithName:@"User Input Sleep Start" context:@{@"delegate" : self,
-                                                                            @"time" : [_currentSleepSession.sleep firstObject],
-                                                            @"maxSleepStart" : [_currentSleepSession.wake firstObject]}];
+        [self presentControllerWithName:@"User Input Sleep Start"
+                                context:@{@"delegate" : self,
+                                          @"time" : [_currentSleepSession.sleep firstObject],
+                                          @"maxSleepStart" : [_currentSleepSession.wake firstObject]}];
     } else {
-        self.proposedSleepStart = [self.currentSleepSession.sleep firstObject];
-        [self presentControllerWithName:@"confirm" context:@{@"delegate" : self,
-                                                             @"time" : self.proposedSleepStart}];
+        [self presentControllerWithName:@"confirm"
+                                context:@{@"delegate" : self,
+                                          @"time" : self.proposedSleepStart}];
     }
 }
 
@@ -534,6 +610,90 @@
 -(void)hideWakeIndicator{
     [self.wakeIndicator setHidden:true];
 }
+
+
+#pragma mark - User Notifications
+
+- (void)configureUserNotificationCenter {
+    _notificationCenter.delegate = self;
+    
+    UNNotificationAction *endSleepSessionAction = [UNNotificationAction
+                                                   actionWithIdentifier:kEndSleepSessionActionIdentifier
+                                                   title:@"End Session"
+                                                   options:UNNotificationActionOptionForeground];
+    
+    UNNotificationAction *snoozeAction = [UNNotificationAction
+                                          actionWithIdentifier:kSnoozeActionIdentifier
+                                          title:@"Snooze"
+                                          options:UNNotificationActionOptionNone];
+    
+    UNNotificationCategory *endSleepSessionCategory = [UNNotificationCategory
+                                                       categoryWithIdentifier:kEndSleepSessionCategoryIdentifier
+                                                       actions:@[endSleepSessionAction, snoozeAction]
+                                                       intentIdentifiers:@[]
+                                                       options:UNNotificationCategoryOptionNone];
+    
+    
+    [_notificationCenter setNotificationCategories:[NSSet setWithObjects:endSleepSessionCategory, nil]];
+}
+
+- (void)scheduleUserNotificationToEndSleepSession {
+    // Configure the notification content
+    UNMutableNotificationContent *content = [[UNMutableNotificationContent alloc] init];
+    content.title = kRemindUserToEndSleepSessionNotificationTitle;
+    content.subtitle = kRemindUserToEndSleepSessionNotificationSubtitle;
+    content.body = kRemindUserToEndSleepSessionNotificationBody;
+    content.sound = [UNNotificationSound defaultSound];
+    content.categoryIdentifier = kEndSleepSessionCategoryIdentifier;
+    
+    // Configure the trigger
+    NSTimeInterval timeInterval = kRemindUserToEndSleepSessionTimeIntervalInSeconds;
+    UNTimeIntervalNotificationTrigger *trigger = [UNTimeIntervalNotificationTrigger triggerWithTimeInterval:timeInterval repeats:NO];
+    
+    // Assign UUID
+    NSString *identifer = [Utility stringWithUUID];
+    
+    // Create the request object.
+    UNNotificationRequest *request = [UNNotificationRequest requestWithIdentifier:identifer
+                                                                          content:content
+                                                                          trigger:trigger];
+    
+    [_notificationCenter addNotificationRequest:request withCompletionHandler:^(NSError * _Nullable error) {
+        if (error != nil) {
+            NSLog(@"%@", error.localizedDescription);
+        }
+    }];
+}
+
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)())completionHandler {
+    NSLog(@"User responded to notification with %@ for notification %@", response.actionIdentifier, response.notification);
+    if ([response.actionIdentifier isEqualToString:UNNotificationDismissActionIdentifier]) {
+        NSLog(@"[VERBOSE] User dismissed the notification");
+    }
+    else if ([response.actionIdentifier isEqualToString:kSnoozeActionIdentifier]) {
+        if (_currentSleepSession.isSleepSessionInProgress) {
+            [self scheduleUserNotificationToEndSleepSession];
+        } else {
+            NSLog(@"[VERBOSE] %@ will not perform action, %@, because user is no longer sleeping.", response.notification, response.actionIdentifier);
+        }
+    }
+    else if ([response.actionIdentifier isEqualToString:kEndSleepSessionActionIdentifier]) {
+        if (_currentSleepSession.isSleepSessionInProgress) {
+            [self sleepDidStopMenuButton];
+        } else {
+            NSLog(@"[VERBOSE] %@ will not perform action, %@, because user is no longer sleeping.", response.notification, response.actionIdentifier);
+        }
+    }
+}
+
+- (void)cancelPendingNotifications {
+    [_notificationCenter removeAllPendingNotificationRequests];
+}
+
+- (void)removeDeliveredNotifications {
+    [_notificationCenter removeAllDeliveredNotifications];
+}
+
 
 #pragma mark - Sleep Delegate Functions
 
@@ -582,38 +742,66 @@
     self.proposedSleepStart = nil;
 }
 
-#pragma mark - iOS Simulator Health Data
 
-- (void)populateHRData {
+#pragma mark - iOS Simulator Test Data Methods
+
+- (void)manuallySendTestDataToiOS {
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    formatter.dateFormat = @"yyyy.MM.dd G 'at' HH:mm:ss zzz";
+    formatter.timeZone = [NSTimeZone localTimeZone];
+    
+    NSDate *inBedStart = [formatter dateFromString:@"2017.01.25 AD at 00:05:00 EST"];
+    NSDate *sleepStart = [formatter dateFromString:@"2017.01.25 AD at 00:25:00 EST"];
+    NSDate *sleepStop = [formatter dateFromString:@"2017.01.25 AD at 6:56:00 EST"];
+    NSDate *wakeStop = [formatter dateFromString:@"2017.01.25 AD at 7:10:00 EST"];
+    
+    [_currentSleepSession.inBed addObject:inBedStart];
+    [_currentSleepSession.sleep addObject:sleepStart];
+    [_currentSleepSession.wake addObject:sleepStop];
+    [_currentSleepSession.outBed addObject:wakeStop];
+    
+    NSDictionary *testDataToSave = [[NSDictionary alloc] init];
+    testDataToSave = [self populateDictionaryWithSleepSessionData];
+    [[WCSession defaultSession] sendMessage:testDataToSave
+                               replyHandler:^(NSDictionary<NSString *,id> * _Nonnull replyMessage) {
+                                   // Remove
+                                   NSLog(@"[DEBUG] Contents of reply: %@", replyMessage);
+                               }
+                               errorHandler:^(NSError *error) {
+                                   //catch any errors here
+                                   NSLog(@"[DEBUG] ERROR: %@", error);
+                               }
+     ];
+    
+    [self populateHRDataFrom:inBedStart to:wakeStop rangingFrom:51 to:98];
+}
+
+- (void)populateHRDataFrom:(NSDate *)startDate to:(NSDate *)endDate rangingFrom:(int)minHeartRate to:(int)maxHeartRate {
     int x = 0;
-    int min = 58;
-    int max = 60;
+    int min = minHeartRate;
+    int max = maxHeartRate;
     
-    NSDate *now = [NSDate date];
+    NSMutableArray *arrayToSave = [[NSMutableArray alloc] init];
     
-    while (x < 10) {
-        
+    while ([Utility compare:startDate isEarlierThanOrEqualTo:endDate]) {
         double randomInt = min + arc4random_uniform(max - min + 1);
         
         HKQuantityType *quantityType = [HKObjectType quantityTypeForIdentifier:HKQuantityTypeIdentifierHeartRate];
         HKUnit *bpm = [HKUnit unitFromString:@"count/min"];
         HKQuantity *quantity = [HKQuantity quantityWithUnit:bpm doubleValue:randomInt];
-        HKQuantitySample *quantitySample = [HKQuantitySample quantitySampleWithType:quantityType quantity:quantity startDate:[now dateByAddingTimeInterval:1*x] endDate:[now dateByAddingTimeInterval:2*x]];
+        HKQuantitySample *quantitySample = [HKQuantitySample quantitySampleWithType:quantityType quantity:quantity startDate:[startDate dateByAddingTimeInterval:1+(300*x)] endDate:[startDate dateByAddingTimeInterval:3+(300*x)]];
         
-        NSArray *array = [NSArray arrayWithObjects:quantitySample, nil];
-        
-        [self.healthStore saveObjects:array withCompletion:^(BOOL success, NSError *error){
-            if (!success) {
-                NSLog(@"[DEBUG] Failed to write data to Health.app with error: %@", error);
-            }
-        }];
+        [arrayToSave addObject:quantitySample];
         
         x++;
+        startDate = [NSDate dateWithTimeInterval:300 sinceDate:startDate];
     }
+    
+    [self.healthStore saveObjects:arrayToSave withCompletion:^(BOOL success, NSError *error){
+        if (!success) {
+            NSLog(@"[DEBUG] Failed to write data to Health.app with error: %@", error);
+        }
+    }];
 }
-
-
-#pragma mark - Private Debug Methods
-
 
 @end

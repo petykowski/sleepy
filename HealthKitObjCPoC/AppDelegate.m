@@ -13,10 +13,12 @@
 #import "OnboardingViewController.h"
 #import "Constants.h"
 @import HealthKit;
+@import UserNotifications;
 
 @interface AppDelegate ()
 
 @property (nonatomic, retain) HKHealthStore *healthStore;
+@property (nonatomic, retain) UNUserNotificationCenter *notificationCenter;
 @property (nonatomic, readwrite) BOOL hasAccessToSleepData;
 @end
 
@@ -34,10 +36,15 @@
 #pragma mark - UIApplication
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    #if TARGET_IPHONE_SIMULATOR == 0
+    [self redirectLogToDocuments];
+    #endif
+    
     application.statusBarStyle = UIStatusBarStyleLightContent;
     
     // Configure Health Store
     self.healthStore = [[HKHealthStore alloc] init];
+    self.notificationCenter = [UNUserNotificationCenter currentNotificationCenter];
     
     // Override point for customization after application launch.
     BOOL shouldPerformAdditionalDelegateHandling = YES;
@@ -70,6 +77,14 @@
     }
     
     return shouldPerformAdditionalDelegateHandling;
+}
+
+- (void)redirectLogToDocuments
+{
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString *filePath = [documentsDirectory stringByAppendingPathComponent:kLogOutputFileName];
+    freopen([filePath cStringUsingEncoding:NSASCIIStringEncoding],"a+",stderr);
 }
 
 -(void)launchWithoutQuickAction{
@@ -122,7 +137,6 @@
                 }
             }
         }
-        
         
         [self.window makeKeyAndVisible];
     }
@@ -199,9 +213,11 @@
     NSBundle *bundle = [NSBundle mainBundle];
     NSString *sleepyMainPath = [bundle pathForResource:@"SleepyMain" ofType:@"mp4"];
     NSString *healthKitPath = [bundle pathForResource:@"HealthKit" ofType:@"mp4"];
+    NSString *notificationPath = [bundle pathForResource:@"SleepNotification" ofType:@"mp4"];
     NSString *appleWatchPath = [bundle pathForResource:@"SleepyWatch" ofType:@"mp4"];
     NSURL *sleepyMainMovieURL = [NSURL fileURLWithPath:sleepyMainPath];
     NSURL *healthKitMovieURL = [NSURL fileURLWithPath:healthKitPath];
+    NSURL *notificationMovieURL = [NSURL fileURLWithPath:notificationPath];
     NSURL *appleWatchMovieURL = [NSURL fileURLWithPath:appleWatchPath];
     
     CGFloat screenHeight;
@@ -236,7 +252,15 @@
         }
     }];
     
-    OnboardingContentViewController *thirdPage = [OnboardingContentViewController contentWithTitle:kOnboardingThirdPageTitle body:kOnboardingThirdPageBody videoURL:appleWatchMovieURL buttonText:kOnboardingThirdPageButton action:^{
+    OnboardingContentViewController *thirdPage = [OnboardingContentViewController contentWithTitle:kOnboardingThirdPageTitle body:kOnboardingThirdPageBody videoURL:notificationMovieURL buttonText:kOnboardingThirdPageButton action:^{
+        
+        [_notificationCenter requestAuthorizationWithOptions:(UNAuthorizationOptionAlert + UNAuthorizationOptionSound)
+                                           completionHandler:^(BOOL granted, NSError * _Nullable error) {
+                                               
+                                           }];
+    }];
+    
+    OnboardingContentViewController *fourthPage = [OnboardingContentViewController contentWithTitle:kOnboardingFourthPageTitle body:kOnboardingFourthPageBody videoURL:appleWatchMovieURL buttonText:kOnboardingFourthPageButton action:^{
         [self handleOnboardingCompletion];
     }];
     
@@ -252,6 +276,9 @@
         thirdPage.topPadding = 0;
         thirdPage.underIconPadding = 50;
         thirdPage.underTitlePadding = 225;
+        fourthPage.topPadding = 0;
+        fourthPage.underIconPadding = 50;
+        fourthPage.underTitlePadding = 225;
     } else if ( screenHeight > 480 && screenHeight < 736 ){
         NSLog(@"iPhone 6");
         firstPage.topPadding = 0;
@@ -263,22 +290,28 @@
         thirdPage.topPadding = 0;
         thirdPage.underIconPadding = 65;
         thirdPage.underTitlePadding = 316;
+        fourthPage.topPadding = 0;
+        fourthPage.underIconPadding = 65;
+        fourthPage.underTitlePadding = 316;
     } else if ( screenHeight > 480 ){
         firstPage.topPadding = 0;
-        firstPage.underIconPadding = 75;
+        firstPage.underIconPadding = 121;
         firstPage.underTitlePadding = 375;
         secondPage.topPadding = 0;
         secondPage.underIconPadding = 75;
         secondPage.underTitlePadding = 375;
         thirdPage.topPadding = 0;
-        thirdPage.underIconPadding = 75;
+        thirdPage.underIconPadding = 121;
         thirdPage.underTitlePadding = 375;
+        fourthPage.topPadding = 0;
+        fourthPage.underIconPadding = 75;
+        fourthPage.underTitlePadding = 375;
         NSLog(@"iPhone 6 Plus");
     } else {
         NSLog(@"iPhone 4/4s");
     }
     
-    OnboardingViewController *onboardingVC = [OnboardingViewController onboardWithBackgroundImage:nil contents:@[firstPage, secondPage, thirdPage]];
+    OnboardingViewController *onboardingVC = [OnboardingViewController onboardWithBackgroundImage:nil contents:@[firstPage, secondPage, thirdPage, fourthPage]];
     onboardingVC.shouldFadeTransitions = YES;
     onboardingVC.fadePageControlOnLastPage = YES;
     onboardingVC.fadeSkipButtonOnLastPage = YES;

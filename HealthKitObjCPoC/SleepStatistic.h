@@ -10,6 +10,8 @@
 
 @interface SleepStatistic : NSObject
 
+- (id)initWithDouble:(double)result;
+
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic) double result;
 @property (nonatomic, strong) NSString *stringResult;

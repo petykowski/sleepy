@@ -28,6 +28,16 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "C2FC97D51E32DCE500E7D17E"
+               BuildableName = "HealthKitObjCPoCTests.xctest"
+               BlueprintName = "HealthKitObjCPoCTests"
+               ReferencedContainer = "container:HealthKitObjCPoC.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference

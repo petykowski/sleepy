@@ -13,6 +13,12 @@
 #import "Utility.h"
 #import "SleepStatistic.h"
 #import "SleepSession.h"
+#import "FSLineChart.h"
+#import "UIColor+FSPalette.h"
+#import "HeartRateChart.h"
+#import "ChartViewController.h"
+#import "Constants.h"
+
 
 @interface SessionDetailTableViewController ()
 
@@ -20,6 +26,9 @@
 @property NSMutableArray *sleepStatistics;
 @property NSMutableArray *heartRateStatistics;
 @property SleepSession *detailSleepSession;
+@property (nonatomic, strong) IBOutlet HeartRateChart *chartWithDates;
+@property NSArray *ktimes12Hour;
+@property (strong, nonatomic) IBOutlet UIView *heartRateChart;
 
 @end
 
@@ -29,15 +38,51 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    _ktimes12Hour = @[@"12 AM", @"1 AM", @"2 AM", @"3 AM", @"4 AM", @"5 AM", @"6 AM", @"7 AM", @"8 AM", @"9 AM", @"10 AM", @"11 AM", @"12 PM", @"1 PM", @"2 PM", @"3 PM", @"4 PM", @"5 PM", @"6 PM", @"7 PM", @"8 PM", @"9 PM", @"10 PM", @"11 PM"];
+    
     _heartRateStatistics = [[NSMutableArray alloc] init];
     _sleepStatistics = [[NSMutableArray alloc] init];
     _detailSleepSession = [Utility convertManagedObjectSessionToSleepSessionForDetailView:sleepSession];
     _sleepSessionMilestones = [Utility convertAndPopulatePreviousSleepSessionDataForMilestone:_detailSleepSession];
-    
     [self refreshHealthStatistics];
     [self refreshSleepStatistics];
+    
+    // Configure Navigation Bar for Detail View
+    UIBarButtonItem *shareDebugDataButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(shareDebugData)];
+    [self.navigationItem setRightBarButtonItem:shareDebugDataButton];
     [self.navigationItem setTitle:_detailSleepSession.name];
+}
 
+-(void) shareDebugData {
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString *filePath = [documentsDirectory stringByAppendingPathComponent:kLogOutputFileName];
+    
+    BOOL success = [fileManager fileExistsAtPath:filePath];
+    
+    if (!success) {
+        NSLog(@"[DEBUG] File not found in users documents directory.");
+    } else {
+//        NSString *logOutput = [[NSString alloc] initWithContentsOfFile:filePath encoding:NSASCIIStringEncoding error:nil];
+        NSURL *logFile = [[NSURL alloc] initFileURLWithPath:filePath];
+        NSLog(@"[DEBUG] success = %d", success);
+        NSArray *objectsToShare = @[logFile];
+        
+        UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:objectsToShare applicationActivities:nil];
+        
+        NSArray *excludeActivities = @[UIActivityTypePrint,
+                                       UIActivityTypeAssignToContact,
+                                       UIActivityTypeSaveToCameraRoll,
+                                       UIActivityTypeAddToReadingList,
+                                       UIActivityTypePostToFlickr,
+                                       UIActivityTypePostToVimeo];
+        
+        activityVC.excludedActivityTypes = excludeActivities;
+        
+        [self presentViewController:activityVC animated:YES completion:nil];
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -111,6 +156,18 @@
     }
 }
 
+#pragma mark -  Chart
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if ([segue.identifier  isEqual: @"heartRateChartSegue"]) {
+        ChartViewController *chartView = [segue destinationViewController];
+        if ([chartView respondsToSelector:@selector(setHealthStore:)]) {
+            [chartView setHealthStore:self.healthStore];
+        }
+        chartView.chartTitle = @"Heart Rate";
+        chartView.sleepSession = sleepSession;
+    }
+}
 
 #pragma mark - Sleep Statistics
 
@@ -165,7 +222,7 @@
 
 - (NSPredicate *)predicateForSleepDuration {
     
-    return [HKQuery predicateForSamplesWithStartDate:[_detailSleepSession.sleep firstObject] endDate:[_detailSleepSession.wake lastObject] options:HKQueryOptionNone];
+    return [HKQuery predicateForSamplesWithStartDate:[_detailSleepSession.inBed firstObject] endDate:[_detailSleepSession.outBed lastObject] options:HKQueryOptionNone];
 }
 
 - (void)refreshHealthStatistics {
@@ -189,7 +246,10 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             SleepStatistic *avgHeartRate = [[SleepStatistic alloc] init];
             
-            avgHeartRate.result = [result.averageQuantity doubleValueForUnit:[HKUnit unitFromString:@"count/min"]];
+            double averageHeartRateResult = [result.averageQuantity doubleValueForUnit:[HKUnit unitFromString:@"count/min"]];
+            NSLog(@"[DEBUG] averageHeartRateResult = %f", averageHeartRateResult);
+            avgHeartRate.result = floorf(averageHeartRateResult);
+            NSLog(@"[DEBUG] avgHeartRate.result = %f", avgHeartRate.result);
             avgHeartRate.name = [NSString stringWithFormat:@"Average"];
             
             [_heartRateStatistics addObject:avgHeartRate];

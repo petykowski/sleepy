@@ -1,0 +1,24 @@
+PODS:
+  - DZNEmptyDataSet (1.8.1)
+  - FSLineChart (0.1.8)
+
+DEPENDENCIES:
+  - DZNEmptyDataSet
+  - FSLineChart (from `https://github.com/spetykowski/FSLineChart.git`)
+
+EXTERNAL SOURCES:
+  FSLineChart:
+    :git: https://github.com/spetykowski/FSLineChart.git
+
+CHECKOUT OPTIONS:
+  FSLineChart:
+    :commit: 7dde4f4c559309781944cc4ef9d626eb6278ad35
+    :git: https://github.com/spetykowski/FSLineChart.git
+
+SPEC CHECKSUMS:
+  DZNEmptyDataSet: 9525833b9e68ac21c30253e1d3d7076cc828eaa7
+  FSLineChart: 5cd048ba095f0f7ab15f64f548f3190996486f9c
+
+PODFILE CHECKSUM: ad67ab4a066d3d682a212c82496ba6e5bbf13650
+
+COCOAPODS: 1.1.1

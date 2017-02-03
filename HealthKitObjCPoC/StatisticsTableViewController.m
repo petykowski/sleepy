@@ -30,9 +30,6 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    [self getLastWeeksSleepSessions];
-    _lastSevenDaysStatistics = [self refreshStatistics:_convertedSessionsFromLastWeek];
-    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadTable:) name:@"NewSessionAdded" object:nil];
     
     // this UIViewController is about to re-appear, make sure we remove the current selection in our table view
@@ -45,6 +42,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    [self getLastWeeksSleepSessions];
+    _lastSevenDaysStatistics = [self refreshStatistics:_convertedSessionsFromLastWeek];
     
     self.tableView.emptyDataSetSource = self;
     self.tableView.emptyDataSetDelegate = self;
@@ -96,14 +96,9 @@
     return -60.0f;
 }
 
-- (BOOL)emptyDataSetShouldDisplay:(UIScrollView *)scrollView
-{
-    if ([_convertedSessionsFromLastWeek count] == 7)
-    {
-        return NO;
-    } else {
-        return YES;
-    }
+- (BOOL)getLastWeeksSleepSessions:(UIScrollView *)scrollView {
+
+    return [_convertedSessionsFromLastWeek count] != 7;
 }
 
 #pragma mark - Table view data source
