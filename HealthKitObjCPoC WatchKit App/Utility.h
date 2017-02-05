@@ -17,7 +17,7 @@
 /**
  * @brief Returns a label ready string to display the time duration of the number of seconds provided
  * @param Integer total number of seconds
- * @return 00h 00m 00s
+ * @return 00h 00m
 */
 + (NSString *)timeFormatter:(int)totalSeconds;
 + (NSString*)pathToSleepSessionDataFile;
