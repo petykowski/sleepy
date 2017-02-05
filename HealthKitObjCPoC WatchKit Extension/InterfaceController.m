@@ -312,7 +312,7 @@
     [self readHeartRateData];
     [self cancelPendingNotifications];
     [self removeDeliveredNotifications];
-    [self prepareMenuIconsForUserNotInSleepSession];
+    [self prepareMenuIconsForUserDismissedProposedSleepInterface];
     
 }
 
@@ -433,6 +433,59 @@
     [self.healthStore executeQuery:query];
 }
 
+
+#pragma mark - Proposed Sleep Delegate Functions
+
+- (void)presentControllerToConfirmProposedSleepTime {
+    if (self.proposedSleepStart == nil) {
+        [self presentControllerWithName:@"User Input Sleep Start"
+                                context:@{@"delegate" : self,
+                                          @"time" : [_currentSleepSession.sleep firstObject],
+                                          @"maxSleepStart" : [_currentSleepSession.wake firstObject]}];
+    } else {
+        [self presentControllerWithName:@"confirm"
+                                context:@{@"delegate" : self,
+                                          @"time" : self.proposedSleepStart}];
+    }
+}
+
+- (void)proposedSleepStartDecision:(int)buttonValue SleepStartDate:(NSDate*)date {
+    
+    if (date) {
+        [self.currentSleepSession.sleep replaceObjectAtIndex:0 withObject:date];
+        [self performSleepSessionCloseout];
+    } else if (buttonValue == 0) {
+        [self presentControllerWithName:@"User Input Sleep Start" context:@{@"delegate" : self,
+                                                                            @"time" : [_currentSleepSession.sleep firstObject],
+                                                                            @"maxSleepStart" : [_currentSleepSession.wake firstObject]}];
+    } else if (buttonValue == 1) {
+        // Proposed Sleep Was Confirmed
+        [self.currentSleepSession.sleep replaceObjectAtIndex:0 withObject:self.proposedSleepStart];
+        [self performSleepSessionCloseout];
+    }
+}
+
+- (void)performSleepSessionCloseout {
+    if (self.connectedSession.reachable) {
+        NSLog(@"[DEBUG] Session Available");
+        [self sendSleepSessionDataToiOSApp];
+    } else {
+        NSLog(@"[DEBUG] Session Unavailable");
+    }
+    [self writeSleepSessionDataToHealthKit];
+    [self writeCurrentSleepSessionAndRetainAsPreviousSleepSessionAtFile];
+    [self updateLabelsForSleepSessionEnded];
+    [self prepareMenuIconsForUserNotInSleepSession];
+    
+    // Allows for proposed sleep interface to dismiss
+    [NSTimer scheduledTimerWithTimeInterval:1.0
+                                     target:self
+                                   selector:@selector(reloadMilestoneInterfaceData)
+                                   userInfo:nil
+                                    repeats:NO];
+}
+
+
 #pragma mark - Watch Connectivity Methods
 
 - (void)sendSleepSessionDataToiOSApp {
@@ -440,7 +493,6 @@
     _sleepSessionDataToSave = [self populateDictionaryWithSleepSessionData];
     [[WCSession defaultSession] sendMessage:_sleepSessionDataToSave
                                replyHandler:^(NSDictionary<NSString *,id> * _Nonnull replyMessage) {
-                                   // Remove
                                    NSLog(@"[DEBUG] Contents of reply: %@", replyMessage);
                                }
                                errorHandler:^(NSError *error) {
@@ -458,8 +510,6 @@
                                    // Remove
                                    NSLog(@"[DEBUG] Contents of Dict: %@", replyMessage);
                                    [WKInterfaceController reloadRootControllersWithNames:[NSArray arrayWithObjects:@"mainInterface",@"lastNightInterface", nil] contexts:[NSArray arrayWithObjects:@"", replyMessage, nil]];
-                                   
-                                   
                                }
                                errorHandler:^(NSError * _Nonnull error) {
                                    NSLog(@"[DEBUG] ERROR: %@", error);
@@ -535,6 +585,11 @@
     [self addMenuItemWithImageNamed:@"wakeMenuIcon" title:@"Wake" action:@selector(userAwokeByUserMenuButton)];
 }
 
+- (void)prepareMenuIconsForUserDismissedProposedSleepInterface {
+    [self clearAllMenuItems];
+    [self addMenuItemWithItemIcon:WKMenuItemIconAccept title:@"End" action:@selector(presentControllerToConfirmProposedSleepTime)];
+}
+
 - (void)prepareMenuIconsForDebugging {
     [self clearAllMenuItems];
     [self addMenuItemWithImageNamed:@"sleepMenuIcon" title:@"Sleep" action:@selector(sleepDidStartMenuButton)];
@@ -571,19 +626,6 @@
     [self.sleepStartLabel setText:[dateFormatter stringFromDate:[self.currentSleepSession.sleep lastObject]]];
     [self.inBedGroup setHidden:false];
     [self.stillAwakeGroup setHidden:false];
-}
-
-- (void)presentControllerToConfirmProposedSleepTime {
-    if (self.proposedSleepStart == nil) {
-        [self presentControllerWithName:@"User Input Sleep Start"
-                                context:@{@"delegate" : self,
-                                          @"time" : [_currentSleepSession.sleep firstObject],
-                                          @"maxSleepStart" : [_currentSleepSession.wake firstObject]}];
-    } else {
-        [self presentControllerWithName:@"confirm"
-                                context:@{@"delegate" : self,
-                                          @"time" : self.proposedSleepStart}];
-    }
 }
 
 #pragma mark - Image Methods
@@ -694,43 +736,6 @@
     [_notificationCenter removeAllDeliveredNotifications];
 }
 
-
-#pragma mark - Sleep Delegate Functions
-
-- (void)proposedSleepStartDecision:(int)buttonValue SleepStartDate:(NSDate*)date {
-    
-    if (date) {
-        [self.currentSleepSession.sleep replaceObjectAtIndex:0 withObject:date];
-        [self performSleepSessionCloseout];
-    } else if (buttonValue == 0) {
-        [self presentControllerWithName:@"User Input Sleep Start" context:@{@"delegate" : self,
-                                                                            @"time" : [_currentSleepSession.sleep firstObject],
-                                                                            @"maxSleepStart" : [_currentSleepSession.wake firstObject]}];
-    } else if (buttonValue == 1) {
-        // Proposed Sleep Was Confirmed
-        [self.currentSleepSession.sleep replaceObjectAtIndex:0 withObject:self.proposedSleepStart];
-        [self performSleepSessionCloseout];
-    }
-}
-
-- (void)performSleepSessionCloseout {
-    if (self.connectedSession.reachable) {
-        NSLog(@"[DEBUG] Session Available");
-        [self sendSleepSessionDataToiOSApp];
-    } else {
-        NSLog(@"[DEBUG] Session Unavailable");
-    }
-    [self writeSleepSessionDataToHealthKit];
-    [self writeCurrentSleepSessionAndRetainAsPreviousSleepSessionAtFile];
-    [self updateLabelsForSleepSessionEnded];
-    
-    // Allows for proposed sleep interface to dismiss
-    [NSTimer scheduledTimerWithTimeInterval:1.0
-                                     target:self
-                                   selector:@selector(reloadMilestoneInterfaceData)
-                                   userInfo:nil
-                                    repeats:NO];
-}
 
 #pragma mark - Reset Values
 
