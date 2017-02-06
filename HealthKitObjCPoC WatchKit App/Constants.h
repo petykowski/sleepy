@@ -32,6 +32,8 @@ extern NSString *const kNoSessionsToDisplayTitle;
 extern NSString *const kNoSessionsToDisplayBody;
 extern NSString *const kNoStatisticsToDisplayTitle;
 extern NSString *const kNoStatisticsToDisplayBody;
+extern NSString *const kNoHeartRateDataToDisplayTitle;
+extern NSString *const kNoHeartRateDataToDisplayBody;
 
 #pragma mark - Local User Notifications
 extern NSString *const kEndSleepSessionCategoryIdentifier;

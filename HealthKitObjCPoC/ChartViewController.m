@@ -12,6 +12,7 @@
 #import "SleepStatistic.h"
 #import "Utility.h"
 #import "ColorConstants.h"
+#import "Constants.h"
 
 @interface ChartViewController ()
 @property (strong, nonatomic) IBOutlet UILabel *chartLabel;
@@ -42,6 +43,7 @@
 @property NSMutableArray *yAxisValues;
 @property double xAxisLeadingShift;
 @property double xAxisTrailingShift;
+@property bool kNoHRDataToDisplay;
 @end
 
 @implementation ChartViewController
@@ -53,6 +55,7 @@
         if (error) {
             // No data avilable or disallowed from HealthKit or error
             NSLog(@"An error has occured. The error was: %@", error);
+            [self blurChartAndDisplayNoDataMessage];
         } else {
             [self getChartProperties];
             [self drawChart];
@@ -78,6 +81,25 @@
     _ktimes12Hour = @[@"12", @"1", @"2", @"3", @"4", @"5", @"6", @"7", @"8", @"9", @"10", @"11", @"12", @"1", @"2", @"3", @"4", @"5", @"6", @"7", @"8", @"9", @"10", @"11"];
 }
 
+- (void)blurChartAndDisplayNoDataMessage {
+    UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
+    UIVisualEffectView *blurEffectView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
+    [blurEffectView setFrame:self.view.bounds];
+
+    UILabel *titleLabel = [UILabel new];
+    titleLabel.frame = blurEffectView.frame;
+    titleLabel.backgroundColor = [UIColor clearColor];
+    titleLabel.font = [UIFont boldSystemFontOfSize:18.0f];
+    titleLabel.textColor = [ColorConstants darkThemePrimaryTextColor];
+    titleLabel.textAlignment = NSTextAlignmentCenter;
+    titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    titleLabel.numberOfLines = 0;
+    titleLabel.text = kNoHeartRateDataToDisplayTitle;
+
+    [blurEffectView addSubview:titleLabel];
+    [self.view addSubview:blurEffectView];
+    
+}
 
 #pragma mark - HealthKit Methods
 
@@ -221,12 +243,16 @@
 - (void)drawChart {
     [self drawChartFrameLines];
     [self plotHeartRateOnGraph:^(NSError *error){
-        [self strokeHeartRatePathOnChart];
-        [self drawAverageHeartRateLine];
-        [self shiftLabels];
-        [self drawXAndYAxisLabelsGridLines];
-        [self drawXAndYAxisLabels];
-        [self organizeStack];
+        if (_kNoHRDataToDisplay) {
+            [self blurChartAndDisplayNoDataMessage];
+        } else {
+            [self strokeHeartRatePathOnChart];
+            [self drawAverageHeartRateLine];
+            [self shiftLabels];
+            [self drawXAndYAxisLabelsGridLines];
+            [self drawXAndYAxisLabels];
+            [self organizeStack];
+        }
     }];
 }
 
@@ -389,7 +415,10 @@
     HKSampleQuery *query = [[HKSampleQuery alloc] initWithSampleType:sampleType predicate:predicate limit:HKObjectQueryNoLimit sortDescriptors:nil resultsHandler:^(HKSampleQuery * _Nonnull query, NSArray<__kindof HKSample *> * _Nullable results, NSError * _Nullable error) {
         if (!results) {
             NSLog(@"An error has occured. The error was: %@", error);
+            _kNoHRDataToDisplay = true;
             abort();
+        } else if (results.count == 0) {
+            _kNoHRDataToDisplay = true;
         }
         
         dispatch_async(dispatch_get_main_queue(), ^{

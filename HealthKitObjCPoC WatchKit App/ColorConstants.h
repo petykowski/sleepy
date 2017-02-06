@@ -20,7 +20,16 @@
  */
 + (UIColor *)darkThemeSecondaryBackgroundColor;
 + (UIColor *)darkThemeLineSeperator;
+
+/**
+ * @brief Returns a white color. Used as a primary text color.
+ */
 + (UIColor *)darkThemePrimaryTextColor;
+
+/**
+ * @brief Returns a light grey color. Used as a secondary text color.
+ */
++ (UIColor *)darkThemeSecondaryTextColor;
 
 /**
  * @brief Returns a bright purple. Used as an accent color or featured color.

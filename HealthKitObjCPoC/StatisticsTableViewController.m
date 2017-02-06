@@ -15,6 +15,7 @@
 #import "StatisticsTableViewCell.h"
 #import "UIScrollView+EmptyDataSet.h"
 #import "Constants.h"
+#import "ColorConstants.h"
 
 @interface StatisticsTableViewController () <NSFetchedResultsControllerDelegate, NSFetchedResultsControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate>
 
@@ -71,7 +72,7 @@
     NSString *text = kNoStatisticsToDisplayTitle;
     
     NSDictionary *attributes = @{NSFontAttributeName: [UIFont boldSystemFontOfSize:18.0f],
-                                 NSForegroundColorAttributeName: [UIColor whiteColor]};
+                                 NSForegroundColorAttributeName: [ColorConstants darkThemePrimaryTextColor]};
     
     return [[NSAttributedString alloc] initWithString:text attributes:attributes];
 }
@@ -85,7 +86,7 @@
     paragraph.alignment = NSTextAlignmentCenter;
     
     NSDictionary *attributes = @{NSFontAttributeName: [UIFont systemFontOfSize:14.0f],
-                                 NSForegroundColorAttributeName: [UIColor lightGrayColor],
+                                 NSForegroundColorAttributeName: [ColorConstants darkThemeSecondaryTextColor],
                                  NSParagraphStyleAttributeName: paragraph};
     
     return [[NSAttributedString alloc] initWithString:text attributes:attributes];

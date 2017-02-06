@@ -15,6 +15,7 @@
 NSString *const kSleepSessionFileNameForWatch = @"SavedSleepSession.plist";
 NSString *const kLogOutputFileName = @"logs.txt";
 
+
 #pragma mark - User Onboarding Strings
 // user_has_onboarded: inital deployment of user onboarding.
 // user_has_onboarded_v1: added push notifications support to user onboarding.
@@ -30,11 +31,14 @@ NSString *const kOnboardingFourthPageTitle = @"Start Sleeping Smarter";
 NSString *const kOnboardingFourthPageBody = @"When using the Sleepy watch app, 3D Touch to begin a new sleep session, and then again to wake.";
 NSString *const kOnboardingFourthPageButton = @"Get Started";
 
+
 #pragma mark - Empty Data Set Screen
 NSString *const kNoSessionsToDisplayTitle = @"You Don't Have Any Recent Sleep Sessions";
 NSString *const kNoSessionsToDisplayBody = @"Complete a sleep session on Apple Watch and check back here in the morning!";
 NSString *const kNoStatisticsToDisplayTitle = @"No Statistics Available";
 NSString *const kNoStatisticsToDisplayBody = @"Statistics are available after 7 sleep sessions.";
+NSString *const kNoHeartRateDataToDisplayTitle = @"No Heart Rate Data Available";
+NSString *const kNoHeartRateDataToDisplayBody = @"Allow access to heart rate data in the Health app.";
 
 #pragma mark - Local User Notifications
 NSString *const kEndSleepSessionCategoryIdentifier = @"END_SLEEP_SESSION_CATEGORY";

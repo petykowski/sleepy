@@ -26,6 +26,10 @@
     return [UIColor whiteColor];
 }
 
++ (UIColor *)darkThemeSecondaryTextColor {
+    return [UIColor lightGrayColor];
+}
+
 + (UIColor *)darkThemePrimaryAccentColor {
     return [UIColor colorWithRed:0.3725490196 green:0.3058823529 blue:0.7176470588 alpha:1.0];
 }
