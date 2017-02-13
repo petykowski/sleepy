@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="11762" systemVersion="16D30a" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="AgC-eL-Hgc">
-    <device id="watch38" orientation="portrait">
+<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="11762" systemVersion="16E144f" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="AgC-eL-Hgc">
+    <device id="watch42" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
@@ -108,10 +108,58 @@
                     <connections>
                         <outlet property="milestoneTable" destination="mgo-3o-CLP" id="eje-Rf-Oyy"/>
                         <outlet property="userMsgLabel" destination="Bpl-YJ-0ys" id="RVW-oi-gJc"/>
+                        <segue destination="mXz-JF-wrm" kind="relationship" relationship="nextPage" id="PK1-wN-yee"/>
                     </connections>
                 </controller>
             </objects>
             <point key="canvasLocation" x="375" y="92"/>
+        </scene>
+        <!--Interface Controller-->
+        <scene sceneID="eMh-vl-eAK">
+            <objects>
+                <controller id="mXz-JF-wrm">
+                    <items>
+                        <group width="1" alignment="center" verticalAlignment="bottom" id="NCo-iv-cEL">
+                            <items>
+                                <group width="50" alignment="left" layout="vertical" id="C2A-vD-tMZ">
+                                    <items>
+                                        <label alignment="left" text="In Bed" id="1sG-ld-RzV">
+                                            <color key="textColor" red="0.3720397949" green="0.30394893880000001" blue="0.71613603830000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <fontDescription key="font" type="system" pointSize="10"/>
+                                        </label>
+                                        <label alignment="left" text="10:09" id="GlQ-Ee-bLW">
+                                            <fontDescription key="font" type="system" pointSize="16"/>
+                                        </label>
+                                    </items>
+                                </group>
+                                <group width="50" alignment="center" layout="vertical" id="Zbz-vT-Tcl">
+                                    <items>
+                                        <label alignment="center" text="Duration" id="oGY-95-vth">
+                                            <color key="textColor" red="0.3720397949" green="0.30394893880000001" blue="0.71613603830000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <fontDescription key="font" type="system" pointSize="10"/>
+                                        </label>
+                                        <label alignment="center" text="8h10" id="dJP-vn-3Oo">
+                                            <fontDescription key="font" type="system" pointSize="16"/>
+                                        </label>
+                                    </items>
+                                </group>
+                                <group width="50" alignment="right" layout="vertical" id="5uL-Yg-5EK">
+                                    <items>
+                                        <label alignment="right" text="8-Hour" id="ghW-If-7fn">
+                                            <color key="textColor" red="0.3720397949" green="0.30394893880000001" blue="0.71613603830000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <fontDescription key="font" type="system" pointSize="10"/>
+                                        </label>
+                                        <label alignment="right" text="6:09" id="QP9-t2-zdg">
+                                            <fontDescription key="font" type="system" pointSize="16"/>
+                                        </label>
+                                    </items>
+                                </group>
+                            </items>
+                        </group>
+                    </items>
+                </controller>
+            </objects>
+            <point key="canvasLocation" x="686" y="92"/>
         </scene>
         <!--　-->
         <scene sceneID="388-Xu-uoL">
@@ -174,4 +222,5 @@
             <point key="canvasLocation" x="58" y="422"/>
         </scene>
     </scenes>
+    <color key="tintColor" red="0.3720397949" green="0.30394893880000001" blue="0.71613603830000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
 </document>
