@@ -22,6 +22,14 @@
     
 }
 
++(NSDateFormatter*)dateFormatterForTimeLabelsWithoutAMPM {
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"hh:mm"];
+    
+    return dateFormatter;
+    
+}
+
 +(NSDateFormatter*)dateFormatterForCellLabel {
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"EEE, MMMM d"];

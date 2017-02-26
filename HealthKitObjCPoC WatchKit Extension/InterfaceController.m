@@ -41,16 +41,24 @@
 
 // Images
 @property (unsafe_unretained, nonatomic) IBOutlet WKInterfaceImage *wakeIndicator;
+@property (strong, nonatomic) IBOutlet WKInterfaceImage *sleepRings;
 
 // Labels
 @property (unsafe_unretained, nonatomic) IBOutlet WKInterfaceLabel *mainLabel;
 @property (unsafe_unretained, nonatomic) IBOutlet WKInterfaceLabel *inBedLabel;
 @property (unsafe_unretained, nonatomic) IBOutlet WKInterfaceLabel *sleepStartLabel;
+@property (strong, nonatomic) IBOutlet WKInterfaceLabel *inBedDashboardLabel;
+@property (strong, nonatomic) IBOutlet WKInterfaceLabel *durationDashboardLabel;
+@property (strong, nonatomic) IBOutlet WKInterfaceLabel *eightHourDashboardLabel;
 
 // Groups
 @property (unsafe_unretained, nonatomic) IBOutlet WKInterfaceGroup *sleepSessionGroup;
 @property (unsafe_unretained, nonatomic) IBOutlet WKInterfaceGroup *inBedGroup;
 @property (unsafe_unretained, nonatomic) IBOutlet WKInterfaceGroup *stillAwakeGroup;
+@property (strong, nonatomic) IBOutlet WKInterfaceGroup *inBedDashboardGroup;
+@property (strong, nonatomic) IBOutlet WKInterfaceGroup *durationDashboardGroup;
+@property (strong, nonatomic) IBOutlet WKInterfaceGroup *eightHourDashboardGroup;
+@property (strong, nonatomic) IBOutlet WKInterfaceGroup *componentsDashboardGroup;
 
 @end
 
@@ -76,7 +84,7 @@
     // If sleep is currently in progress update labels and menu buttons to Sleep State
     if (self.currentSleepSession.isSleepSessionInProgress) {
         [self populateSleepSessionWithCurrentSessionData];
-        [self updateLabelsForSleepSessionStart];
+        [self updateLabelsForSleepSessionInProgress];
         [self determineMenuIconsToDisplay];
         NSLog(@"[VERBOSE] User is currently asleep. Resuming sleep state.");
     } else {
@@ -94,6 +102,11 @@
 
 - (void)willActivate {
     [super willActivate];
+    
+    // If sleep is currently in progress update labels and ring
+    if (self.currentSleepSession.isSleepSessionInProgress) {
+        [self updateLabelsForSleepSessionInProgress];
+    }
     
     // Initate WatchConnectivity
     if ([WCSession isSupported]) {
@@ -115,7 +128,7 @@
 
 - (void)didDeactivate {
     [super didDeactivate];
-    
+    [self determineMenuIconsToDisplay];
 }
 
 - (void)reloadMilestoneInterfaceData {
@@ -285,7 +298,7 @@
 - (IBAction)sleepWasDeferredByUserMenuButton {
     
     [self.currentSleepSession.sleep replaceObjectAtIndex:self.currentSleepSession.sleep.count - 1 withObject:[NSDate date]];
-    [self updateLabelsForSleepStartDeferred];
+    [self updateLabelsForSleepSessionInProgress];
     [self writeCurrentSleepSessionToFile];
     [self writeRemoveDeferredSleepOptionDate];
     
@@ -474,7 +487,6 @@
     }
     [self writeSleepSessionDataToHealthKit];
     [self writeCurrentSleepSessionAndRetainAsPreviousSleepSessionAtFile];
-    [self updateLabelsForSleepSessionEnded];
     [self prepareMenuIconsForUserNotInSleepSession];
     
     // Allows for proposed sleep interface to dismiss
@@ -600,35 +612,67 @@
 #pragma mark - Label Methods
 
 - (void)updateLabelsForSleepSessionStart {
-    NSDateFormatter *dateFormatter = [Utility dateFormatterForTimeLabels];
+    NSDateFormatter *dateWithoutFormatter = [Utility dateFormatterForTimeLabelsWithoutAMPM];
+    NSDate *inBedDate = [self.currentSleepSession.inBed firstObject];
+    NSDate *eightHourDate = [NSDate dateWithTimeInterval:28800 sinceDate:inBedDate];
+    NSTimeInterval secondsBetween = [[NSDate date] timeIntervalSinceDate:inBedDate];
     
     [self.mainLabel setHidden:true];
-    [self.sleepSessionGroup setHidden:false];
     
-    [self.inBedLabel setText:[dateFormatter stringFromDate:[self.currentSleepSession.inBed firstObject]]];
-    [self.inBedGroup setHidden:false];
+    int ringProgress = (secondsBetween * 100) / 28800;
+    if (ringProgress > 100) {
+        [_sleepRings setImageNamed:@"sleep-ring-animation-100"];
+    } else {
+        [_sleepRings setImageNamed:[NSString stringWithFormat:@"sleep-ring-animation-%d", ringProgress]];
+    }
+    
+    [_sleepRings setHidden:false];
+    [_inBedDashboardLabel setText:[dateWithoutFormatter stringFromDate:inBedDate]];
+    [_durationDashboardLabel setText:[Utility timeFormatter:secondsBetween]];
+    [_eightHourDashboardLabel setText:[dateWithoutFormatter stringFromDate:eightHourDate]];
+    [_componentsDashboardGroup setHidden:false];
+}
+
+- (void)updateLabelsForSleepSessionInProgress {
+    NSDateFormatter *dateWithoutFormatter = [Utility dateFormatterForTimeLabelsWithoutAMPM];
+    NSDate *inBedDate = [self.currentSleepSession.inBed firstObject];
+    NSDate *eightHourDate = [NSDate dateWithTimeInterval:28800 sinceDate:inBedDate];
+    NSTimeInterval secondsBetween = [[NSDate date] timeIntervalSinceDate:inBedDate];
+    
+    [self.mainLabel setHidden:true];
+    
+    int ringProgress = (secondsBetween * 100) / 28800;
+    if (ringProgress > 100) {
+        [_sleepRings setImageNamed:@"sleep-ring-animation-100"];
+    } else {
+        [_sleepRings setImageNamed:[NSString stringWithFormat:@"sleep-ring-animation-%d", ringProgress]];
+    }
+    
+    [_inBedDashboardLabel setText:[dateWithoutFormatter stringFromDate:inBedDate]];
+    [_durationDashboardLabel setText:[Utility timeFormatter:secondsBetween]];
+    [_eightHourDashboardLabel setText:[dateWithoutFormatter stringFromDate:eightHourDate]];
+    
+    [_sleepRings setHidden:false];
+    [_componentsDashboardGroup setHidden:false];
 }
 
 - (void)updateLabelsForSleepSessionEnded {
     
     [self.mainLabel setHidden:false];
-    [self.sleepSessionGroup setHidden:true];
-    [self.inBedGroup setHidden:true];
-    [self.stillAwakeGroup setHidden:true];
+    
+    [_componentsDashboardGroup setHidden:true];
+    [_sleepRings setHidden:true];
 }
 
-- (void)updateLabelsForSleepStartDeferred {
-    NSDateFormatter *dateFormatter = [Utility dateFormatterForTimeLabels];
-    
-    [self.mainLabel setHidden:true];
-    [self.sleepSessionGroup setHidden:false];
-    [self.inBedLabel setText:[dateFormatter stringFromDate:[self.currentSleepSession.inBed firstObject]]];
-    [self.sleepStartLabel setText:[dateFormatter stringFromDate:[self.currentSleepSession.sleep lastObject]]];
-    [self.inBedGroup setHidden:false];
-    [self.stillAwakeGroup setHidden:false];
-}
 
 #pragma mark - Image Methods
+
+-(void)displaySleepRings {
+    NSRange range = NSMakeRange(0, 7);
+    [self.sleepRings setImageNamed:@"sleep-ring-animation-"];
+    [self.sleepRings startAnimatingWithImagesInRange:range duration:5.0 repeatCount:10];
+
+}
 
 -(void)displayWakeIndicator{
     NSRange range = NSMakeRange(0, 11);

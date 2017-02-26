@@ -13,6 +13,7 @@
 @interface Utility : NSObject
 
 + (NSDateFormatter*)dateFormatterForTimeLabels;
++ (NSDateFormatter*)dateFormatterForTimeLabelsWithoutAMPM;
 
 /**
  * @brief Returns a label ready string to display the time duration of the number of seconds provided

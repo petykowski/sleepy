@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="11762" systemVersion="16E144f" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="AgC-eL-Hgc">
+<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="11762" systemVersion="16E163f" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="AgC-eL-Hgc">
     <device id="watch42" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -17,9 +17,49 @@
                         <label alignment="center" verticalAlignment="center" text="Press To Sleep" textAlignment="center" numberOfLines="2" id="Bq9-XQ-8sA">
                             <fontDescription key="font" type="boldSystem" pointSize="30"/>
                         </label>
-                        <group width="1" height="1" alignment="center" verticalAlignment="center" layout="vertical" id="vgZ-Sk-U0Y" userLabel="Sleep Session Group">
+                        <imageView height="8" alignment="center" contentMode="scaleAspectFit" id="ptQ-Tp-H4F"/>
+                        <imageView width="110" height="110" alignment="center" verticalAlignment="center" hidden="YES" image="sleep-ring-animation-5" id="MGK-sq-OL9"/>
+                        <group width="1" alignment="center" verticalAlignment="bottom" hidden="YES" id="NCo-iv-cEL" userLabel="Components Group">
                             <items>
-                                <imageView height="8" alignment="center" contentMode="scaleAspectFit" id="ptQ-Tp-H4F"/>
+                                <group width="50" alignment="left" layout="vertical" id="C2A-vD-tMZ" userLabel="In Bed Group">
+                                    <items>
+                                        <label alignment="left" text="In Bed" id="1sG-ld-RzV">
+                                            <color key="textColor" red="0.3720397949" green="0.30394893880000001" blue="0.71613603830000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <fontDescription key="font" type="system" pointSize="10"/>
+                                        </label>
+                                        <label alignment="left" text="10:09" id="GlQ-Ee-bLW">
+                                            <fontDescription key="font" type="system" pointSize="16"/>
+                                        </label>
+                                    </items>
+                                    <variation key="device=watch38mm" width="43"/>
+                                </group>
+                                <group width="50" alignment="center" layout="vertical" id="Zbz-vT-Tcl" userLabel="Duration Group">
+                                    <items>
+                                        <label alignment="center" text="Duration" id="oGY-95-vth">
+                                            <color key="textColor" red="0.3720397949" green="0.30394893880000001" blue="0.71613603830000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <fontDescription key="font" type="system" pointSize="10"/>
+                                        </label>
+                                        <label alignment="center" text="10h10" id="dJP-vn-3Oo">
+                                            <fontDescription key="font" type="system" pointSize="16"/>
+                                        </label>
+                                    </items>
+                                    <variation key="device=watch38mm" width="44"/>
+                                </group>
+                                <group width="44" alignment="right" layout="vertical" id="5uL-Yg-5EK" userLabel="8-Hour Group">
+                                    <items>
+                                        <label alignment="right" text="8-Hour" id="ghW-If-7fn">
+                                            <color key="textColor" red="0.3720397949" green="0.30394893880000001" blue="0.71613603830000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <fontDescription key="font" type="system" pointSize="10"/>
+                                        </label>
+                                        <label alignment="right" text="6:09" id="QP9-t2-zdg">
+                                            <fontDescription key="font" type="system" pointSize="16"/>
+                                        </label>
+                                    </items>
+                                </group>
+                            </items>
+                        </group>
+                        <group width="1" height="1" alignment="center" verticalAlignment="center" hidden="YES" layout="vertical" id="vgZ-Sk-U0Y" userLabel="Sleep Session Group">
+                            <items>
                                 <group alignment="center" verticalAlignment="center" hidden="YES" layout="vertical" spacing="0.0" id="fhZ-7G-B6m" userLabel="In Bed Group">
                                     <items>
                                         <label alignment="left" text="IN BED" textAlignment="left" id="7CL-2U-yoq">
@@ -64,10 +104,23 @@
                             </mask>
                         </variation>
                     </menu>
+                    <variation key="default">
+                        <mask key="items">
+                            <exclude reference="vgZ-Sk-U0Y"/>
+                        </mask>
+                    </variation>
                     <connections>
+                        <outlet property="componentsDashboardGroup" destination="NCo-iv-cEL" id="MJm-y7-2JI"/>
+                        <outlet property="durationDashboardGroup" destination="Zbz-vT-Tcl" id="Xjx-2a-X23"/>
+                        <outlet property="durationDashboardLabel" destination="dJP-vn-3Oo" id="GI4-Js-2B2"/>
+                        <outlet property="eightHourDashboardGroup" destination="5uL-Yg-5EK" id="Rpa-Gx-7BD"/>
+                        <outlet property="eightHourDashboardLabel" destination="QP9-t2-zdg" id="b05-ef-SXp"/>
+                        <outlet property="inBedDashboardGroup" destination="C2A-vD-tMZ" id="fhd-2L-K6Y"/>
+                        <outlet property="inBedDashboardLabel" destination="GlQ-Ee-bLW" id="4bF-U5-fJ5"/>
                         <outlet property="inBedGroup" destination="fhZ-7G-B6m" id="yip-cG-CcZ"/>
                         <outlet property="inBedLabel" destination="IlJ-1x-MBO" id="njs-PS-FbR"/>
                         <outlet property="mainLabel" destination="Bq9-XQ-8sA" id="04B-5i-kqk"/>
+                        <outlet property="sleepRings" destination="MGK-sq-OL9" id="hGY-my-r6n"/>
                         <outlet property="sleepSessionGroup" destination="vgZ-Sk-U0Y" id="usu-V9-08E"/>
                         <outlet property="sleepStartLabel" destination="h3f-gq-ifV" id="dkN-XM-gIN"/>
                         <outlet property="stillAwakeGroup" destination="RIv-q4-PRN" id="KC7-Ot-PoU"/>
@@ -108,58 +161,10 @@
                     <connections>
                         <outlet property="milestoneTable" destination="mgo-3o-CLP" id="eje-Rf-Oyy"/>
                         <outlet property="userMsgLabel" destination="Bpl-YJ-0ys" id="RVW-oi-gJc"/>
-                        <segue destination="mXz-JF-wrm" kind="relationship" relationship="nextPage" id="PK1-wN-yee"/>
                     </connections>
                 </controller>
             </objects>
             <point key="canvasLocation" x="375" y="92"/>
-        </scene>
-        <!--Interface Controller-->
-        <scene sceneID="eMh-vl-eAK">
-            <objects>
-                <controller id="mXz-JF-wrm">
-                    <items>
-                        <group width="1" alignment="center" verticalAlignment="bottom" id="NCo-iv-cEL">
-                            <items>
-                                <group width="50" alignment="left" layout="vertical" id="C2A-vD-tMZ">
-                                    <items>
-                                        <label alignment="left" text="In Bed" id="1sG-ld-RzV">
-                                            <color key="textColor" red="0.3720397949" green="0.30394893880000001" blue="0.71613603830000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <fontDescription key="font" type="system" pointSize="10"/>
-                                        </label>
-                                        <label alignment="left" text="10:09" id="GlQ-Ee-bLW">
-                                            <fontDescription key="font" type="system" pointSize="16"/>
-                                        </label>
-                                    </items>
-                                </group>
-                                <group width="50" alignment="center" layout="vertical" id="Zbz-vT-Tcl">
-                                    <items>
-                                        <label alignment="center" text="Duration" id="oGY-95-vth">
-                                            <color key="textColor" red="0.3720397949" green="0.30394893880000001" blue="0.71613603830000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <fontDescription key="font" type="system" pointSize="10"/>
-                                        </label>
-                                        <label alignment="center" text="8h10" id="dJP-vn-3Oo">
-                                            <fontDescription key="font" type="system" pointSize="16"/>
-                                        </label>
-                                    </items>
-                                </group>
-                                <group width="50" alignment="right" layout="vertical" id="5uL-Yg-5EK">
-                                    <items>
-                                        <label alignment="right" text="8-Hour" id="ghW-If-7fn">
-                                            <color key="textColor" red="0.3720397949" green="0.30394893880000001" blue="0.71613603830000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <fontDescription key="font" type="system" pointSize="10"/>
-                                        </label>
-                                        <label alignment="right" text="6:09" id="QP9-t2-zdg">
-                                            <fontDescription key="font" type="system" pointSize="16"/>
-                                        </label>
-                                    </items>
-                                </group>
-                            </items>
-                        </group>
-                    </items>
-                </controller>
-            </objects>
-            <point key="canvasLocation" x="686" y="92"/>
         </scene>
         <!--　-->
         <scene sceneID="388-Xu-uoL">
