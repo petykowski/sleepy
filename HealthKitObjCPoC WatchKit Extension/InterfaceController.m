@@ -614,18 +614,17 @@
 - (void)updateLabelsForSleepSessionStart {
     NSDateFormatter *dateWithoutFormatter = [Utility dateFormatterForTimeLabelsWithoutAMPM];
     NSDate *inBedDate = [self.currentSleepSession.inBed firstObject];
+    
+    if (self.currentSleepSession.wake.count > 0) {
+        inBedDate = [self.currentSleepSession.sleep firstObject];
+    }
+    
     NSDate *eightHourDate = [NSDate dateWithTimeInterval:28800 sinceDate:inBedDate];
     NSTimeInterval secondsBetween = [[NSDate date] timeIntervalSinceDate:inBedDate];
     
+    [self updateSleepRingFor:secondsBetween];
+    
     [self.mainLabel setHidden:true];
-    
-    int ringProgress = (secondsBetween * 100) / 28800;
-    if (ringProgress > 100) {
-        [_sleepRings setImageNamed:@"sleep-ring-animation-100"];
-    } else {
-        [_sleepRings setImageNamed:[NSString stringWithFormat:@"sleep-ring-animation-%d", ringProgress]];
-    }
-    
     [_sleepRings setHidden:false];
     [_inBedDashboardLabel setText:[dateWithoutFormatter stringFromDate:inBedDate]];
     [_durationDashboardLabel setText:[Utility timeFormatter:secondsBetween]];
@@ -635,19 +634,13 @@
 
 - (void)updateLabelsForSleepSessionInProgress {
     NSDateFormatter *dateWithoutFormatter = [Utility dateFormatterForTimeLabelsWithoutAMPM];
-    NSDate *inBedDate = [self.currentSleepSession.inBed firstObject];
+    NSDate *inBedDate = [self.currentSleepSession.sleep firstObject];
     NSDate *eightHourDate = [NSDate dateWithTimeInterval:28800 sinceDate:inBedDate];
     NSTimeInterval secondsBetween = [[NSDate date] timeIntervalSinceDate:inBedDate];
     
+    [self updateSleepRingFor:secondsBetween];
+    
     [self.mainLabel setHidden:true];
-    
-    int ringProgress = (secondsBetween * 100) / 28800;
-    if (ringProgress > 100) {
-        [_sleepRings setImageNamed:@"sleep-ring-animation-100"];
-    } else {
-        [_sleepRings setImageNamed:[NSString stringWithFormat:@"sleep-ring-animation-%d", ringProgress]];
-    }
-    
     [_inBedDashboardLabel setText:[dateWithoutFormatter stringFromDate:inBedDate]];
     [_durationDashboardLabel setText:[Utility timeFormatter:secondsBetween]];
     [_eightHourDashboardLabel setText:[dateWithoutFormatter stringFromDate:eightHourDate]];
@@ -672,6 +665,15 @@
     [self.sleepRings setImageNamed:@"sleep-ring-animation-"];
     [self.sleepRings startAnimatingWithImagesInRange:range duration:5.0 repeatCount:10];
 
+}
+
+- (void)updateSleepRingFor:(int)durationInSeconds {
+    int ringProgress = (durationInSeconds * 100) / 28800;
+    if (ringProgress > 100) {
+        [_sleepRings setImageNamed:@"sleep-ring-animation-100"];
+    } else {
+        [_sleepRings setImageNamed:[NSString stringWithFormat:@"sleep-ring-animation-%d", ringProgress]];
+    }
 }
 
 -(void)displayWakeIndicator{
