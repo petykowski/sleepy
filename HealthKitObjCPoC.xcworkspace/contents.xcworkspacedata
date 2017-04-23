@@ -1,10 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Workspace
    version = "1.0">
+   <Group
+      location = "container:"
+      name = "Screenshots">
+      <FileRef
+         location = "group:1_main.png">
+      </FileRef>
+      <FileRef
+         location = "group:2_details.png">
+      </FileRef>
+      <FileRef
+         location = "group:3_details.png">
+      </FileRef>
+      <FileRef
+         location = "group:4_stats.png">
+      </FileRef>
+   </Group>
    <FileRef
       location = "group:HealthKitObjCPoC.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:Pods/Pods.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:README.md">
    </FileRef>
 </Workspace>
