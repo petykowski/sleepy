@@ -9,12 +9,13 @@
 /* Begin PBXBuildFile section */
 		082972C96AC8EB1EE084E4C6 /* libPods-HealthKitObjCPoC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F29A0B0C96A13CA796FE7B37 /* libPods-HealthKitObjCPoC.a */; };
 		A8D8787AE597B0F312A4A3B1 /* libPods-HealthKitObjCPoC WatchKit Extension.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DA86632C5F9D1B2EE4704820 /* libPods-HealthKitObjCPoC WatchKit Extension.a */; };
-		C200919F1D75473B003682D9 /* session.m in Sources */ = {isa = PBXBuildFile; fileRef = C245D3DC1D56925E0047D2FD /* session.m */; };
+		C21600071EAD564100CB6865 /* session.m in Sources */ = {isa = PBXBuildFile; fileRef = C21600041EAD564100CB6865 /* session.m */; };
+		C21600081EAD564100CB6865 /* SleepSession.m in Sources */ = {isa = PBXBuildFile; fileRef = C21600061EAD564100CB6865 /* SleepSession.m */; };
+		C21600091EAD56A000CB6865 /* session.m in Sources */ = {isa = PBXBuildFile; fileRef = C21600041EAD564100CB6865 /* session.m */; };
+		C216000A1EAD56AA00CB6865 /* SleepSession.m in Sources */ = {isa = PBXBuildFile; fileRef = C21600061EAD564100CB6865 /* SleepSession.m */; };
 		C225561C1DB9BE4200E31C62 /* SleepInputInterfaceController.m in Sources */ = {isa = PBXBuildFile; fileRef = C225561B1DB9BE4200E31C62 /* SleepInputInterfaceController.m */; };
 		C22625CD1D864BB70013398C /* OnboardingContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C22625CA1D864BB70013398C /* OnboardingContentViewController.m */; };
 		C22625CF1D864BB70013398C /* OnboardingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C22625CC1D864BB70013398C /* OnboardingViewController.m */; };
-		C22EFCA91D82518500A64D3B /* SleepSession.m in Sources */ = {isa = PBXBuildFile; fileRef = C22EFCA81D82518500A64D3B /* SleepSession.m */; };
-		C22EFCAA1D82518500A64D3B /* SleepSession.m in Sources */ = {isa = PBXBuildFile; fileRef = C22EFCA81D82518500A64D3B /* SleepSession.m */; };
 		C2391DEC1D35D92C00808835 /* Utility.m in Sources */ = {isa = PBXBuildFile; fileRef = C2391DEB1D35D92C00808835 /* Utility.m */; };
 		C2391DED1D35D92C00808835 /* Utility.m in Sources */ = {isa = PBXBuildFile; fileRef = C2391DEB1D35D92C00808835 /* Utility.m */; };
 		C243C1541C57D32400DB8803 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C243C1531C57D32400DB8803 /* main.m */; };
@@ -30,7 +31,6 @@
 		C243C17F1C57D32400DB8803 /* ExtensionDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C243C17E1C57D32400DB8803 /* ExtensionDelegate.m */; };
 		C243C1811C57D32400DB8803 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C243C1801C57D32400DB8803 /* Assets.xcassets */; };
 		C243C1911C57D34800DB8803 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C243C1901C57D34800DB8803 /* HealthKit.framework */; };
-		C245D3DD1D56925E0047D2FD /* session.m in Sources */ = {isa = PBXBuildFile; fileRef = C245D3DC1D56925E0047D2FD /* session.m */; };
 		C2508E571C582A5B00900AC1 /* Health.plist in Resources */ = {isa = PBXBuildFile; fileRef = C2508E561C582A5B00900AC1 /* Health.plist */; };
 		C2508E581C582A5B00900AC1 /* Health.plist in Resources */ = {isa = PBXBuildFile; fileRef = C2508E561C582A5B00900AC1 /* Health.plist */; };
 		C25FC8F21DA97F5F00B39ACD /* StatisticsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C25FC8F11DA97F5F00B39ACD /* StatisticsTableViewCell.m */; };
@@ -112,6 +112,10 @@
 		1600CA2E8CD6C40D6732715A /* Pods-HealthKitObjCPoC WatchKit App.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HealthKitObjCPoC WatchKit App.release.xcconfig"; path = "Pods/Target Support Files/Pods-HealthKitObjCPoC WatchKit App/Pods-HealthKitObjCPoC WatchKit App.release.xcconfig"; sourceTree = "<group>"; };
 		3E85099F7F0347C1EEC310E3 /* Pods-HealthKitObjCPoC WatchKit App.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HealthKitObjCPoC WatchKit App.debug.xcconfig"; path = "Pods/Target Support Files/Pods-HealthKitObjCPoC WatchKit App/Pods-HealthKitObjCPoC WatchKit App.debug.xcconfig"; sourceTree = "<group>"; };
 		8107589464DD4C3A76098B09 /* Pods-HealthKitObjCPoC WatchKit Extension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HealthKitObjCPoC WatchKit Extension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-HealthKitObjCPoC WatchKit Extension/Pods-HealthKitObjCPoC WatchKit Extension.debug.xcconfig"; sourceTree = "<group>"; };
+		C21600031EAD564100CB6865 /* session.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = session.h; path = HealthKitObjCPoC/session.h; sourceTree = "<group>"; };
+		C21600041EAD564100CB6865 /* session.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = session.m; path = HealthKitObjCPoC/session.m; sourceTree = "<group>"; };
+		C21600051EAD564100CB6865 /* SleepSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SleepSession.h; path = HealthKitObjCPoC/SleepSession.h; sourceTree = "<group>"; };
+		C21600061EAD564100CB6865 /* SleepSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SleepSession.m; path = HealthKitObjCPoC/SleepSession.m; sourceTree = "<group>"; };
 		C225561A1DB9BE4200E31C62 /* SleepInputInterfaceController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SleepInputInterfaceController.h; sourceTree = "<group>"; };
 		C225561B1DB9BE4200E31C62 /* SleepInputInterfaceController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SleepInputInterfaceController.m; sourceTree = "<group>"; };
 		C22625C81D864BB60013398C /* OnboardingContentViewController_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OnboardingContentViewController_Private.h; sourceTree = "<group>"; };
@@ -119,8 +123,6 @@
 		C22625CA1D864BB70013398C /* OnboardingContentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OnboardingContentViewController.m; sourceTree = "<group>"; };
 		C22625CB1D864BB70013398C /* OnboardingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OnboardingViewController.h; sourceTree = "<group>"; };
 		C22625CC1D864BB70013398C /* OnboardingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OnboardingViewController.m; sourceTree = "<group>"; };
-		C22EFCA71D82518500A64D3B /* SleepSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SleepSession.h; sourceTree = "<group>"; };
-		C22EFCA81D82518500A64D3B /* SleepSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SleepSession.m; sourceTree = "<group>"; };
 		C22F3B0A1D331B7900FE6F9B /* HealthKitObjCPoC WatchKit App.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "HealthKitObjCPoC WatchKit App.entitlements"; sourceTree = "<group>"; };
 		C2391DEA1D35D92C00808835 /* Utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utility.h; sourceTree = "<group>"; };
 		C2391DEB1D35D92C00808835 /* Utility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Utility.m; sourceTree = "<group>"; };
@@ -146,8 +148,6 @@
 		C243C1901C57D34800DB8803 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
 		C243C1921C57D34800DB8803 /* HealthKitObjCPoC.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = HealthKitObjCPoC.entitlements; sourceTree = "<group>"; };
 		C243C1931C57D35900DB8803 /* HealthKitObjCPoC WatchKit Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "HealthKitObjCPoC WatchKit Extension.entitlements"; sourceTree = "<group>"; };
-		C245D3DB1D56925E0047D2FD /* session.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = session.h; sourceTree = "<group>"; };
-		C245D3DC1D56925E0047D2FD /* session.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = session.m; sourceTree = "<group>"; };
 		C2508E561C582A5B00900AC1 /* Health.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Health.plist; sourceTree = "<group>"; };
 		C25FC8F01DA97F5F00B39ACD /* StatisticsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatisticsTableViewCell.h; sourceTree = "<group>"; };
 		C25FC8F11DA97F5F00B39ACD /* StatisticsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatisticsTableViewCell.m; sourceTree = "<group>"; };
@@ -271,11 +271,11 @@
 		C243C1461C57D32400DB8803 = {
 			isa = PBXGroup;
 			children = (
-				C22EFCA71D82518500A64D3B /* SleepSession.h */,
-				C22EFCA81D82518500A64D3B /* SleepSession.m */,
+				C21600031EAD564100CB6865 /* session.h */,
+				C21600041EAD564100CB6865 /* session.m */,
+				C21600051EAD564100CB6865 /* SleepSession.h */,
+				C21600061EAD564100CB6865 /* SleepSession.m */,
 				C2AB02111D5652430051CFCF /* coreData.xcdatamodeld */,
-				C245D3DB1D56925E0047D2FD /* session.h */,
-				C245D3DC1D56925E0047D2FD /* session.m */,
 				C243C1901C57D34800DB8803 /* HealthKit.framework */,
 				C243C1511C57D32400DB8803 /* HealthKitObjCPoC */,
 				C243C16A1C57D32400DB8803 /* HealthKitObjCPoC WatchKit App */,
@@ -767,18 +767,18 @@
 			files = (
 				C2AA52DF1D83AB7600584AF4 /* Constants.m in Sources */,
 				C2CCCF1D1D7E2C84004C82F8 /* SleepSessionTableViewCell.m in Sources */,
-				C245D3DD1D56925E0047D2FD /* session.m in Sources */,
 				C25FC8F21DA97F5F00B39ACD /* StatisticsTableViewCell.m in Sources */,
 				C22625CD1D864BB70013398C /* OnboardingContentViewController.m in Sources */,
 				C28F8EFF1DCFE96F0016BFD4 /* HeartRateChart.m in Sources */,
 				C2FB86511D31D0B900FCC143 /* SleepMilestoneInterfaceController.m in Sources */,
+				C21600081EAD564100CB6865 /* SleepSession.m in Sources */,
+				C21600071EAD564100CB6865 /* session.m in Sources */,
 				C22625CF1D864BB70013398C /* OnboardingViewController.m in Sources */,
 				C29A2FB71D8DFC44005B5D29 /* SessionDetailTableViewController.m in Sources */,
 				C29A2FBA1D8E0054005B5D29 /* SessionDetailTableViewCell.m in Sources */,
 				C2391DEC1D35D92C00808835 /* Utility.m in Sources */,
 				C2C9911E1DE7B3D700E6815D /* ColorConstants.m in Sources */,
 				C2BBAAA31D6FCCC0000ACD2B /* SessionsTableViewController.m in Sources */,
-				C22EFCA91D82518500A64D3B /* SleepSession.m in Sources */,
 				C29E28A41D98AC00009FD716 /* SleepStatistic.m in Sources */,
 				C2D692091DA195CC00DB3876 /* StatisticsTableViewController.m in Sources */,
 				C2F1FF851DD916E20092C6F0 /* ChartViewController.m in Sources */,
@@ -793,13 +793,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				C2FB86521D31D0B900FCC143 /* SleepMilestoneInterfaceController.m in Sources */,
+				C21600091EAD56A000CB6865 /* session.m in Sources */,
 				C243C17F1C57D32400DB8803 /* ExtensionDelegate.m in Sources */,
 				C243C17C1C57D32400DB8803 /* InterfaceController.m in Sources */,
-				C200919F1D75473B003682D9 /* session.m in Sources */,
 				C2BA05E11D2FEC1800438CC7 /* InterfaceControllerSleep.m in Sources */,
 				C2391DED1D35D92C00808835 /* Utility.m in Sources */,
+				C216000A1EAD56AA00CB6865 /* SleepSession.m in Sources */,
 				C225561C1DB9BE4200E31C62 /* SleepInputInterfaceController.m in Sources */,
-				C22EFCAA1D82518500A64D3B /* SleepSession.m in Sources */,
 				C2FB86561D31D93800FCC143 /* MilestoneRowController.m in Sources */,
 				C2AA52E01D83AB7600584AF4 /* Constants.m in Sources */,
 			);
