@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="11762" systemVersion="16E163f" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="AgC-eL-Hgc">
-    <device id="watch42" orientation="portrait">
+<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="12120" systemVersion="16F54b" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="AgC-eL-Hgc">
+    <device id="watch38" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="watchOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="11508"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="12029"/>
     </dependencies>
     <scenes>
         <!--mainInterface-->
@@ -18,10 +18,12 @@
                             <fontDescription key="font" type="boldSystem" pointSize="30"/>
                         </label>
                         <imageView height="8" alignment="center" contentMode="scaleAspectFit" id="ptQ-Tp-H4F"/>
-                        <imageView width="110" height="110" alignment="center" verticalAlignment="center" hidden="YES" image="sleep-ring-animation-5" id="MGK-sq-OL9"/>
+                        <imageView width="110" height="110" alignment="center" verticalAlignment="center" hidden="YES" image="sleep-ring-animation-5" id="MGK-sq-OL9">
+                            <variation key="device=watch38mm" height="92" width="92"/>
+                        </imageView>
                         <group width="1" alignment="center" verticalAlignment="bottom" hidden="YES" id="NCo-iv-cEL" userLabel="Components Group">
                             <items>
-                                <group width="50" alignment="left" layout="vertical" id="C2A-vD-tMZ" userLabel="In Bed Group">
+                                <group width="46" alignment="left" layout="vertical" id="C2A-vD-tMZ" userLabel="In Bed Group">
                                     <items>
                                         <label alignment="left" text="In Bed" id="1sG-ld-RzV">
                                             <color key="textColor" red="0.3720397949" green="0.30394893880000001" blue="0.71613603830000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -29,21 +31,27 @@
                                         </label>
                                         <label alignment="left" text="10:09" id="GlQ-Ee-bLW">
                                             <fontDescription key="font" type="system" pointSize="16"/>
+                                            <variation key="device=watch38mm">
+                                                <fontDescription key="font" type="system" pointSize="13"/>
+                                            </variation>
                                         </label>
                                     </items>
-                                    <variation key="device=watch38mm" width="43"/>
+                                    <variation key="device=watch38mm" width="38"/>
                                 </group>
-                                <group width="50" alignment="center" layout="vertical" id="Zbz-vT-Tcl" userLabel="Duration Group">
+                                <group width="58" alignment="center" layout="vertical" id="Zbz-vT-Tcl" userLabel="Duration Group">
                                     <items>
                                         <label alignment="center" text="Duration" id="oGY-95-vth">
                                             <color key="textColor" red="0.3720397949" green="0.30394893880000001" blue="0.71613603830000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <fontDescription key="font" type="system" pointSize="10"/>
                                         </label>
-                                        <label alignment="center" text="10h10" id="dJP-vn-3Oo">
+                                        <label alignment="center" text="10h10m" id="dJP-vn-3Oo">
                                             <fontDescription key="font" type="system" pointSize="16"/>
+                                            <variation key="device=watch38mm">
+                                                <fontDescription key="font" type="system" pointSize="13"/>
+                                            </variation>
                                         </label>
                                     </items>
-                                    <variation key="device=watch38mm" width="44"/>
+                                    <variation key="device=watch38mm" width="51"/>
                                 </group>
                                 <group width="44" alignment="right" layout="vertical" id="5uL-Yg-5EK" userLabel="8-Hour Group">
                                     <items>
@@ -53,8 +61,12 @@
                                         </label>
                                         <label alignment="right" text="6:09" id="QP9-t2-zdg">
                                             <fontDescription key="font" type="system" pointSize="16"/>
+                                            <variation key="device=watch38mm">
+                                                <fontDescription key="font" type="system" pointSize="13"/>
+                                            </variation>
                                         </label>
                                     </items>
+                                    <variation key="device=watch38mm" width="41"/>
                                 </group>
                             </items>
                         </group>
