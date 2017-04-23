@@ -2,7 +2,7 @@
 <Workspace
    version = "1.0">
    <Group
-      location = "container:"
+      location = "group:Screenshots"
       name = "Screenshots">
       <FileRef
          location = "group:1_main.png">
