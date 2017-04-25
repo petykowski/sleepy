@@ -33,6 +33,8 @@
 		C245D3DD1D56925E0047D2FD /* session.m in Sources */ = {isa = PBXBuildFile; fileRef = C245D3DC1D56925E0047D2FD /* session.m */; };
 		C2508E571C582A5B00900AC1 /* Health.plist in Resources */ = {isa = PBXBuildFile; fileRef = C2508E561C582A5B00900AC1 /* Health.plist */; };
 		C2508E581C582A5B00900AC1 /* Health.plist in Resources */ = {isa = PBXBuildFile; fileRef = C2508E561C582A5B00900AC1 /* Health.plist */; };
+		C25E2DB91EAD747200F45B3A /* ColorConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = C2C9911D1DE7B3D700E6815D /* ColorConstants.m */; };
+		C25E2DBC1EAEDD6500F45B3A /* SleepProgressRing.m in Sources */ = {isa = PBXBuildFile; fileRef = C25E2DBB1EAEDD6500F45B3A /* SleepProgressRing.m */; };
 		C25FC8F21DA97F5F00B39ACD /* StatisticsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C25FC8F11DA97F5F00B39ACD /* StatisticsTableViewCell.m */; };
 		C28F8EFF1DCFE96F0016BFD4 /* HeartRateChart.m in Sources */ = {isa = PBXBuildFile; fileRef = C28F8EFE1DCFE96F0016BFD4 /* HeartRateChart.m */; };
 		C29A2FB71D8DFC44005B5D29 /* SessionDetailTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C29A2FB61D8DFC44005B5D29 /* SessionDetailTableViewController.m */; };
@@ -149,6 +151,8 @@
 		C245D3DB1D56925E0047D2FD /* session.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = session.h; sourceTree = "<group>"; };
 		C245D3DC1D56925E0047D2FD /* session.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = session.m; sourceTree = "<group>"; };
 		C2508E561C582A5B00900AC1 /* Health.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Health.plist; sourceTree = "<group>"; };
+		C25E2DBA1EAEDD6500F45B3A /* SleepProgressRing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SleepProgressRing.h; sourceTree = "<group>"; };
+		C25E2DBB1EAEDD6500F45B3A /* SleepProgressRing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SleepProgressRing.m; sourceTree = "<group>"; };
 		C25FC8F01DA97F5F00B39ACD /* StatisticsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatisticsTableViewCell.h; sourceTree = "<group>"; };
 		C25FC8F11DA97F5F00B39ACD /* StatisticsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatisticsTableViewCell.m; sourceTree = "<group>"; };
 		C28F8EFD1DCFE96F0016BFD4 /* HeartRateChart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeartRateChart.h; sourceTree = "<group>"; };
@@ -343,6 +347,8 @@
 		C243C1791C57D32400DB8803 /* HealthKitObjCPoC WatchKit Extension */ = {
 			isa = PBXGroup;
 			children = (
+				C25E2DBA1EAEDD6500F45B3A /* SleepProgressRing.h */,
+				C25E2DBB1EAEDD6500F45B3A /* SleepProgressRing.m */,
 				C243C1931C57D35900DB8803 /* HealthKitObjCPoC WatchKit Extension.entitlements */,
 				C2FB86531D31D93800FCC143 /* MilestoneRowController.h */,
 				C2FB86541D31D93800FCC143 /* MilestoneRowController.m */,
@@ -799,9 +805,11 @@
 				C2BA05E11D2FEC1800438CC7 /* InterfaceControllerSleep.m in Sources */,
 				C2391DED1D35D92C00808835 /* Utility.m in Sources */,
 				C225561C1DB9BE4200E31C62 /* SleepInputInterfaceController.m in Sources */,
+				C25E2DB91EAD747200F45B3A /* ColorConstants.m in Sources */,
 				C22EFCAA1D82518500A64D3B /* SleepSession.m in Sources */,
 				C2FB86561D31D93800FCC143 /* MilestoneRowController.m in Sources */,
 				C2AA52E01D83AB7600584AF4 /* Constants.m in Sources */,
+				C25E2DBC1EAEDD6500F45B3A /* SleepProgressRing.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

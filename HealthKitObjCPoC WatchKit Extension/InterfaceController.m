@@ -13,6 +13,7 @@
 #import "Utility.h"
 #import "Constants.h"
 #import "SleepSession.h"
+#import "SleepProgressRing.h"
 
 @import HealthKit;
 @import UserNotifications;
@@ -622,7 +623,12 @@
     NSDate *eightHourDate = [NSDate dateWithTimeInterval:28800 sinceDate:inBedDate];
     NSTimeInterval secondsBetween = [[NSDate date] timeIntervalSinceDate:inBedDate];
     
-    [self updateSleepRingFor:secondsBetween];
+    NSString *watchSizeCategory = [WKInterfaceDevice.currentDevice preferredContentSizeCategory];
+    if ([watchSizeCategory  isEqual: @"UICTContentSizeCategoryL"]) {
+        [_sleepRings setImage:[SleepProgressRing SleepProgressRingImageForProgressInPercentage:(secondsBetween/28800) * 100 ForWatchSize:RingImageSize42]];
+    } else {
+        [_sleepRings setImage:[SleepProgressRing SleepProgressRingImageForProgressInPercentage:(secondsBetween/28800) * 100 ForWatchSize:RingImageSize38]];
+    }
     
     [self.mainLabel setHidden:true];
     [_sleepRings setHidden:false];
@@ -638,7 +644,13 @@
     NSDate *eightHourDate = [NSDate dateWithTimeInterval:28800 sinceDate:inBedDate];
     NSTimeInterval secondsBetween = [[NSDate date] timeIntervalSinceDate:inBedDate];
     
-    [self updateSleepRingFor:secondsBetween];
+    
+    NSString *watchSizeCategory = [WKInterfaceDevice.currentDevice preferredContentSizeCategory];
+    if ([watchSizeCategory  isEqual: @"UICTContentSizeCategoryL"]) {
+        [_sleepRings setImage:[SleepProgressRing SleepProgressRingImageForProgressInPercentage:(secondsBetween/28800) * 100 ForWatchSize:RingImageSize42]];
+    } else {
+        [_sleepRings setImage:[SleepProgressRing SleepProgressRingImageForProgressInPercentage:(secondsBetween/28800) * 100 ForWatchSize:RingImageSize38]];
+    }
     
     [self.mainLabel setHidden:true];
     [_inBedDashboardLabel setText:[dateWithoutFormatter stringFromDate:inBedDate]];
@@ -660,21 +672,21 @@
 
 #pragma mark - Image Methods
 
--(void)displaySleepRings {
-    NSRange range = NSMakeRange(0, 7);
-    [self.sleepRings setImageNamed:@"sleep-ring-animation-"];
-    [self.sleepRings startAnimatingWithImagesInRange:range duration:5.0 repeatCount:10];
-
-}
-
-- (void)updateSleepRingFor:(int)durationInSeconds {
-    int ringProgress = (durationInSeconds * 100) / 28800;
-    if (ringProgress > 100) {
-        [_sleepRings setImageNamed:@"sleep-ring-animation-100"];
-    } else {
-        [_sleepRings setImageNamed:[NSString stringWithFormat:@"sleep-ring-animation-%d", ringProgress]];
-    }
-}
+//-(void)displaySleepRings {
+//    NSRange range = NSMakeRange(0, 7);
+//    [self.sleepRings setImageNamed:@"sleep-ring-animation-"];
+//    [self.sleepRings startAnimatingWithImagesInRange:range duration:5.0 repeatCount:10];
+//
+//}
+//
+//- (void)updateSleepRingFor:(int)durationInSeconds {
+//    int ringProgress = (durationInSeconds * 100) / 28800;
+//    if (ringProgress > 100) {
+//        [_sleepRings setImageNamed:@"sleep-ring-animation-100"];
+//    } else {
+//        [_sleepRings setImageNamed:[NSString stringWithFormat:@"sleep-ring-animation-%d", ringProgress]];
+//    }
+//}
 
 -(void)displayWakeIndicator{
     NSRange range = NSMakeRange(0, 11);

@@ -56,5 +56,7 @@ double const kDefaultFontSizeTimeLabel = 30;
 double const kRemoveDeferredOptionTimer = 7200;
 double const kScaleCountLowerLimit = 0;
 double const kScaleCountUpperLimit = 11;
+double const kProgressRingImageSize38 = 92;
+double const kProgressRingImageSize42 = 110;
 
 @end

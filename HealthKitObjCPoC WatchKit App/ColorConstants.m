@@ -34,6 +34,10 @@
     return [UIColor colorWithRed:0.3725490196 green:0.3058823529 blue:0.7176470588 alpha:1.0];
 }
 
++ (UIColor *)darkThemeSecondaryAccentColor {
+    return [UIColor colorWithRed:0.1450980392 green:0.137254902 blue:0.1882352941 alpha:1.0];
+}
+
 + (UIColor *)darkThemeChartGridLineColor {
     return [UIColor colorWithRed:0.18 green:0.18 blue:0.18 alpha:1.0];
 }

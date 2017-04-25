@@ -37,6 +37,11 @@
 + (UIColor *)darkThemePrimaryAccentColor;
 
 /**
+ * @brief Returns a dark purple. Used as background for progress ring.
+ */
++ (UIColor *)darkThemeSecondaryAccentColor;
+
+/**
  * @brief Returns a bright purple. Used as an accent color or featured color.
  */
 + (UIColor *)darkThemeChartGridLineColor;

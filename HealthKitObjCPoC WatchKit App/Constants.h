@@ -50,5 +50,7 @@ extern double const kDefaultFontSizeTimeLabel;
 extern double const kRemoveDeferredOptionTimer;
 extern double const kScaleCountLowerLimit;
 extern double const kScaleCountUpperLimit;
+extern double const kProgressRingImageSize38;
+extern double const kProgressRingImageSize42;
 
 @end
