@@ -20,4 +20,9 @@ typedef NS_ENUM(NSInteger, ProgressRingSizeTypes) {
  */
 + (UIImage *) SleepProgressRingImageForProgressInPercentage:(int)percentage ForWatchSize:(ProgressRingSizeTypes)watchSize;
 
+/**
+ * @brief Returns a NSArrary containing a series of images used for the wake indicator animation.
+ */
++ (NSArray *) WakeIndicatorImagesFadingIn:(BOOL)fadeIn ForWatchSize:(ProgressRingSizeTypes)watchSize;
+
 @end

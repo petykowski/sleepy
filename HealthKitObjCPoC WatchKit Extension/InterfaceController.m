@@ -14,6 +14,7 @@
 #import "Constants.h"
 #import "SleepSession.h"
 #import "SleepProgressRing.h"
+#import "ColorConstants.h"
 
 @import HealthKit;
 @import UserNotifications;
@@ -23,6 +24,9 @@
 // HEALTHKIT PROPERTIES //
 
 @property (nonatomic, retain) HKHealthStore *healthStore;
+
+// WATCH SIZE //
+@property (nonatomic, readwrite) NSString *watchSizeCategory;
 
 // NOTIFICATION CENTER PROPERTIES //
 
@@ -70,6 +74,7 @@
 
 - (instancetype)init {
     self = [super init];
+    self.watchSizeCategory = [WKInterfaceDevice.currentDevice preferredContentSizeCategory];
     
     _notificationCenter = [UNUserNotificationCenter currentNotificationCenter];
     [self configureUserNotificationCenter];
@@ -572,6 +577,8 @@
 - (void)prepareMenuIconsForUserNotInSleepSession {
     [self clearAllMenuItems];
     [self addMenuItemWithImageNamed:@"sleepMenuIcon" title:@"Sleep" action:@selector(sleepDidStartMenuButton)];
+    [self addMenuItemWithImageNamed:@"sleepMenuIcon" title:@"Fade In" action:@selector(displayWakeIndicator)];
+    [self addMenuItemWithImageNamed:@"sleepMenuIcon" title:@"Fade Out" action:@selector(fadeWakeIndicator)];
 }
 
 - (void)prepareMenuIconsForUserAsleepInSleepSession {
@@ -670,42 +677,51 @@
 
 #pragma mark - Image Methods
 
-//-(void)displaySleepRings {
-//    NSRange range = NSMakeRange(0, 7);
-//    [self.sleepRings setImageNamed:@"sleep-ring-animation-"];
-//    [self.sleepRings startAnimatingWithImagesInRange:range duration:5.0 repeatCount:10];
-//
-//}
-//
-//- (void)updateSleepRingFor:(int)durationInSeconds {
-//    int ringProgress = (durationInSeconds * 100) / 28800;
-//    if (ringProgress > 100) {
-//        [_sleepRings setImageNamed:@"sleep-ring-animation-100"];
-//    } else {
-//        [_sleepRings setImageNamed:[NSString stringWithFormat:@"sleep-ring-animation-%d", ringProgress]];
-//    }
-//}
-
 -(void)displayWakeIndicator{
-    NSRange range = NSMakeRange(0, 11);
-    [self.wakeIndicator setImageNamed:@"wakeIndicator"];
-    [self.wakeIndicator setHeight:8.0];
-    [self.wakeIndicator setWidth:8.0];
     [self.wakeIndicator setHidden:false];
-    [self.wakeIndicator startAnimatingWithImagesInRange:range duration:0.8 repeatCount:1];
+    NSArray *imagesArray;
+    BOOL hideIndicator = false;
+    // This is needed to pass into selector
+    NSNumber *boolAsNumber = [NSNumber numberWithBool:hideIndicator];
+    
+    if ([_watchSizeCategory  isEqual: @"UICTContentSizeCategoryL"]) {
+        imagesArray = [SleepProgressRing WakeIndicatorImagesFadingIn:true ForWatchSize:RingImageSize42];
+    } else {
+        imagesArray = [SleepProgressRing WakeIndicatorImagesFadingIn:true ForWatchSize:RingImageSize38];
+    }
+    UIImage *animation = [UIImage animatedImageWithImages:imagesArray duration:1.0];
+    [self.wakeIndicator setImage:animation];
+    [self.wakeIndicator startAnimating];
+    [self performSelector:@selector(animationDidFinishAndShouldHide:) withObject:boolAsNumber
+               afterDelay:1.0];
 }
 -(void)fadeWakeIndicator{
-    NSRange range = NSMakeRange(10, 12);
-    [self.wakeIndicator setImageNamed:@"wakeIndicator"];
-    [self.wakeIndicator startAnimatingWithImagesInRange:range duration:0.8 repeatCount:1];
-    [NSTimer scheduledTimerWithTimeInterval:0.8
-                                     target:self
-                                   selector:@selector(hideWakeIndicator)
-                                   userInfo:nil
-                                    repeats:NO];
+    NSArray *imagesArray;
+    BOOL hideIndicator = true;
+    // This is needed to pass into selector
+    NSNumber *boolAsNumber = [NSNumber numberWithBool:hideIndicator];
     
+    if ([_watchSizeCategory  isEqual: @"UICTContentSizeCategoryL"]) {
+        imagesArray = [SleepProgressRing WakeIndicatorImagesFadingIn:false ForWatchSize:RingImageSize42];
+    } else {
+        imagesArray = [SleepProgressRing WakeIndicatorImagesFadingIn:false ForWatchSize:RingImageSize38];
+    }
+    UIImage *animation = [UIImage animatedImageWithImages:imagesArray duration:1.0];
+    [self.wakeIndicator setImage:animation];
+    [self.wakeIndicator startAnimating];
+    [self performSelector:@selector(animationDidFinishAndShouldHide:) withObject:boolAsNumber
+               afterDelay:1.0];
 }
--(void)hideWakeIndicator{
+
+-(void)animationDidFinishAndShouldHide:(NSNumber *)hideWakeIndicator {
+    BOOL hideIndicator = [hideWakeIndicator boolValue];
+    [self.wakeIndicator stopAnimating];
+    if (hideIndicator) {
+        [self hideWakeIndicator];
+    }
+}
+
+-(void)hideWakeIndicator {
     [self.wakeIndicator setHidden:true];
 }
 

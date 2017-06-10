@@ -42,4 +42,8 @@
     return [UIColor colorWithRed:0.18 green:0.18 blue:0.18 alpha:1.0];
 }
 
++ (UIColor *)darkThemeWakeIndicatorColor {
+    return [UIColor colorWithRed:0.937254902 green:0.7254901961 blue:0.1490196078 alpha:1.0];
+}
+
 @end

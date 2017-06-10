@@ -52,5 +52,8 @@ extern double const kScaleCountLowerLimit;
 extern double const kScaleCountUpperLimit;
 extern double const kProgressRingImageSize38;
 extern double const kProgressRingImageSize42;
+extern double const kWakeIndicatorImageSize38;
+extern double const kWakeIndicatorImageSize42;
+
 
 @end

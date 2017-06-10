@@ -46,4 +46,9 @@
  */
 + (UIColor *)darkThemeChartGridLineColor;
 
+/**
+ * @brief Returns a bright yellow. Used as a featured color for the wake indicator icon.
+ */
++ (UIColor *)darkThemeWakeIndicatorColor;
+
 @end

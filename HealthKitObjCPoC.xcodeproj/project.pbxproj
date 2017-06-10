@@ -152,7 +152,7 @@
 		C245D3DC1D56925E0047D2FD /* session.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = session.m; sourceTree = "<group>"; };
 		C2508E561C582A5B00900AC1 /* Health.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Health.plist; sourceTree = "<group>"; };
 		C25E2DBA1EAEDD6500F45B3A /* SleepProgressRing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SleepProgressRing.h; sourceTree = "<group>"; };
-		C25E2DBB1EAEDD6500F45B3A /* SleepProgressRing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SleepProgressRing.m; sourceTree = "<group>"; };
+		C25E2DBB1EAEDD6500F45B3A /* SleepProgressRing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SleepProgressRing.m; sourceTree = "<group>"; usesTabs = 0; };
 		C25FC8F01DA97F5F00B39ACD /* StatisticsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatisticsTableViewCell.h; sourceTree = "<group>"; };
 		C25FC8F11DA97F5F00B39ACD /* StatisticsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatisticsTableViewCell.m; sourceTree = "<group>"; };
 		C28F8EFD1DCFE96F0016BFD4 /* HeartRateChart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeartRateChart.h; sourceTree = "<group>"; };
