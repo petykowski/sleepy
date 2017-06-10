@@ -289,9 +289,7 @@
     
     [self updateLabelsForSleepSessionStart];
     [self writeCurrentSleepSessionToFile];
-    
     [self prepareMenuIconsForUserAsleepInSleepSession];
-    
     [self writeRemoveDeferredSleepOptionDate];
     
 }
@@ -865,6 +863,18 @@
             NSLog(@"[DEBUG] Failed to write data to Health.app with error: %@", error);
         }
     }];
+}
+
+- (void) session:(nonnull WCSession *)session activationDidCompleteWithState:(WCSessionActivationState)activationState error:(nullable NSError *)error {
+    //
+}
+
+- (void) sessionDidBecomeInactive:(nonnull WCSession *)session {
+    //
+}
+
+- (void) sessionDidDeactivate:(nonnull WCSession *)session {
+    //
 }
 
 @end

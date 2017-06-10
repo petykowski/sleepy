@@ -96,8 +96,8 @@
     titleLabel.numberOfLines = 0;
     titleLabel.text = kNoHeartRateDataToDisplayTitle;
 
-    [blurEffectView addSubview:titleLabel];
     [self.view addSubview:blurEffectView];
+    [self.view addSubview:titleLabel];
     
 }
 

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="12120" systemVersion="16F54b" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="AgC-eL-Hgc">
+<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="13122.17" systemVersion="16G8c" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="AgC-eL-Hgc">
     <device id="watch42" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="watchOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="12029"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13104.14"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="13034"/>
     </dependencies>
     <scenes>
         <!--Sleep In Progress Interface Controller-->
@@ -32,7 +32,7 @@
                             <fontDescription key="font" type="boldSystem" pointSize="30"/>
                         </label>
                         <imageView height="8" alignment="center" contentMode="scaleAspectFit" id="ptQ-Tp-H4F"/>
-                        <imageView width="110" height="110" alignment="center" verticalAlignment="center" hidden="YES" image="sleep-ring-animation-5" id="MGK-sq-OL9">
+                        <imageView width="110" height="110" alignment="center" verticalAlignment="center" hidden="YES" id="MGK-sq-OL9">
                             <variation key="device=watch38mm" height="92" width="92"/>
                         </imageView>
                         <group width="1" alignment="center" verticalAlignment="bottom" hidden="YES" id="NCo-iv-cEL" userLabel="Components Group">
