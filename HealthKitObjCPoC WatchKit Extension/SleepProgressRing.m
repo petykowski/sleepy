@@ -14,47 +14,46 @@
 
 @implementation SleepProgressRing
 
-+ (NSArray *) WakeIndicatorImagesFadingIn:(BOOL)fadeIn ForWatchSize:(ProgressRingSizeTypes)watchSize {
++ (NSArray *) WakeIndicatorImagesFadingIn:(BOOL)fadeIn ForWatchSize:(ImageSizeWatchSizeTypes)watchSize {
     double imageSize;
-    if (watchSize == RingImageSize42) {
+    if (watchSize == ImageSize42) {
         imageSize = kWakeIndicatorImageSize42;
     } else {
         imageSize = kWakeIndicatorImageSize38;
     }
     
-    int loopCount = 0;
-    double alphaCount = 0.0;
-    UIImage *wakeCircleIcon;
+    int imagesGenerated = 0;
+    double imageAlpha = 0.0;
+    UIImage *circleWakeIndicator;
     NSMutableArray *images = [[NSMutableArray alloc] init];
     
-    while (loopCount < 10) {
+    while (imagesGenerated < 10) {
         double imageSize = 65;
+        
         // Initialize UIGraphicsImage
         CGSize size = CGSizeMake(imageSize, imageSize);
         UIGraphicsBeginImageContextWithOptions(size, false, 2.0);
         CGContextRef graphicsContext = UIGraphicsGetCurrentContext();
         UIGraphicsPushContext(graphicsContext);
         CGContextSetBlendMode(graphicsContext, kCGBlendModeNormal);
-        
         CGContextSetLineWidth(graphicsContext, 5.0);
-        CGContextSetFillColorWithColor(graphicsContext, [[ColorConstants darkThemeWakeIndicatorColor] colorWithAlphaComponent:alphaCount].CGColor);
+        CGContextSetFillColorWithColor(graphicsContext, [[ColorConstants darkThemeWakeIndicatorColor] colorWithAlphaComponent:imageAlpha].CGColor);
         
-        // setup the size
+        // Draw Circle
         CGRect circleRect = CGRectMake( 0, 0, size.width, size.height );
         circleRect = CGRectInset(circleRect, 5, 5);
-        // Fill
         CGContextFillEllipseInRect(graphicsContext, circleRect);
         
         // Convert To Image
-        CGImageRef ringCGImage = CGBitmapContextCreateImage(graphicsContext);
-        wakeCircleIcon = [UIImage imageWithCGImage:ringCGImage scale:2.0 orientation:UIImageOrientationUp];
+        CGImageRef wakeCGImage = CGBitmapContextCreateImage(graphicsContext);
+        circleWakeIndicator = [UIImage imageWithCGImage:wakeCGImage scale:2.0 orientation:UIImageOrientationUp];
         UIGraphicsPopContext();
         UIGraphicsEndImageContext();
         
-        //        [self.wakeIndicator setImage:wakeCircleIcon];
-        [images addObject:wakeCircleIcon];
-        loopCount++;
-        alphaCount += 0.1;
+        // Prepare Array
+        [images addObject:circleWakeIndicator];
+        imagesGenerated++;
+        imageAlpha += 0.1;
         
     }
     
@@ -65,10 +64,10 @@
     }
 }
 
-+ (UIImage *) SleepProgressRingImageForProgressInPercentage:(int)percentage ForWatchSize:(ProgressRingSizeTypes)watchSize {
++ (UIImage *) SleepProgressRingImageForProgressInPercentage:(int)percentage ForWatchSize:(ImageSizeWatchSizeTypes)watchSize {
     
     double imageSize;
-    if (watchSize == RingImageSize42) {
+    if (watchSize == ImageSize42) {
         imageSize = kProgressRingImageSize42;
     } else {
         imageSize = kProgressRingImageSize38;

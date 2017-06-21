@@ -1,28 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="13122.17" systemVersion="16G8c" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="AgC-eL-Hgc">
+<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="12120" systemVersion="16G8c" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="AgC-eL-Hgc">
     <device id="watch42" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="watchOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13104.14"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="13034"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="12029"/>
     </dependencies>
     <scenes>
-        <!--Sleep In Progress Interface Controller-->
-        <scene sceneID="U6F-H3-j3l">
-            <objects>
-                <controller id="41w-sF-lBT" customClass="SleepInProgressInterfaceController">
-                    <items>
-                        <imageView width="150" height="150" alignment="center" verticalAlignment="center" contentMode="center" id="f5g-gG-dBj"/>
-                    </items>
-                    <connections>
-                        <outlet property="image" destination="f5g-gG-dBj" id="NRG-fc-X1q"/>
-                    </connections>
-                </controller>
-            </objects>
-            <point key="canvasLocation" x="58.410256410256416" y="-200.07692307692309"/>
-        </scene>
         <!--mainInterface-->
         <scene sceneID="aou-V4-d1y">
             <objects>

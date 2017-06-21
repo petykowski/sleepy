@@ -577,8 +577,6 @@
 - (void)prepareMenuIconsForUserNotInSleepSession {
     [self clearAllMenuItems];
     [self addMenuItemWithImageNamed:@"sleepMenuIcon" title:@"Sleep" action:@selector(sleepDidStartMenuButton)];
-    [self addMenuItemWithImageNamed:@"sleepMenuIcon" title:@"Fade In" action:@selector(displayWakeIndicator)];
-    [self addMenuItemWithImageNamed:@"sleepMenuIcon" title:@"Fade Out" action:@selector(fadeWakeIndicator)];
 }
 
 - (void)prepareMenuIconsForUserAsleepInSleepSession {
@@ -630,9 +628,9 @@
     
     NSString *watchSizeCategory = [WKInterfaceDevice.currentDevice preferredContentSizeCategory];
     if ([watchSizeCategory  isEqual: @"UICTContentSizeCategoryL"]) {
-        [_sleepRings setImage:[SleepProgressRing SleepProgressRingImageForProgressInPercentage:(secondsBetween/28800) * 100 ForWatchSize:RingImageSize42]];
+        [_sleepRings setImage:[SleepProgressRing SleepProgressRingImageForProgressInPercentage:(secondsBetween/28800) * 100 ForWatchSize:ImageSize42]];
     } else {
-        [_sleepRings setImage:[SleepProgressRing SleepProgressRingImageForProgressInPercentage:(secondsBetween/28800) * 100 ForWatchSize:RingImageSize38]];
+        [_sleepRings setImage:[SleepProgressRing SleepProgressRingImageForProgressInPercentage:(secondsBetween/28800) * 100 ForWatchSize:ImageSize38]];
     }
     
     [self.mainLabel setHidden:true];
@@ -652,9 +650,9 @@
     
     NSString *watchSizeCategory = [WKInterfaceDevice.currentDevice preferredContentSizeCategory];
     if ([watchSizeCategory  isEqual: @"UICTContentSizeCategoryL"]) {
-        [_sleepRings setImage:[SleepProgressRing SleepProgressRingImageForProgressInPercentage:(secondsBetween/28800) * 100 ForWatchSize:RingImageSize42]];
+        [_sleepRings setImage:[SleepProgressRing SleepProgressRingImageForProgressInPercentage:(secondsBetween/28800) * 100 ForWatchSize:ImageSize42]];
     } else {
-        [_sleepRings setImage:[SleepProgressRing SleepProgressRingImageForProgressInPercentage:(secondsBetween/28800) * 100 ForWatchSize:RingImageSize38]];
+        [_sleepRings setImage:[SleepProgressRing SleepProgressRingImageForProgressInPercentage:(secondsBetween/28800) * 100 ForWatchSize:ImageSize38]];
     }
     
     [self.mainLabel setHidden:true];
@@ -685,9 +683,9 @@
     NSNumber *boolAsNumber = [NSNumber numberWithBool:hideIndicator];
     
     if ([_watchSizeCategory  isEqual: @"UICTContentSizeCategoryL"]) {
-        imagesArray = [SleepProgressRing WakeIndicatorImagesFadingIn:true ForWatchSize:RingImageSize42];
+        imagesArray = [SleepProgressRing WakeIndicatorImagesFadingIn:true ForWatchSize:ImageSize42];
     } else {
-        imagesArray = [SleepProgressRing WakeIndicatorImagesFadingIn:true ForWatchSize:RingImageSize38];
+        imagesArray = [SleepProgressRing WakeIndicatorImagesFadingIn:true ForWatchSize:ImageSize38];
     }
     UIImage *animation = [UIImage animatedImageWithImages:imagesArray duration:1.0];
     [self.wakeIndicator setImage:animation];
@@ -702,9 +700,9 @@
     NSNumber *boolAsNumber = [NSNumber numberWithBool:hideIndicator];
     
     if ([_watchSizeCategory  isEqual: @"UICTContentSizeCategoryL"]) {
-        imagesArray = [SleepProgressRing WakeIndicatorImagesFadingIn:false ForWatchSize:RingImageSize42];
+        imagesArray = [SleepProgressRing WakeIndicatorImagesFadingIn:false ForWatchSize:ImageSize42];
     } else {
-        imagesArray = [SleepProgressRing WakeIndicatorImagesFadingIn:false ForWatchSize:RingImageSize38];
+        imagesArray = [SleepProgressRing WakeIndicatorImagesFadingIn:false ForWatchSize:ImageSize38];
     }
     UIImage *animation = [UIImage animatedImageWithImages:imagesArray duration:1.0];
     [self.wakeIndicator setImage:animation];
