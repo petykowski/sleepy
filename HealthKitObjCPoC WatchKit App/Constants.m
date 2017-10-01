@@ -58,6 +58,8 @@ double const kScaleCountLowerLimit = 0;
 double const kScaleCountUpperLimit = 11;
 double const kProgressRingImageSize38 = 92;
 double const kProgressRingImageSize42 = 110;
+double const kProgressRingAnalysisImageSize38 = 35;
+double const kProgressRingAnalysisImageSize42 = 40;
 double const kWakeIndicatorImageSize38 = 55;
 double const kWakeIndicatorImageSize42 = 65;
 

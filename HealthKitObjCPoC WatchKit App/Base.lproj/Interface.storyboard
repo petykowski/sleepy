@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="12120" systemVersion="16G8c" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="AgC-eL-Hgc">
+<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="13168.3" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="AgC-eL-Hgc">
     <device id="watch42" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="watchOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="12029"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13147.4"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="13042.2"/>
     </dependencies>
     <scenes>
         <!--mainInterface-->
@@ -237,6 +237,43 @@
                 </controller>
             </objects>
             <point key="canvasLocation" x="58" y="422"/>
+        </scene>
+        <!--Dismiss-->
+        <scene sceneID="gyE-0B-cBO">
+            <objects>
+                <controller identifier="SleepAnalysis" title="Dismiss" id="azr-cN-uVZ" customClass="SleepAnalysisWKInterfaceController">
+                    <items>
+                        <group width="1" alignment="left" layout="vertical" spacing="13" id="q9k-2d-4aB">
+                            <items>
+                                <group width="1" alignment="left" id="NwP-aj-J2f">
+                                    <items>
+                                        <imageView width="0.29999999999999999" height="40" alignment="left" verticalAlignment="center" contentMode="scaleAspectFit" id="puM-dW-X8e"/>
+                                        <label width="0.69999999999999996" alignment="center" verticalAlignment="center" text="4h 25m" textAlignment="center" minimumScaleFactor="0.0" id="acx-pT-Ey7">
+                                            <fontDescription key="font" type="boldSystem" pointSize="25"/>
+                                        </label>
+                                    </items>
+                                </group>
+                                <group width="1" alignment="left" layout="overlap" id="drh-at-Mqy">
+                                    <items>
+                                        <label alignment="left" text="AVG HEART RATE" id="CN3-ey-Rdc">
+                                            <fontDescription key="font" type="system" weight="medium" pointSize="9"/>
+                                        </label>
+                                        <label alignment="center" verticalAlignment="center" text="98 bpm" minimumScaleFactor="0.0" id="be7-UL-sjn">
+                                            <fontDescription key="font" type="boldSystem" pointSize="30"/>
+                                        </label>
+                                    </items>
+                                </group>
+                            </items>
+                        </group>
+                    </items>
+                    <connections>
+                        <outlet property="durationLabel" destination="acx-pT-Ey7" id="sqW-rM-ggP"/>
+                        <outlet property="heartRateLabel" destination="be7-UL-sjn" id="qJg-Bj-hYM"/>
+                        <outlet property="progressRingImage" destination="puM-dW-X8e" id="3e1-bn-OFw"/>
+                    </connections>
+                </controller>
+            </objects>
+            <point key="canvasLocation" x="57.53846153846154" y="717.48717948717956"/>
         </scene>
     </scenes>
     <color key="tintColor" red="0.3720397949" green="0.30394893880000001" blue="0.71613603830000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

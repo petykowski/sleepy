@@ -21,6 +21,17 @@ typedef NS_ENUM(NSInteger, ImageSizeWatchSizeTypes) {
 + (UIImage *) SleepProgressRingImageForProgressInPercentage:(int)percentage ForWatchSize:(ImageSizeWatchSizeTypes)watchSize;
 
 /**
+ * @brief Returns a UIImage of a progress ring, used during sleep analysis, indicating the sleep duration.
+ */
++ (UIImage *) SleepProgressRingAnalysisImageForProgressInPercentage:(int)percentage ForWatchSize:(ImageSizeWatchSizeTypes)watchSize;
+
+/**
+ * @brief Returns an NSArray of UIImages of a progress ring, used during sleep analysis, indicating the sleep duration.
+ */
++ (UIImage *) SleepProgressRingAnalysisAnimationForProgressInPercentage:(int)percentage ForWatchSize:(ImageSizeWatchSizeTypes)watchSize;
+
+
+/**
  * @brief Returns a NSArrary containing a series of UIImages used for the wake indicator animation.
  */
 + (NSArray *) WakeIndicatorImagesFadingIn:(BOOL)fadeIn ForWatchSize:(ImageSizeWatchSizeTypes)watchSize;

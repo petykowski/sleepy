@@ -15,6 +15,8 @@
 #import "SleepSession.h"
 #import "SleepProgressRing.h"
 #import "ColorConstants.h"
+#import "Utility.h"
+#import "SleepStatistic.h"
 
 @import HealthKit;
 @import UserNotifications;
@@ -95,7 +97,8 @@
         NSLog(@"[VERBOSE] User is currently asleep. Resuming sleep state.");
     } else {
         [self updateLabelsForSleepSessionEnded];
-        [self prepareMenuIconsForUserNotInSleepSession];
+        //[self prepareMenuIconsForUserNotInSleepSession];
+        [self prepareMenuIconsForDebugging];
     }
     
     return self;
@@ -326,7 +329,7 @@
         [self.currentSleepSession.wake addObject:[NSDate dateWithTimeInterval:-1 sinceDate:[NSDate date]]];
     }
     [self writeCurrentSleepSessionToFile];
-    [self readHeartRateData];
+    [self determineUserSleepStart];
     [self cancelPendingNotifications];
     [self removeDeliveredNotifications];
     [self prepareMenuIconsForUserDismissedProposedSleepInterface];
@@ -411,7 +414,7 @@
     }];
 }
 
-- (void)readHeartRateData {
+- (void)determineUserSleepStart {
     NSDate *sampleStartDate = [self.currentSleepSession.sleep firstObject];
     NSDate *sampleEndDate = [NSDate dateWithTimeInterval:3600 sinceDate:sampleStartDate];
     
@@ -489,16 +492,63 @@
     } else {
         NSLog(@"[DEBUG] Session Unavailable");
     }
+    [self generateSleepStatData];
     [self writeSleepSessionDataToHealthKit];
     [self writeCurrentSleepSessionAndRetainAsPreviousSleepSessionAtFile];
     [self prepareMenuIconsForUserNotInSleepSession];
     
     // Allows for proposed sleep interface to dismiss
-    [NSTimer scheduledTimerWithTimeInterval:1.0
-                                     target:self
-                                   selector:@selector(reloadMilestoneInterfaceData)
-                                   userInfo:nil
-                                    repeats:NO];
+//    [NSTimer scheduledTimerWithTimeInterval:1.0
+//                                     target:self
+//                                   selector:@selector(reloadMilestoneInterfaceData)
+//                                   userInfo:nil
+//                                    repeats:NO];
+}
+
+- (void)generateSleepStatData {
+    NSDateComponents *components;
+//    NSDateFormatter *dateFormatter = [Utility dateFormatterForCellLabel];
+//    NSDateFormatter *timeFormatter = [Utility dateFormatterForTimeLabels];
+    
+    components = [[NSCalendar currentCalendar] components:NSCalendarUnitHour|NSCalendarUnitMinute fromDate:[self.currentSleepSession.sleep firstObject] toDate:[self.currentSleepSession.outBed lastObject] options:0];
+    
+    NSInteger hours = [components hour];
+    NSInteger minutes = [components minute];
+    
+    NSLog(@"The duration is %d hours and %d minutes", hours, minutes);
+    [self getAverageHeartRateForSleepSession:^(NSError *error) {
+        [self presentControllerWithName:@"SleepAnalysis" context:nil];
+    }];
+}
+
+- (NSPredicate *)predicateForSleepDuration {
+    
+    return [HKQuery predicateForSamplesWithStartDate:[_currentSleepSession.sleep firstObject] endDate:[NSDate dateWithTimeInterval:3600 sinceDate:[_currentSleepSession.outBed lastObject]] options:HKQueryOptionNone];
+}
+
+- (void)getAverageHeartRateForSleepSession:(void (^)(NSError *))completionHandler {
+    NSPredicate *predicate = [self predicateForSleepDuration];
+    
+    HKQuantityType *heartRateQuantityType = [HKQuantityType quantityTypeForIdentifier:HKQuantityTypeIdentifierHeartRate];
+    
+    HKStatisticsQuery *averageHeartRateQuery = [[HKStatisticsQuery alloc] initWithQuantityType:heartRateQuantityType quantitySamplePredicate:predicate options:HKStatisticsOptionDiscreteAverage completionHandler:^(HKStatisticsQuery * _Nonnull query, HKStatistics * _Nullable result, NSError * _Nullable error) {
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            SleepStatistic *avgHeartRate = [[SleepStatistic alloc] init];
+            double averageHeartRateResult = [result.averageQuantity doubleValueForUnit:[HKUnit unitFromString:@"count/min"]];
+            
+            NSLog(@"[DEBUG] averageHeartRateResult = %f", averageHeartRateResult);
+            avgHeartRate.result = floorf(averageHeartRateResult);
+            NSLog(@"[DEBUG] avgHeartRate.result = %f", avgHeartRate.result);
+            avgHeartRate.name = [NSString stringWithFormat:@"Average"];
+            
+            if (completionHandler) {
+                completionHandler(error);
+            }
+        });
+    }];
+    
+    [self.healthStore executeQuery:averageHeartRateQuery];
 }
 
 
@@ -549,6 +599,18 @@
     [sleepSessionDictionary setObject:outBedData forKey:@"outBed"];
     
     return sleepSessionDictionary;
+}
+
+- (void) session:(nonnull WCSession *)session activationDidCompleteWithState:(WCSessionActivationState)activationState error:(nullable NSError *)error {
+    //
+}
+
+- (void) sessionDidBecomeInactive:(nonnull WCSession *)session {
+    //
+}
+
+- (void) sessionDidDeactivate:(nonnull WCSession *)session {
+    //
 }
 
 
@@ -610,6 +672,8 @@
     [self clearAllMenuItems];
     [self addMenuItemWithImageNamed:@"sleepMenuIcon" title:@"Sleep" action:@selector(sleepDidStartMenuButton)];
     [self addMenuItemWithImageNamed:@"sleepMenuIcon" title:@"Populate Test Data" action:@selector(manuallySendTestDataToiOS)];
+    [self addMenuItemWithImageNamed:@"sleepMenuIcon" title:@"Populate HR Data" action:@selector(testAnalysisInterface)];
+    
 }
 
 
@@ -825,10 +889,10 @@
     formatter.dateFormat = @"yyyy.MM.dd G 'at' HH:mm:ss zzz";
     formatter.timeZone = [NSTimeZone localTimeZone];
     
-    NSDate *inBedStart = [formatter dateFromString:@"2017.01.25 AD at 00:05:00 EST"];
-    NSDate *sleepStart = [formatter dateFromString:@"2017.01.25 AD at 00:25:00 EST"];
-    NSDate *sleepStop = [formatter dateFromString:@"2017.01.25 AD at 6:56:00 EST"];
-    NSDate *wakeStop = [formatter dateFromString:@"2017.01.25 AD at 7:10:00 EST"];
+    NSDate *inBedStart = [formatter dateFromString:@"2017.07.02 AD at 21:05:00 EST"];
+    NSDate *sleepStart = [formatter dateFromString:@"2017.07.02 AD at 21:25:00 EST"];
+    NSDate *sleepStop = [formatter dateFromString:@"2017.07.03 AD at 6:56:00 EST"];
+    NSDate *wakeStop = [formatter dateFromString:@"2017.07.03 AD at 7:10:00 EST"];
     
     [_currentSleepSession.inBed addObject:inBedStart];
     [_currentSleepSession.sleep addObject:sleepStart];
@@ -849,6 +913,10 @@
      ];
     
     [self populateHRDataFrom:inBedStart to:wakeStop rangingFrom:51 to:98];
+}
+
+- (void)populateHRData {
+    [self populateHRDataFrom:[NSDate dateWithTimeIntervalSinceNow:-18000] to:[NSDate dateWithTimeIntervalSinceNow:18000] rangingFrom:48 to:102];
 }
 
 - (void)populateHRDataFrom:(NSDate *)startDate to:(NSDate *)endDate rangingFrom:(int)minHeartRate to:(int)maxHeartRate {
@@ -876,19 +944,17 @@
         if (!success) {
             NSLog(@"[DEBUG] Failed to write data to Health.app with error: %@", error);
         }
+        else {
+            NSLog(@"[DEBUG] Heart rate data sucessfully saved to Health.app");
+        }
     }];
 }
 
-- (void) session:(nonnull WCSession *)session activationDidCompleteWithState:(WCSessionActivationState)activationState error:(nullable NSError *)error {
-    //
+#pragma mark - Debug
+-(void)testAnalysisInterface {
+    [self presentControllerWithName:@"SleepAnalysis"
+                            context:nil];
 }
 
-- (void) sessionDidBecomeInactive:(nonnull WCSession *)session {
-    //
-}
-
-- (void) sessionDidDeactivate:(nonnull WCSession *)session {
-    //
-}
 
 @end
